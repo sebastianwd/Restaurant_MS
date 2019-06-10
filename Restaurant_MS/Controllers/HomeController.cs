@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RMS_SQL;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -8,23 +9,13 @@ namespace Restaurant_MS.Controllers
 {
     public class HomeController : Controller
     {
+        SQL_TB_MESA S_TB_MESA = new SQL_TB_MESA();
         public ActionResult Index()
         {
-            return View();
+
+
+            return View(S_TB_MESA.listar_mesas());
         }
 
-        public ActionResult About()
-        {
-            ViewBag.Message = "Your application description page.";
-
-            return View();
-        }
-
-        public ActionResult Contact()
-        {
-            ViewBag.Message = "Your contact page.";
-
-            return View();
-        }
     }
 }

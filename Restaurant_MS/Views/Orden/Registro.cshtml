@@ -1,0 +1,110 @@
+﻿@model RMS_MODELOS.M_TB_CABE_ORDE
+@{
+    ViewBag.Title = "Registro";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- INDEX TRABAJADOR SOLICITUD LICENCIAS -->
+<section class="" id="main_content">
+
+    <link href="~/Content/ui-search/search.min.css" rel="stylesheet" />
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a href="#">Orden</a>
+        </li>
+
+        <li class="breadcrumb-item active">@ViewBag.Title</li>
+    </ol>
+    <div class="container-fluid animated fadeIn">
+        <div class="row">
+            <div class="col-md-12 col-lg-12">
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fa fa-edit"></i> Datos
+                    </div>
+                    <div class="card-body">
+                        @using (Html.BeginForm("Registrar", "Orden", FormMethod.Post, new { @id = "Frm_Orden_Registro", @class = "form-horizontal" }))
+                        {
+                            <div class="form-group row">
+
+
+                                @Html.Label("", String.Format("Fecha"), new { @class = "col-lg-1 pr-0 col-form-label-sm" })
+                                <div class="col-lg-2 ">
+                                    <div class="input-group">
+                                        @Html.EditorFor(x => x.FD_FEC_ORDE, new { @class = "form-control  form-control-sm _valid-date", @id = "TXT_FD_FEC_ORDE", data_val_date = "Ingrese una fecha válida" })
+                                        <span class="input-group-append">
+                                            <span class="input-group-text">
+                                                <i class="fa fa-calendar"></i>
+                                            </span>
+                                        </span>
+                                    </div>
+                                    @Html.ValidationMessageFor(x => x.FD_FEC_ORDE, null, new { @class = "label-alert" })
+                                </div>
+
+
+                                @Html.Label("", String.Format("Código de cliente"), new { @class = "col-lg-1 pr-0 col-form-label-sm " })
+                                <div class="col-lg-2 ">
+                                    @Html.TextBoxFor(x => @x.FS_COD_CLIE, new { @class = "form-control form-control-sm", @id = "TXT_FS_COD_CLIE" })
+                                </div>
+                                @Html.ValidationMessageFor(x => x.FS_COD_CLIE, null, new { @class = "label-alert" })
+
+
+                                @Html.Label("", String.Format("Nombre de cliente"), new { @class = "col-lg-2  pr-0 col-form-label-sm" })
+                                <div class=" col-lg-4 pl-lg-0 ">
+                                    @Html.TextBoxFor(x => @x.FS_NOM_CLIE, new { @class = "form-control form-control-sm", @id = "TXT_FS_COD_CLIE" })
+                                </div>
+                                @Html.ValidationMessageFor(x => @x.FS_NOM_CLIE, null, new { @class = "label-alert" })
+
+
+                            </div>
+                            <div class="form-group row">
+                                @Html.Label("", String.Format("DNI/RUC"), new { @class = "col-lg-1 pr-0 col-form-label-sm " })
+                                <div class="col-lg-2 ">
+                                    @Html.TextBoxFor(x => @x.FS_NUM_RUCS, new { @class = "form-control form-control-sm", @id = "TXT_FS_COD_CLIE" })
+                                </div>
+                                @Html.ValidationMessageFor(x => x.FS_NUM_RUCS, null, new { @class = "label-alert" })
+                            </div>
+                        }
+                        <div class="col-lg-12">
+
+                            <div class="card">
+                                <div class="card-header">
+                                    <i class="fa fa-edit"></i> Registros
+
+                                </div>
+                                <div class="card-body " style="min-height:100px">
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <table id="TA_WEBB_DOCU_GENE" class="table table-striped table-bordered table-hover table-condensed ctable-with-buttons" cellspacing="0" width="100%">
+                                                <thead>
+                                                    <tr>
+                                                        <th>
+                                                            <div class="text-center" style="width:120px"></div>Fecha
+                                                        </th>
+                                                        <th>
+                                                            <div style="width:180px"></div>Cliente
+                                                        </th>
+                                                        <th>Situación</th>
+                                                        <th>Descarga</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody></tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="_load" data-load="Orden"></div>
+    <script src="~/Content/ui-search/search.min.js"></script>
+
+</section>
+

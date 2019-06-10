@@ -1,31 +1,78 @@
-﻿@{
-    ViewBag.Title = "Home Page";
+﻿@model IEnumerable<RMS_MODELOS.M_TB_MESA>
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="jumbotron">
-    <h1>ASP.NET</h1>
-    <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
-    <p><a href="https://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
-</div>
+<div class="content-wrapper">
+    <section class="content-header" id="main_content">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">Home</li>
+            <li class="breadcrumb-item">
+                <a href="#">
+                    Módulo de Gestión de restaurante
+                </a>
+            </li>
 
-<div class="row">
-    <div class="col-md-4">
-        <h2>Getting started</h2>
-        <p>
-            ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-            enables a clean separation of concerns and gives you full control over markup
-            for enjoyable, agile development.
-        </p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>Get more libraries</h2>
-        <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>Web Hosting</h2>
-        <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
-    </div>
+        </ol>
+        <article class="animated fadeIn slow">
+            <div class="container-fluid">
+
+                <div class="row">
+
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 pt-3 pl-sm-2 pl-lg-5 card">
+                        <h5 class="cdisplay-2-sm">
+                            Gestión de mesas
+                        </h5>
+                        <div class="row">
+                            @foreach (var item in Model)
+                            {
+
+                                <div class="col-sm-6 col-lg-2 col-md-3">
+                                    <div class="card text-white bg-light">
+                                        <div class="card-body pb-0">
+                                            <div class="btn-group float-right">
+                                                <button class="btn btn-light dropdown-toggle p-0" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                    <i class="icon-settings"></i>
+                                                </button>
+                                                <div class="dropdown-menu dropdown-menu-right">
+                                                    <a class="dropdown-item" href="#">Liberar/Ocupar mesa</a>
+                                                    <a class="dropdown-item" href="#">Reservar mesa</a>
+                                                    <a class="dropdown-item" href="#">Eliminar mesa</a>
+                                                </div>
+                                            </div>
+
+
+                                            <div class="text-black-50">@item.FS_COD_MESA</div>
+                                            @if (item.FS_STA_OCUP == "R")
+                                            {
+                                                <div class="text-info">Reservado</div>
+                                            }
+                                            else if (item.FS_STA_OCUP == "S")
+                                            {
+                                                <div class="text-danger">Ocupado</div>
+                                            }
+                                            else
+                                            {
+                                                <div class="text-success">Libre</div>
+                                            }
+                                        </div>
+                                        <img src="~/Content/Main/imagenes/dishes.svg" style="height:7rem;" />
+
+                                    </div>
+                                </div>
+
+                            }
+
+                        </div>
+                        <div class="pb-5">
+                            <a class="btn btn-outline-success smooth-link" href="@Url.Action("Registro", "Orden")" role="button">
+                                Nuevo pedido <i class="fa fa-long-arrow-right" aria-hidden="true"></i>
+                            </a>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </article>
+    </section>
 </div>

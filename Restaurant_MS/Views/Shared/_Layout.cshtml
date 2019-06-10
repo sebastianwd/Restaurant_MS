@@ -1,42 +1,102 @@
-﻿<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - My ASP.NET Application</title>
-    @Styles.Render("~/Content/css")
-    @Scripts.Render("~/bundles/modernizr")
-</head>
-<body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
-            </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    <li>@Html.ActionLink("About", "About", "Home")</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
-                </ul>
-            </div>
-        </div>
-    </div>
-    <div class="container body-content">
-        @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
-        </footer>
-    </div>
+﻿@{
+    Layout = null;   
+}
 
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
-    @RenderSection("scripts", required: false)
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <base href="./">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Restaurant MS</title>
+    <!-- Icons-->
+    <link href="~/Content/core-ui/icons/coreui-icons.min.css" rel="stylesheet" />
+    <link href="~/Content/core-ui/icons/flag-icon.min.css" rel="stylesheet" />
+    <link href="~/Content/core-ui/icons/font-awesome.min.css" rel="stylesheet" />
+    <link href="~/Content/core-ui/icons/simple-line-icons.css" rel="stylesheet" />
+    <!-- Main styles for this application-->
+    <link href="~/Content/core-ui/style.css" rel="stylesheet" />
+    <link href="~/Content/core-ui/pace-progress/css/pace.min.css" rel="stylesheet" />
+    <link href="~/Content/animate/animate.css" rel="stylesheet" />
+    <link href="~/Content/daterangepicker-master/daterangepicker.css" rel="stylesheet" />
+    <link href="~/Content/iziToast/iziToast.min.css" rel="stylesheet" />
+    <link href="~/Content/Main/custom.min.css" rel="stylesheet" />
+
+    @Styles.Render("~/bundles/tablesCss")
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="~/Scripts/popper.js"></script>
+    <script src="~/Content/bootstrap/js/bootstrap.min.js"></script>
+    <style>
+        .bg-loader {
+
+        background: transparent url(@Url.Content("~/Content/Main/imagenes/bg-loader.svg")) no-repeat 52% 40%;
+         content: '';
+        /*position: absolute;*/
+        position:fixed;
+          width: 100%;
+         min-height: 100%;
+        /*top: 0;
+        left: 0;*/
+        pointer-events: none;
+        background-size: 75px auto;
+        -webkit-transition: opacity 0.3s;
+        transition: opacity 0.3s;
+        z-index:97;
+
+        }
+    </style>
+</head>
+<body class="app header-fixed sidebar-fixed aside-menu-fixed  sidebar-lg-show">
+    @Html.Partial("~/Views/Shared/navbar.cshtml")
+    <div class="bg-loader"></div>
+    <div class="app-body ">
+        @Html.Partial("~/Views/Shared/sidebar.cshtml")
+
+        <main class="main animated fadeIn fast" >
+
+            @RenderBody()
+        </main>
+        @Html.Partial("~/Views/Shared/aside.cshtml")
+    </div>
+    <footer class="app-footer ctext-sm-1">
+        <div>
+            <span> Cibertec 2019 </span>
+        </div>
+        <div class="ml-auto">
+            <span>Powered by</span>
+            <a href="https://coreui.io">CoreUI</a>
+        </div>
+    </footer>
+    <!-- CoreUI and necessary plugins-->
+    @Scripts.Render("~/bundles/tablesJs")
+    <script src="~/Content/smoothState/jquery.smoothState.min.js"></script>
+    <script src="~/Content/core-ui/pace-progress/pace.min.js"></script>
+    <script src="~/Content/core-ui/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+    <script src="~/Content/core-ui/coreui.min.js"></script>
+    <script src="~/Content/moment/min/moment.min.js"></script>
+    <script src="~/Content/daterangepicker-master/daterangepicker.js"></script>
+    <script src="~/Content/iziToast/iziToast.min.js"></script>
+    <script src="~/Scripts/jquery.form.min.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/Content/cleavejs/cleave.js"></script>
+    <script src="~/Scripts/util.js"></script>
+    <script src="~/Scripts/index.js"></script>
+
+    <script>
+        // Pace (loading bar) restart en cada ajax request
+        $(document).ready(function () {
+            $(".bg-loader").addClass("_loaded");
+                
+        });
+
+        $(document).ajaxStart(function () { Pace.restart(); });
+
+         console.log("layout activated");
+  
+
+    </script>
 </body>
 </html>

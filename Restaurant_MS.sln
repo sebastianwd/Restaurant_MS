@@ -5,6 +5,10 @@ VisualStudioVersion = 15.0.28307.645
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Restaurant_MS", "Restaurant_MS\Restaurant_MS.csproj", "{62011A7B-3EC8-4FA9-B143-88873138A947}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RMS_SQL", "RMS_SQL\RMS_SQL.csproj", "{C672F650-FE5B-4560-A424-567C1FEBD748}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RMS_MODELOS", "RMS_MODELOS\RMS_MODELOS.csproj", "{416279C3-0613-4654-812F-6B4182F6B5A3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{62011A7B-3EC8-4FA9-B143-88873138A947}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{62011A7B-3EC8-4FA9-B143-88873138A947}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{62011A7B-3EC8-4FA9-B143-88873138A947}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C672F650-FE5B-4560-A424-567C1FEBD748}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C672F650-FE5B-4560-A424-567C1FEBD748}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C672F650-FE5B-4560-A424-567C1FEBD748}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C672F650-FE5B-4560-A424-567C1FEBD748}.Release|Any CPU.Build.0 = Release|Any CPU
+		{416279C3-0613-4654-812F-6B4182F6B5A3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{416279C3-0613-4654-812F-6B4182F6B5A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{416279C3-0613-4654-812F-6B4182F6B5A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{416279C3-0613-4654-812F-6B4182F6B5A3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
