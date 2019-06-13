@@ -38,9 +38,11 @@ namespace RMS_MODELOS
             [Required]
             [MaxLength(4)]
             public string FS_TIP_SITU { get; set; }
-
-            [MaxLength(20)]
+ [MaxLength(20)]
+           
             public string FS_COD_EJEC { get; set; }
+        [MaxLength(4)]
+        public string FS_TIP_CLIE { get; set; }
 
 
     }
