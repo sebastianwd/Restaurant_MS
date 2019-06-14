@@ -106,7 +106,7 @@ RMS = {
             //debugger;
             // controller-wide code  - general de cada vista
             console.log("js para  Orden");
-         
+
 
         }
 

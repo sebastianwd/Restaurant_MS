@@ -1070,6 +1070,7 @@
     <Content Include="Views\Shared\sidebar.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Orden\Registro.cshtml" />
+    <Content Include="Views\Shared\_lista_articulos.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

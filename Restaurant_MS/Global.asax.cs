@@ -8,6 +8,14 @@ using System.Web.Routing;
 
 namespace Restaurant_MS
 {
+
+    public class AjaxOnlyAttribute : ActionMethodSelectorAttribute
+    {
+        public override bool IsValidForRequest(ControllerContext controllerContext, System.Reflection.MethodInfo methodInfo)
+        {
+            return controllerContext.RequestContext.HttpContext.Request.IsAjaxRequest();
+        }
+    }
     public class MvcApplication : System.Web.HttpApplication
     {
         protected void Application_Start()

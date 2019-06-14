@@ -1,0 +1,40 @@
+﻿@model IEnumerable<RMS_MODELOS.M_TB_ARTI_CLAS>
+@{
+    Layout = null;
+    ViewBag.Title = "lista_articulos";
+}
+
+@{int i = 0;}
+@foreach (var item in Model)
+{
+
+    <div id="accordion" role="tablist">
+        <div class="card mb-0">
+            <div class="card-header" id="heading@(i)" role="tab">
+                <h5 class="mb-0">
+                    <a data-toggle="collapse"
+                       href="#collapse@(i)"
+                       aria-expanded="true"
+                       aria-controls="collapseOne">@item.FS_DES_CLAS</a>
+                </h5>
+            </div>
+            <div class="collapse show" id="collapse@(i)" role="tabpanel" aria-labelledby="headingOne" data-parent="#accordion">
+                <div class="card-body">
+                    @foreach (var articulo in @item.lista_articulos)
+                    {
+
+                        <ul>
+                            <li>
+                                @articulo.FS_NOM_ARTI
+                            </li>
+                        </ul>
+                    }
+
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+    i++;
+}

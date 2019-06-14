@@ -133,11 +133,12 @@ html {
     padding: 0.2rem 0.5rem 0.2rem 0.5rem;
 }
 
- table > thead:nth-child(1) > tr:nth-child(1) th {
+table > thead:nth-child(1) > tr:nth-child(1) th {
     background-color: $cmain-dark !important;
-    vertical-align: middle;    
+    vertical-align: middle;
     color: #f9f9f9;
     font-weight: 400;
+    padding: 0.3rem 0.7rem 0.3rem 0.7rem;
 }
 
 
@@ -174,3 +175,5 @@ div#main-sideBar.sidebar nav.sidebar-nav.ps--active-y ul.nav li.nav-dropdown.ope
     width: 4.75rem;
     height: 4.75rem;
 }
+
+

@@ -42,9 +42,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="M_TB_ARTI.cs" />
+    <Compile Include="M_TB_ARTI_CLAS.cs" />
     <Compile Include="M_TB_CABE_ORDE.cs" />
     <Compile Include="M_TB_MESA.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewDataHelper.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

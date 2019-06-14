@@ -97,7 +97,8 @@ table > thead:nth-child(1) > tr:nth-child(1) th {
   background-color: #3a4149 !important;
   vertical-align: middle;
   color: #f9f9f9;
-  font-weight: 400; }
+  font-weight: 400;
+  padding: 0.3rem 0.7rem 0.3rem 0.7rem; }
 
 label.error {
   position: relative;
