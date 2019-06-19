@@ -13,12 +13,19 @@ namespace Restaurant_MS.Controllers
     {
         SQL_TB_ARTI_CLAS S_TB_ARTI_CLAS = new SQL_TB_ARTI_CLAS();
         SQL_TB_ARTI S_TB_ARTI = new SQL_TB_ARTI();
+        SQL_TB_DETA_ORDE S_TB_DETA_ORDE = new SQL_TB_DETA_ORDE();
+        SQL_TB_CABE_ORDE S_TB_CABE_ORDE = new SQL_TB_CABE_ORDE();
+
         public ActionResult Registro()
         {
+
+           ViewBag.numero_orden =  S_TB_CABE_ORDE.obtener_numero_nueva_orden(1);
 
 
             return View(new M_TB_CABE_ORDE());
         }
+
+     
 
         [ChildActionOnly]
         public PartialViewResult Lista_productos_por_clase()
@@ -35,6 +42,40 @@ namespace Restaurant_MS.Controllers
 
 
             return PartialView("_lista_articulos", articulos_por_clase);
+        }
+
+
+        [HttpGet]
+        public JsonResult listar_detalle_orden(decimal FN_IDE_ORDE, int FI_COD_EMPR)
+        {
+
+          var temp =  S_TB_DETA_ORDE.listar_detalle_orden(FN_IDE_ORDE, FI_COD_EMPR);
+
+
+            return Json(temp, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public JsonResult agregar_detalle_orden(decimal FN_IDE_ORDE, int FI_COD_EMPR)
+        {
+
+            var temp = S_TB_DETA_ORDE.listar_detalle_orden(FN_IDE_ORDE, FI_COD_EMPR);
+
+
+            return Json(temp, JsonRequestBehavior.AllowGet);
+        }
+
+
+
+        [HttpPost]
+        public ActionResult registrar_orden(M_TB_CABE_ORDE reg)
+        {
+            reg.FN_IDE_ORDE = S_TB_CABE_ORDE.obtener_numero_nueva_orden(1);
+            reg.FI_COD_EMPR = 1;
+            ViewBag.numero_orden = S_TB_CABE_ORDE.agregar_orden(reg);
+
+
+            return View(new M_TB_CABE_ORDE());
         }
 
     }

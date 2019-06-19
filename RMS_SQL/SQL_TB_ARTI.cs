@@ -29,6 +29,7 @@ namespace RMS_SQL
                 e.FS_DES_OBSE = dr["FS_DES_OBSE"].ToString();
                 e.FS_TIP_SITU = dr["FS_TIP_SITU"].ToString();
                 e.FS_COD_CLAS = dr["FS_COD_CLAS"].ToString();
+                e.FS_RUT_FOTO = dr["FS_RUT_FOTO"].ToString();
 
                 temp.Add(e);
             }
@@ -53,6 +54,7 @@ namespace RMS_SQL
                 e.FS_TIP_SITU = dr["FS_TIP_SITU"].ToString();
                 e.FS_COD_CLAS = dr["FS_COD_CLAS"].ToString();
                 e.FS_DES_CLAS = dr["FS_DES_CLAS"].ToString();
+                e.FS_RUT_FOTO = dr["FS_RUT_FOTO"].ToString();
                 temp.Add(e);
             }
             cn.Close(); dr.Close();

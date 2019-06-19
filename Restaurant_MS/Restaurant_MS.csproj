@@ -982,6 +982,7 @@
     <Content Include="Content\ui-search\search.min.js" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Fotos\comida\ceviche.jpg" />
     <Content Include="Global.asax" />
     <Content Include="Content\bootstrap\css\bootstrap.min.css.map" />
     <Content Include="Content\core-ui\fonts\CoreUI-Icons-Linear-Free.eot" />

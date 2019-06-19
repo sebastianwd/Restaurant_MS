@@ -9,6 +9,17 @@ using System.Web.Routing;
 namespace Restaurant_MS
 {
 
+    /* Clase - Asigna Anotación ConvertEmptyStringToNull a false globalmente, enviando espacios en blanco en lugar de null
+  al Insertar campos vacíos */
+    public sealed class EmptyStringModelBinder : DefaultModelBinder
+    {
+        public override object BindModel(ControllerContext controllerContext, ModelBindingContext bindingContext)
+        {
+            bindingContext.ModelMetadata.ConvertEmptyStringToNull = false;
+            return base.BindModel(controllerContext, bindingContext);
+        }
+    }
+
     public class AjaxOnlyAttribute : ActionMethodSelectorAttribute
     {
         public override bool IsValidForRequest(ControllerContext controllerContext, System.Reflection.MethodInfo methodInfo)

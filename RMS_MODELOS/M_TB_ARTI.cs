@@ -36,5 +36,7 @@ namespace RMS_MODELOS
         public string FS_DES_OBSE { get; set; }
 
         public string FS_DES_CLAS { get; set; }
+
+        public string FS_RUT_FOTO { get; set; }
     }
 }

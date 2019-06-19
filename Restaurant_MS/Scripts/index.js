@@ -28,6 +28,11 @@ var data_Table_Language = {
     }
 }
 
+const button_save = '<span class="fa fa-save fa-lg cicon-save cfirst-dt-button"></span>';
+const button_save_tooltip = 'Grabar Datos (shift + 2)';
+
+
+
 RMS = {
     common: {
         init: function () {
@@ -106,6 +111,114 @@ RMS = {
             //debugger;
             // controller-wide code  - general de cada vista
             console.log("js para  Orden");
+
+            $('#FD_FEC_ORDE').removeAttr("data-val-date");
+
+            const url_detail_add = $("#_detalle_data_add").data('request-url');
+            const url_order_add = $("#_orden_data_add").data('request-url');
+
+            let dTable = $('#TB_DETA_ORDE').DataTable({
+                "scrollX": true,  
+                ajax: {
+                    "url": $("#_detalle_data_loader").data('request-url'),
+                    "dataSrc": ""
+                },
+                columns: [
+                    { data: 'FI_NUM_SECU' },
+                    {
+                        data: 'FS_NOM_ARTI'
+                    },
+                    {
+                        data: 'FN_PRE_VENT',
+                        "defaultContent": "0.0"
+                    },
+                    { data: 'FN_CAN_ARTI' }                   
+
+                ],
+                dom: 'lBrtip',
+                select: true,
+                "rowId": function (a) {
+                    return 'id_' + a.FI_NUM_SECU;
+                },
+                "processing": true,
+                buttons: [
+
+                    {
+                        text: button_save,
+                        key: {
+                            shiftKey: true,
+                            key: '2',
+                        },
+                        className: 'btn btn-lg btn-transparent',
+                        titleAttr: "Procesar Orden (shift + 2)",
+                        action: function (e, dt, node, config) {
+                            msg.success("test", "test");
+                        },
+                        init: function (api, node, config) {
+                            $(node).removeClass('btn-default')
+                        }
+                    }
+                ],
+                "lengthMenu": [[5, 10, -1], [5, 10, "Todos"]],
+                "language": data_Table_Language,
+                "fnInitComplete": function () {
+
+                     orders = dTable
+                        .rows()
+                        .data();
+
+                    console.log(orders);
+                },
+
+            });
+     
+        dTable.on('user-select', function (e, dt, type, cell, originalEvent) {
+            if ($(cell.node()).parent().hasClass('selected')) {
+                e.preventDefault();
+            }
+            });
+
+            $('body').off("click", ".collapse .food-card").on("click", ".collapse .food-card", function (e) {
+                $this = $(this);
+
+                $.post(url_detail_add, { FS_COD_ARTI: $this.data("id") },
+                    function (data, textStatus, jqXHR) {
+                        dTable.ajax.reload(null, false);
+                    },
+                    "json"
+                );
+            });
+
+            $('body').off("click", "#submitButton").on("click", "#submitButton", function (e) {
+                $("#Frm_Orden_Registro").submit();
+            });
+
+            $("#Frm_Orden_Registro").off("submit").on("submit", function () {
+                debugger;
+                const $form = $(this);
+                $.validator.unobtrusive.parse($form);
+                const result = $form.valid();
+                if (result) {
+                    $form.ajaxSubmit({
+                        dataType: 'JSON',
+                        type: 'POST',
+                        url: $form.attr('action'),
+                        success: function (data) {
+                            dTable.clear();
+                            dTable.rows.add(data);
+                            dTable.draw(false);
+                            return false;
+                        },
+                        error: function (jqXHR, textStatus, errorThrown) {
+                            console.log(errorThrown);
+                            msg.error("Aviso","Error de conexión");
+                        }
+                    });
+                }
+                return false;
+            });
+
+            
 
 
         }
@@ -198,7 +311,7 @@ var options = {
     prefetch: false,
     anchors: 'a.smoothState',
     forms: 'form.smoothState',
-    cacheLength: 0,
+    cacheLength: 2,
     onStart: {
         duration: 150, // Duration of our animation
         render: function ($container) {						 

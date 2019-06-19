@@ -29,7 +29,7 @@ namespace RMS_SQL
         }
 
 
-        public int GetProcedure(  
+       /* public int GetProcedure(  
             string procedureName,
             params object[] parameters)
         {
@@ -41,15 +41,71 @@ namespace RMS_SQL
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.CommandText = procedureName;
                     // assign parameters passed in to the command
-                    foreach (var procParameter in parameters)
-                    {
-                        cmd.Parameters.Add(procParameter);
-                    }
+                 
+                        cmd.Parameters.AddRange(parameters);
+                    
                     rc = cmd.ExecuteNonQuery();
                 }
             }
            
-            return rc;
+           return rc;
+        }*/
+
+        public int GetProcedure(string ProcedureName, params object[] param)
+        {
+            int result = 0;
+            int iCount;
+            SqlCommand cmd = new SqlCommand();
+            var da = new SqlDataAdapter();
+            SqlConnection cn = GetConnection();
+            cmd.Connection = cn;
+            cmd.CommandText = ProcedureName;
+            cmd.CommandType = CommandType.StoredProcedure;
+            da.SelectCommand = cmd;
+            try
+            {
+                SqlCommandBuilder.DeriveParameters(da.SelectCommand);
+                for (iCount = 1; (iCount <= param.Length); iCount++)
+                {
+                    if (((da.SelectCommand.Parameters[iCount].Direction == ParameterDirection.Input)
+                                || (da.SelectCommand.Parameters[iCount].Direction == ParameterDirection.InputOutput)))
+                    {
+                        if (param[iCount - 1] == null)
+                        {
+                            if (param[iCount - 1] is null)
+                            {
+                                da.SelectCommand.Parameters[iCount].Value = "";
+                            }
+                            else if(param[iCount - 1].GetType() == typeof(string))
+                            {
+                                da.SelectCommand.Parameters[iCount].Value = "";
+                            }
+                            else if (param[iCount - 1].GetType() == typeof(int))
+                            {
+                                da.SelectCommand.Parameters[iCount].Value = 0;
+                            }
+                            else if (param[iCount - 1].GetType() == typeof(decimal))
+                            {
+                                da.SelectCommand.Parameters[iCount].Value = 0;
+                            }
+
+                        }
+                        else
+                        {
+                            da.SelectCommand.Parameters[iCount].Value = param[iCount - 1];
+                        }
+
+                    }
+
+                }
+
+            }
+            catch (Exception ex)
+            {
+            }
+            result = cmd.ExecuteNonQuery();
+
+            return result;
         }
 
         public int GetQuery(
@@ -68,6 +124,28 @@ namespace RMS_SQL
                         cmd.Parameters.Add(procParameter);
                     }
                     rc = cmd.ExecuteNonQuery();
+                }
+            }
+
+            return rc;
+        }
+
+        public object GetScalar(
+         string query,
+         params object[] parameters)
+        {
+            object rc;
+            using (SqlConnection cn = GetConnection())
+            {
+                using (SqlCommand cmd = cn.CreateCommand())
+                {
+                    cmd.CommandText = query;
+                    // assign parameters passed in to the command
+                    foreach (var procParameter in parameters)
+                    {
+                        cmd.Parameters.Add(procParameter);
+                    }
+                    rc = cmd.ExecuteScalar();
                 }
             }
 
