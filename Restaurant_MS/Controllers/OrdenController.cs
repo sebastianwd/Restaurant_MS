@@ -15,11 +15,21 @@ namespace Restaurant_MS.Controllers
         SQL_TB_ARTI S_TB_ARTI = new SQL_TB_ARTI();
         SQL_TB_DETA_ORDE S_TB_DETA_ORDE = new SQL_TB_DETA_ORDE();
         SQL_TB_CABE_ORDE S_TB_CABE_ORDE = new SQL_TB_CABE_ORDE();
+        SQL_TB_TIPO_CLIE S_TB_TIPO_CLIE = new SQL_TB_TIPO_CLIE();
+        SQL_TB_CLIE S_TB_CLIE = new SQL_TB_CLIE();
+
+        ResponseModel res = new ResponseModel
+        {
+            result = "",
+            response = true,
+            error = ""
+        };
 
         public ActionResult Registro()
         {
 
-           ViewBag.numero_orden =  S_TB_CABE_ORDE.obtener_numero_nueva_orden(1);
+            Session["detalle_orden"] = new List<M_TB_DETA_ORDE>();
+            ViewBag.numero_orden =  S_TB_CABE_ORDE.obtener_numero_nueva_orden(1);
 
 
             return View(new M_TB_CABE_ORDE());
@@ -55,28 +65,123 @@ namespace Restaurant_MS.Controllers
             return Json(temp, JsonRequestBehavior.AllowGet);
         }
 
-        [HttpPost]
-        public JsonResult agregar_detalle_orden(decimal FN_IDE_ORDE, int FI_COD_EMPR)
+        [HttpGet]
+        public JsonResult listar_tipo_cliente()
         {
 
-            var temp = S_TB_DETA_ORDE.listar_detalle_orden(FN_IDE_ORDE, FI_COD_EMPR);
+            var temp = S_TB_TIPO_CLIE.listar_tipo_cliente();
 
 
             return Json(temp, JsonRequestBehavior.AllowGet);
         }
 
+        [HttpPost]
+        public JsonResult agregar_detalle_orden(string FS_COD_ARTI)
+        {
+            decimal total = 0;
+
+
+            if (Session["detalle_orden"] == null)
+            {
+                Session["detalle_orden"] = new List<M_TB_DETA_ORDE>();
+            }   
+            List<M_TB_DETA_ORDE> auxiliar = (List<M_TB_DETA_ORDE>)Session["detalle_orden"];
+
+            if (FS_COD_ARTI == "" || FS_COD_ARTI == null)
+            {
+                res.response = false;
+                res.error = "Artículo no existe";
+                return Json(res, JsonRequestBehavior.AllowGet);
+            }
+
+            if (auxiliar.Count(p => p.FS_COD_ARTI == FS_COD_ARTI) > 0)
+            {
+                 auxiliar.Where(p => p.FS_COD_ARTI == FS_COD_ARTI).FirstOrDefault().FN_CAN_ARTI++;
+                res.result = "Cantidad agregada";
+
+                total = auxiliar.Sum(item => item.FN_PRE_VENT * item.FN_CAN_ARTI);
+                return Json(new { response = res.response, result = res.result, data = auxiliar, total }, JsonRequestBehavior.AllowGet);
+            }
+            var O_TB_ARTI= S_TB_ARTI.buscar_por_codigo(FS_COD_ARTI).FirstOrDefault();
+            if (O_TB_ARTI.FS_COD_ARTI == "" || O_TB_ARTI.FS_COD_ARTI == null)
+            {
+                res.response = false;
+                res.error = "Artículo no existe";
+                return Json(res, JsonRequestBehavior.AllowGet);
+            }
+
+
+            var lastItemNumber = 1;
+            if (auxiliar.Count > 0)
+            {
+                lastItemNumber = auxiliar
+   .Aggregate((agg, next) =>
+   next.FI_NUM_SECU > agg.FI_NUM_SECU ? next : agg).FI_NUM_SECU + 1;
+            }
+            M_TB_DETA_ORDE reg = new M_TB_DETA_ORDE
+            {
+                FI_NUM_SECU = lastItemNumber,
+                FS_COD_ARTI = O_TB_ARTI.FS_COD_ARTI,
+                FS_NOM_ARTI = O_TB_ARTI.FS_NOM_ARTI,
+                FN_PRE_VENT = O_TB_ARTI.FN_IMP_VENT,
+                FN_CAN_ARTI = 1
+            };
+            auxiliar.Add(reg);
+            total = auxiliar.Sum(item => item.FN_PRE_VENT * item.FN_CAN_ARTI);
+
+            res.result = "Artículo <strong>" +  reg.FS_NOM_ARTI + "</strong> agregado";
+
+
+            return Json(new { response = res.response, result = res.result, data = auxiliar, total }, JsonRequestBehavior.AllowGet);
+        }
+
 
 
         [HttpPost]
-        public ActionResult registrar_orden(M_TB_CABE_ORDE reg)
+        public JsonResult registrar_orden(M_TB_CABE_ORDE reg)
         {
-            reg.FN_IDE_ORDE = S_TB_CABE_ORDE.obtener_numero_nueva_orden(1);
-            reg.FI_COD_EMPR = 1;
-            ViewBag.numero_orden = S_TB_CABE_ORDE.agregar_orden(reg);
+            if (!ModelState.IsValid)
+            {
+                res.response = false;
+                res.error = "Por favor, complete los datos";
+                return Json(res, JsonRequestBehavior.AllowGet);
+            }
 
+            try
+            {
+                reg.FN_IDE_ORDE = S_TB_CABE_ORDE.obtener_numero_nueva_orden(1);
+                reg.FI_COD_EMPR = 1;
+                var n = S_TB_CABE_ORDE.agregar_orden(reg);
 
-            return View(new M_TB_CABE_ORDE());
+                if (n < 1)
+                {
+                    res.response = false;
+                    res.error = "No se pudo completar la operación";
+                    return Json(res, JsonRequestBehavior.AllowGet);
+                }
+
+                res.result = "Orden nro. " + reg.FN_IDE_ORDE + " registrada";
+            }
+            catch (Exception e)
+            {
+                res.response = false;
+                res.error = "Error at OrdenController - method registrar_orden " + e.Message;
+            }
+
+      
+            return Json(res, JsonRequestBehavior.AllowGet);
         }
+
+        [HttpGet]
+        public JsonResult buscar_cliente_por_tipo(string FS_TIP_CLIE)
+        {
+
+            M_TB_CLIE temp = S_TB_CLIE.buscar_por_tipo_cliente(FS_TIP_CLIE).FirstOrDefault();
+
+            return Json(temp, JsonRequestBehavior.AllowGet);
+        }
+
+
 
     }
 }

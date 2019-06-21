@@ -41,6 +41,9 @@ namespace RMS_MODELOS
  [MaxLength(20)]
            
             public string FS_COD_EJEC { get; set; }
+
+
+        [Required]
         [MaxLength(4)]
         public string FS_TIP_CLIE { get; set; }
 

@@ -10,10 +10,10 @@
     <link href="~/Content/ui-search/search.min.css" rel="stylesheet" />
     <ol class="breadcrumb">
         <li class="breadcrumb-item">
-            <a href="#">Orden</a>
+            <a href="#">Orden </a>
         </li>
-
-        <li class="breadcrumb-item active">@ViewBag.Title</li>
+        @Html.ActionLink("ConsultaRuc", "Index", "ConsultaRuc")
+        <li class="breadcrumb-item active">@ViewBag.Title </li>
     </ol>
     <div class="container-fluid animated fadeIn">
         <div class="row">
@@ -43,8 +43,10 @@
                                                 <i class="fa fa-calendar"></i>
                                             </span>
                                         </span>
+
                                     </div>
                                     @Html.ValidationMessageFor(x => x.FD_FEC_ORDE, null, new { @class = "label-alert" })
+
                                 </div>
 
                             </div>
@@ -54,31 +56,42 @@
 
                                 @Html.Label("", String.Format("Tipo de cliente"), new { @class = "col-lg-2 pr-0 col-form-label-sm " })
                                 <div class="col-lg-4 ">
-                                    @Html.TextBoxFor(x => @x.FS_TIP_CLIE, new { @class = "form-control form-control-sm", @id = "TXT_FS_TIP_CLIE" })
+                                    <div class="ui fluid search _FS_DES_TIPO_CLIE">
+                                        <div class="ui icon input">
+                                            @Html.TextBox("FS_DES_TIPO_CLIE", null, new { @class = " prompt form-control form-control-sm", @id = "TXT_FS_DES_TIPO_CLIE" })
+                                        </div>
+                                        <div class="results" style="z-index: 8999;"></div>
+                                    </div>
+                                    @Html.ValidationMessageFor(x => x.FS_TIP_CLIE, null, new { @class = "label-alert" })
+
                                 </div>
-                                @Html.ValidationMessageFor(x => x.FS_TIP_CLIE, null, new { @class = "label-alert" })
+                                @Html.HiddenFor(x => @x.FS_TIP_CLIE, new { @class = "form-control form-control-sm", @id = "TXT_FS_TIP_CLIE" })
+
 
 
                                 @Html.Label("", String.Format("DNI/RUC"), new { @class = "col-lg-2 pr-0 col-form-label-sm " })
                                 <div class="col-lg-4 ">
-                                    @Html.TextBoxFor(x => @x.FS_NUM_RUCS, new { @class = "form-control form-control-sm", @id = "TXT_FS_COD_CLIE" })
+                                    @Html.TextBoxFor(x => @x.FS_NUM_RUCS, new { @class = "form-control form-control-sm", @id = "TXT_FS_NUM_RUCS" })
+                                    @Html.ValidationMessageFor(x => x.FS_NUM_RUCS, null, new { @class = "label-alert" })
+
                                 </div>
-                                @Html.ValidationMessageFor(x => x.FS_NUM_RUCS, null, new { @class = "label-alert" })
 
                             </div>
                             <div class="form-group row">
                                 @Html.Label("", String.Format("Cód. cliente"), new { @class = "col-lg-2 pr-0 col-form-label-sm " })
                                 <div class="col-lg-3 ">
                                     @Html.TextBoxFor(x => @x.FS_COD_CLIE, new { @class = "form-control form-control-sm", @id = "TXT_FS_COD_CLIE" })
+                                    @Html.ValidationMessageFor(x => x.FS_COD_CLIE, null, new { @class = "label-alert" })
+
                                 </div>
-                                @Html.ValidationMessageFor(x => x.FS_COD_CLIE, null, new { @class = "label-alert" })
 
 
                                 @Html.Label("", String.Format("Nom. cliente"), new { @class = "col-lg-2  pr-0 col-form-label-sm" })
                                 <div class=" col-lg-5 pl-lg-0 ">
-                                    @Html.TextBoxFor(x => @x.FS_NOM_CLIE, new { @class = "form-control form-control-sm", @id = "TXT_FS_COD_CLIE" })
+                                    @Html.TextBoxFor(x => @x.FS_NOM_CLIE, new { @class = "form-control form-control-sm", @id = "TXT_FS_NOM_CLIE" })
+                                    @Html.ValidationMessageFor(x => @x.FS_NOM_CLIE, null, new { @class = "label-alert" })
+
                                 </div>
-                                @Html.ValidationMessageFor(x => @x.FS_NOM_CLIE, null, new { @class = "label-alert" })
 
 
                             </div>
@@ -123,11 +136,18 @@
                                             <th>
                                                 <div style="width:180px"></div>Artículo
                                             </th>
-                                            <th>Cantidad</th>
                                             <th>Precio</th>
+
+                                            <th>Cantidad</th>
                                         </tr>
                                     </thead>
                                     <tbody></tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <th colspan="3" style="text-align:right">Total:</th>
+                                            <th></th>
+                                        </tr>
+                                    </tfoot>
                                 </table>
                             </div>
                         </div>
@@ -140,9 +160,10 @@
         </div>
     </div>
     <div class="_load" data-load="Orden"></div>
-    <div id="_orden_data_add" data-request-url="@Url.Action("registrar_orden", "Orden",new { FN_IDE_ORDE = ViewBag.numero_orden,FI_COD_EMPR = 1 })"></div>
     <div id="_detalle_data_loader" data-request-url="@Url.Action("listar_detalle_orden", "Orden",new { FN_IDE_ORDE = ViewBag.numero_orden,FI_COD_EMPR = 1 })"></div>
     <div id="_detalle_data_add" data-request-url="@Url.Action("agregar_detalle_orden", "Orden",new { FN_IDE_ORDE = ViewBag.numero_orden })"></div>
+    <div id="_tipo_cliente_data_loader" data-request-url="@Url.Action("listar_tipo_cliente", "Orden")"></div>
+    <div id="_tipo_cliente_data_search_by_code" data-request-url="@Url.Action("buscar_cliente_por_tipo", "Orden")"></div>
     <script src="~/Content/ui-search/search.min.js"></script>
 
 </section>

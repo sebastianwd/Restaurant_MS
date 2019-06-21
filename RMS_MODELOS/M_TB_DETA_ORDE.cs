@@ -34,5 +34,6 @@ namespace RMS_MODELOS
         public string FS_NOM_ARTI { get; set; }
 
 
+        public decimal FN_IMP_TOTA { get; set; }
     }
 }

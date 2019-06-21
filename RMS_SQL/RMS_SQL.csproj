@@ -43,13 +43,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="SQL_config.cs" />
+    <Compile Include="AdoHelper.cs" />
+    <Compile Include="SQL_config_old.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SQL_TB_ARTI.cs" />
     <Compile Include="SQL_TB_ARTI_CLAS.cs" />
     <Compile Include="SQL_TB_CABE_ORDE.cs" />
+    <Compile Include="SQL_TB_CLIE.cs" />
     <Compile Include="SQL_TB_DETA_ORDE.cs" />
     <Compile Include="SQL_TB_MESA.cs" />
+    <Compile Include="SQL_TB_TIPO_CLIE.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\RMS_MODELOS\RMS_MODELOS.csproj">

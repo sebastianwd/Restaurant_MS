@@ -19,7 +19,7 @@
 .card__clock {
     width: 15px;
     vertical-align: middle;
-    fill: #AD7D52;
+    fill: #4dbd74;
 }
 
 .card__time {
@@ -47,7 +47,9 @@
 .card__info-hover {
     position: absolute;
     padding: 16px;
-    padding-bottom:0;
+    padding-right: 1px;
+    padding-top: 1px;
+    padding-bottom: 0;
     width: 100%;
     opacity: 0;
     top: 0;
@@ -58,12 +60,14 @@
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    width: 100%;
+    //width: 100%;
     position: absolute;
-    height: 125px;
+    //height: 125px;
     border-top-left-radius: 12px;
     border-top-right-radius: 12px;
     top: 0;
+    width: 25%;
+    height: 100%;
 }
 
 .food-card {
@@ -74,21 +78,29 @@
     position: relative;
     border-radius: 12px;
     overflow: hidden;
-    box-shadow: 0px 13px 10px -7px rgba(0, 0, 0,0.1);
+    box-shadow: 0px 13px 40px -7px rgba(0, 0, 0,0.1);
 }
 
 .food-card:hover {
-    -webkit-box-shadow: 0px 12px 38px -8px rgba(0,0,0,0.58);
-    -moz-box-shadow: 0px 12px 38px -8px rgba(0,0,0,0.58);
-    box-shadow: 0px 12px 38px -8px rgba(0,0,0,0.58);
+    -webkit-box-shadow: 0px 12px 38px -8px rgba(0,0,0,0.48);
+    -moz-box-shadow: 0px 12px 38px -8px rgba(0,0,0,0.48);
+    box-shadow: 0px 12px 38px -8px rgba(0,0,0,0.48);
 }
+
+.food-card:active {
+    background: #e5e5e5;
+    -webkit-box-shadow: inset 0px 0px 5px #c1c1c1;
+    -moz-box-shadow: inset 0px 0px 5px #c1c1c1;
+    box-shadow: inset 0px 0px 5px #c1c1c1;
+}
+
 
 .card__info {
     z-index: 2;
     background-color: #fff;
     border-bottom-left-radius: 12px;
     border-bottom-right-radius: 12px;
-    padding: 16px 24px 24px 24px;
+    padding: 16px 4px 24px 26%;
     padding-bottom: 0;
 }
 
@@ -117,19 +129,19 @@
 }
 
 .food-card:hover .card__img--hover {
-    height: 70%;
+  //  height: 70%;
     opacity: 0.3;
 }
 
-.card_link:active .card__img--hover {
+/*.card_link:active .card__img--hover {
     height: 65%;
 }
-
+    */
 .food-card:hover .card__info {
     background-color: transparent;
     position: relative;
 }
 
 .food-card:hover .card__info-hover {
-    opacity: 1;
+    opacity: 0.6;
 }

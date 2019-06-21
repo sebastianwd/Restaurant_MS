@@ -115,7 +115,6 @@ RMS = {
             $('#FD_FEC_ORDE').removeAttr("data-val-date");
 
             const url_detail_add = $("#_detalle_data_add").data('request-url');
-            const url_order_add = $("#_orden_data_add").data('request-url');
 
             let dTable = $('#TB_DETA_ORDE').DataTable({
                 "scrollX": true,  
@@ -130,7 +129,11 @@ RMS = {
                     },
                     {
                         data: 'FN_PRE_VENT',
-                        "defaultContent": "0.0"
+                        "defaultContent": "0.0",
+                        "render": function (data, type, row) {
+                            // return moment(date).format('HH:mm a, D MMM , YY');
+                            return "S/. " + data;
+                        }
                     },
                     { data: 'FN_CAN_ARTI' }                   
 
@@ -162,12 +165,6 @@ RMS = {
                 "lengthMenu": [[5, 10, -1], [5, 10, "Todos"]],
                 "language": data_Table_Language,
                 "fnInitComplete": function () {
-
-                     orders = dTable
-                        .rows()
-                        .data();
-
-                    console.log(orders);
                 },
 
             });
@@ -178,7 +175,7 @@ RMS = {
             }
             });
 
-            $('body').off("click", ".collapse .food-card").on("click", ".collapse .food-card", function (e) {
+        /*    $('body').off("click", ".collapse .food-card").on("click", ".collapse .food-card", function (e) {
                 $this = $(this);
 
                 $.post(url_detail_add, { FS_COD_ARTI: $this.data("id") },
@@ -187,9 +184,34 @@ RMS = {
                     },
                     "json"
                 );
+            });*/
+
+            $('body').off("click", "[data-product]").on("click", "[data-product]", function (e) {
+                let $this = $(this);
+                $.post(url_detail_add, { FS_COD_ARTI: $this.data("product") },
+                    function (res, textStatus, jqXHR) {
+                        if (res.response) {
+                            dTable.clear();
+                            dTable.rows.add(res.data);
+                            dTable.draw(false);
+                            msg.success("Aviso", res.result);
+
+                            $(dTable.column(3).footer()).html(
+                                'S/ ' + res.total
+                            );
+
+                        }
+                        else {
+                            msg.error("Aviso", res.error);
+                        }
+                        return false;
+                    },
+                    "json"
+                );
             });
 
             $('body').off("click", "#submitButton").on("click", "#submitButton", function (e) {
+                $(this).attr("disabled", "disabled");
                 $("#Frm_Orden_Registro").submit();
             });
 
@@ -203,7 +225,8 @@ RMS = {
                         dataType: 'JSON',
                         type: 'POST',
                         url: $form.attr('action'),
-                        success: function (data) {
+                        success: function (data) {                    
+
                             dTable.clear();
                             dTable.rows.add(data);
                             dTable.draw(false);
@@ -215,11 +238,56 @@ RMS = {
                         }
                     });
                 }
+                $("#submitButton").removeAttr("disabled");
                 return false;
             });
 
-            
+            $.get($('#_tipo_cliente_data_loader').data('request-url'), function (data) {
+                $('._FS_DES_TIPO_CLIE').search({
+                    source: data,
+                    fields: {
+                        description: 'FS_TIP_CLIE',
+                        title: 'FS_DES_TIPO_CLIE'
+                    },
+                    searchFields: [
+                        'FS_TIP_CLIE',
+                        'FS_DES_TIPO_CLIE'
+                    ],
+                    fullTextSearch: true,
+                    onSelect: function (result, response) {
+                        $("#TXT_FS_TIP_CLIE").val(result.FS_TIP_CLIE);
+                        debugger;
+                        if (result.FS_TIP_CLIE === "9999")
+                            set_generic_client(result.FS_TIP_CLIE);
+                        else
+                            clean_fields();
+                    },
+                    error: {
+                        noResults: "No hay resultados"
+                    },
+                    maxResults: 15,
+                    minCharacters: 0
+                });
+            }).fail(function () {
+                console.error("error at get in s-ui search");
+            });
 
+            function set_generic_client(searchTerm) {
+                $.get($('#_tipo_cliente_data_search_by_code').data('request-url'), { FS_TIP_CLIE: searchTerm },
+                    function (data, textStatus, jqXHR) {
+                        $("#TXT_FS_COD_CLIE").val(data.FS_COD_CLIE).attr("readonly", true);
+                        $("#TXT_FS_NUM_RUCS").val(data.FS_NUM_RUCS).attr("readonly", true);
+                        $("#TXT_FS_NOM_CLIE").val(data.FS_NOM_CLIE).attr("readonly", true);
+                    },
+                    "json"
+                );
+            }
+            function clean_fields() {       
+                $("#TXT_FS_COD_CLIE").val('').removeAttr("readonly");
+                $("#TXT_FS_NUM_RUCS").val('').removeAttr("readonly");
+                $("#TXT_FS_NOM_CLIE").val('').removeAttr("readonly"); 
+               
+            }
 
         }
 

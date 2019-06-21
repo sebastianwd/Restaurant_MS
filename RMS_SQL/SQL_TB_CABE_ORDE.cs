@@ -14,13 +14,16 @@ namespace RMS_SQL
     {
         SqlConnection cn = new SqlConnection(ConfigurationManager.ConnectionStrings["sql_connection"].ConnectionString);
 
-        SQL_config sql = new SQL_config();
 
         public decimal obtener_numero_nueva_orden(int FI_COD_EMPR)
         {
             decimal FN_IDE_ORDE = 0;
 
-            FN_IDE_ORDE = Convert.ToDecimal(sql.GetScalar("select IsNull(max(FN_IDE_ORDE),1) from TB_CABE_ORDE"));
+            using (AdoHelper db = new AdoHelper())
+            {
+                FN_IDE_ORDE = Convert.ToDecimal(db.ExecScalar("select IsNull(max(FN_IDE_ORDE),1) from TB_CABE_ORDE"));
+
+            }
 
 
             return FN_IDE_ORDE;
@@ -31,9 +34,11 @@ namespace RMS_SQL
         {
 
                 int result = 0;
-                result = sql.GetProcedure("SP_CABE_ORDE_AD01", reg.FI_COD_EMPR, reg.FN_IDE_ORDE, reg.FD_FEC_ORDE, reg.FS_NOM_CLIE,
+            using (AdoHelper db = new AdoHelper())
+            {
+                result = db.ExecNonQueryProc("SP_CABE_ORDE_AD01", reg.FI_COD_EMPR, reg.FN_IDE_ORDE, reg.FD_FEC_ORDE, reg.FS_NOM_CLIE,
                 reg.FS_NUM_RUCS, reg.FS_COD_CLIE, reg.FN_IMP_TOTA, reg.FS_COD_MESA, reg.FS_TIP_SITU, reg.FS_COD_EJEC, reg.FS_TIP_CLIE);
-
+            }
             return result;
 
         }

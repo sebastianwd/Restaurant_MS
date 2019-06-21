@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace RMS_SQL
 {
-    public class SQL_config
+    public class SQL_config_old
     {
 
         public SqlConnection GetConnection(string  connectionName)
@@ -51,61 +51,45 @@ namespace RMS_SQL
            return rc;
         }*/
 
-        public int GetProcedure(string ProcedureName, params object[] param)
+      
+
+        public int GetProcedure(
+      string ProcedureName,
+      params object[] parameters)
         {
-            int result = 0;
-            int iCount;
-            SqlCommand cmd = new SqlCommand();
+            int rc;
             var da = new SqlDataAdapter();
-            SqlConnection cn = GetConnection();
-            cmd.Connection = cn;
-            cmd.CommandText = ProcedureName;
-            cmd.CommandType = CommandType.StoredProcedure;
-            da.SelectCommand = cmd;
-            try
+            using (SqlConnection cn = GetConnection())
             {
-                SqlCommandBuilder.DeriveParameters(da.SelectCommand);
-                for (iCount = 1; (iCount <= param.Length); iCount++)
+                using (SqlCommand cmd = cn.CreateCommand())
                 {
-                    if (((da.SelectCommand.Parameters[iCount].Direction == ParameterDirection.Input)
-                                || (da.SelectCommand.Parameters[iCount].Direction == ParameterDirection.InputOutput)))
+                    cmd.CommandText = ProcedureName;
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    da.SelectCommand = cmd;
+                    SqlCommandBuilder.DeriveParameters(da.SelectCommand);
+
+                    // assign parameters passed in to the command
+                    for (var i = 1; (i <= parameters.Length); i++)
                     {
-                        if (param[iCount - 1] == null)
+                        if (((da.SelectCommand.Parameters[i].Direction == ParameterDirection.Input)
+                          || (da.SelectCommand.Parameters[i].Direction == ParameterDirection.InputOutput)))
                         {
-                            if (param[iCount - 1] is null)
+                            if (parameters[i - 1] == null)
                             {
-                                da.SelectCommand.Parameters[iCount].Value = "";
+                                da.SelectCommand.Parameters[i].Value = "";
                             }
-                            else if(param[iCount - 1].GetType() == typeof(string))
+                            else
                             {
-                                da.SelectCommand.Parameters[iCount].Value = "";
-                            }
-                            else if (param[iCount - 1].GetType() == typeof(int))
-                            {
-                                da.SelectCommand.Parameters[iCount].Value = 0;
-                            }
-                            else if (param[iCount - 1].GetType() == typeof(decimal))
-                            {
-                                da.SelectCommand.Parameters[iCount].Value = 0;
+                                da.SelectCommand.Parameters[i].Value = parameters[i - 1];
                             }
 
                         }
-                        else
-                        {
-                            da.SelectCommand.Parameters[iCount].Value = param[iCount - 1];
-                        }
-
                     }
-
+                    rc = cmd.ExecuteNonQuery();
                 }
-
             }
-            catch (Exception ex)
-            {
-            }
-            result = cmd.ExecuteNonQuery();
 
-            return result;
+            return rc;
         }
 
         public int GetQuery(
