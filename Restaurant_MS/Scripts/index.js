@@ -31,7 +31,48 @@ var data_Table_Language = {
 const button_save = '<span class="fa fa-save fa-lg cicon-save cfirst-dt-button"></span>';
 const button_save_tooltip = 'Grabar Datos (shift + 2)';
 
+function modal_ajax(url, title,subtitle){
 
+
+    $("#modal-search").iziModal({
+        title: title || 'Búsqueda',
+        subtitle: subtitle || '',
+     history: true,
+     icon: 'fa fa-search',
+    top: 10,
+    // bottom: 50,
+    // timeout: 5000,
+    timeoutProgressbar: false,
+    timeoutProgressbarColor: 'white',
+    arrowKeys: true,
+    width: 900,
+    padding: 20,
+    restoreDefaultContent: true,
+        headerColor: '#2f353a', 
+    group: 'grupo1',
+    loop: true,
+        fullscreen: true,
+        overlayClose:false,
+    onResize: function (modal) {
+    },
+    afterRender: function (modal) {
+    },
+    onOpening: function (modal) {
+        modal.startLoading();
+        $.get(url, function (data) {
+            $("#modal-search .iziModal-content").html(data);
+            modal.stopLoading();
+        });
+    }
+    /*    transitionIn: false,
+        transitionOut: false,
+        transitionInOverlay: false,
+        transitionOutOverlay: false*/
+    });
+
+    $('#modal-search').iziModal('open');
+
+}
 
 RMS = {
     common: {
@@ -175,17 +216,6 @@ RMS = {
             }
             });
 
-        /*    $('body').off("click", ".collapse .food-card").on("click", ".collapse .food-card", function (e) {
-                $this = $(this);
-
-                $.post(url_detail_add, { FS_COD_ARTI: $this.data("id") },
-                    function (data, textStatus, jqXHR) {
-                        dTable.ajax.reload(null, false);
-                    },
-                    "json"
-                );
-            });*/
-
             $('body').off("click", "[data-product]").on("click", "[data-product]", function (e) {
                 let $this = $(this);
                 $.post(url_detail_add, { FS_COD_ARTI: $this.data("product") },
@@ -196,6 +226,8 @@ RMS = {
                             dTable.draw(false);
                             msg.success("Aviso", res.result);
 
+
+                            $("#TXT_FN_IMP_TOTA").val(res.total);
                             $(dTable.column(3).footer()).html(
                                 'S/ ' + res.total
                             );
@@ -207,7 +239,9 @@ RMS = {
                         return false;
                     },
                     "json"
-                );
+                ).fail(function () {
+                    msg.error("Aviso", "Error de conexión");
+                });
             });
 
             $('body').off("click", "#submitButton").on("click", "#submitButton", function (e) {
@@ -242,35 +276,7 @@ RMS = {
                 return false;
             });
 
-            $.get($('#_tipo_cliente_data_loader').data('request-url'), function (data) {
-                $('._FS_DES_TIPO_CLIE').search({
-                    source: data,
-                    fields: {
-                        description: 'FS_TIP_CLIE',
-                        title: 'FS_DES_TIPO_CLIE'
-                    },
-                    searchFields: [
-                        'FS_TIP_CLIE',
-                        'FS_DES_TIPO_CLIE'
-                    ],
-                    fullTextSearch: true,
-                    onSelect: function (result, response) {
-                        $("#TXT_FS_TIP_CLIE").val(result.FS_TIP_CLIE);
-                        debugger;
-                        if (result.FS_TIP_CLIE === "9999")
-                            set_generic_client(result.FS_TIP_CLIE);
-                        else
-                            clean_fields();
-                    },
-                    error: {
-                        noResults: "No hay resultados"
-                    },
-                    maxResults: 15,
-                    minCharacters: 0
-                });
-            }).fail(function () {
-                console.error("error at get in s-ui search");
-            });
+ 
 
             function set_generic_client(searchTerm) {
                 $.get($('#_tipo_cliente_data_search_by_code').data('request-url'), { FS_TIP_CLIE: searchTerm },
@@ -288,6 +294,16 @@ RMS = {
                 $("#TXT_FS_NOM_CLIE").val('').removeAttr("readonly"); 
                
             }
+
+            $("#CHK_isGeneric").off("change").on("change",function (e) {
+                if ($(this).prop("checked")) {
+
+                }
+            });
+
+            $("#busqueda_cliente").click(function (e) {
+                modal_ajax($("#_busqueda_clientes").data("request-url"), "Búsqueda de clientes");
+            });
 
         }
 

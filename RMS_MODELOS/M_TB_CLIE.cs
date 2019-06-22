@@ -30,7 +30,6 @@ namespace RMS_MODELOS
         [MaxLength(150)]
         public string FS_NOM_RAZO_SOCI { get; set; }
 
-        [Required]
         public DateTime FD_FEC_REGI { get; set; }
 
         [MaxLength(20)]
@@ -48,11 +47,14 @@ namespace RMS_MODELOS
         [MaxLength(4)]
         public string FS_TIP_SITU { get; set; }
 
-        [MaxLength(50)]
-        public string FS_STA_SUNA { get; set; }
+        [MaxLength(2)]
+        public string FS_COD_TIPE_SUNA { get; set; }
 
         [MaxLength(4)]
         public string FS_TIP_CLIE { get; set; }
+
+        [MaxLength(200)]
+        public string FS_NOM_CLIE { get; set; }
 
     }
 }

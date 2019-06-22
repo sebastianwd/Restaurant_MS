@@ -51,6 +51,25 @@
 
                             </div>
 
+                            <div class="form-group row">
+
+                                @Html.Label("", String.Format("Cliente"), new { @class = "col-lg-2 pr-0 col-form-label-sm " })
+                                <div class="col-lg-4 ">
+
+                                    <button class="btn btn-sm btn-outline-dark" type="button" id="busqueda_cliente" >...</button>
+                                </div>
+
+                                @Html.Label("", String.Format("Cliente genérico"), new { @class = "col-lg-3 col-sm-3 col-form-label-sm " })
+
+                                <label class="switch switch-label switch-pill switch-success">
+                                    @Html.CheckBoxSimple("isGeneric", new { @class = "switch-input", @id = "CHK_isGeneric" })
+                                    <span class="switch-slider" data-checked="✓" data-unchecked="✕"></span>
+                                    <input type="hidden" name="isGeneric" value="false">
+
+                                </label>
+
+                            </div>
+
 
                             <div class="form-group row">
 
@@ -97,28 +116,30 @@
                             </div>
                             <div class="form-group row">
 
-                                @Html.Label("", String.Format("Total"), new { @class = "col-lg-2 pr-0 col-form-label-sm" })
+                                @Html.Label("", String.Format("Total S/"), new { @class = "col-lg-2 pr-0 col-form-label-sm" })
                                 <div class="col-lg-3">
-                                    @Html.TextBox("FN_IMP_TOTA", (string)ViewBag.FN_IMP_TOTA, new { @class = "form-control form-control-sm", @id = "TXT_FN_IMP_TOTA", @disabled = "disabled" })
+                                    @Html.TextBox("FN_IMP_TOTA", (string)ViewBag.FN_IMP_TOTA, new { @class = "form-control form-control-lg", @id = "TXT_FN_IMP_TOTA", @readonly = "readonly" })
+                                </div>
+
+                                <div class="btn-group ml-auto mr-1 mt-sm-3">
+                                    <button class="btn btn-secondary btn-lg btn-ghost-light" id="submitButton" type="button"
+                                            title="Procesar Orden (shift + 2)">
+                                        <span>
+                                            <span class="fa fa-check fa-lg text-success">
+                                            </span>
+                                        </span>
+                                    </button>
                                 </div>
                             </div>
 
-                            <div class="btn-group">
-                                <button class="btn btn-secondary btn-lg btn-transparent" id="submitButton" type="button"
-                                        title="Procesar Orden (shift + 2)">
-                                    <span>
-                                        <span class="fa fa-check fa-lg">
-                                        </span>
-                                    </span>
-                                </button>
-                            </div>
+
                         }
 
 
 
                     </div>
 
-                </div>
+                        </div>
                 <div class="card">
                     <div class="card-header">
                         <i class="fa fa-edit"></i> Detalle
@@ -162,8 +183,9 @@
     <div class="_load" data-load="Orden"></div>
     <div id="_detalle_data_loader" data-request-url="@Url.Action("listar_detalle_orden", "Orden",new { FN_IDE_ORDE = ViewBag.numero_orden,FI_COD_EMPR = 1 })"></div>
     <div id="_detalle_data_add" data-request-url="@Url.Action("agregar_detalle_orden", "Orden",new { FN_IDE_ORDE = ViewBag.numero_orden })"></div>
-    <div id="_tipo_cliente_data_loader" data-request-url="@Url.Action("listar_tipo_cliente", "Orden")"></div>
-    <div id="_tipo_cliente_data_search_by_code" data-request-url="@Url.Action("buscar_cliente_por_tipo", "Orden")"></div>
+    <div id="_busqueda_clientes" data-request-url="@Url.Action("Busqueda_clientes", "Busqueda")"></div>
+
+    <div id="_partial_lista_productos_por_clase" data-request-url="@Url.Action("Lista_productos_por_clase", "Orden")"></div>
     <script src="~/Content/ui-search/search.min.js"></script>
 
 </section>

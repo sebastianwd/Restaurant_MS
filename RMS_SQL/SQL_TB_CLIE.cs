@@ -32,7 +32,7 @@ namespace RMS_SQL
                     e.FS_DES_MAIL       =  dr["FS_DES_MAIL"     ].ToString();
                     e.FS_DES_OBSE       =  dr["FS_DES_OBSE"     ].ToString();
                     e.FS_TIP_SITU       =  dr["FS_TIP_SITU"     ].ToString();
-                    e.FS_STA_SUNA = dr["FS_STA_SUNA"].ToString(); ;
+                    e.FS_COD_TIPE_SUNA = dr["FS_COD_TIPE_SUNA"].ToString(); ;
                     temp.Add(e);
                 }
                 dr.Close();
@@ -40,6 +40,33 @@ namespace RMS_SQL
 
             return temp;
 
+        }
+
+        public List<M_TB_CLIE> buscar_por_filtros(M_TB_CLIE O_TB_CLIE,string nro_documento ,int top)
+        {
+            var temp = new List<M_TB_CLIE>();
+
+            using (AdoHelper db = new AdoHelper())
+            using (SqlDataReader dr = db.ExecDataReaderProc("SP_CLIE_BU02", 
+                "@ISCOD_CLIE", O_TB_CLIE.FS_COD_CLIE,
+                "@ISNOM_CLIE", O_TB_CLIE.FS_NOM_CLIE,
+                "@ISTIP_CLIE", O_TB_CLIE.FS_TIP_CLIE, 
+                "@ISTIP_SITU", O_TB_CLIE.FS_TIP_SITU,
+                "@ISNUM_RUCS", nro_documento,
+                "@ISCOD_TIPE_SUNA", O_TB_CLIE.FS_COD_TIPE_SUNA,
+                "@ISTOP_REGI",top))
+            {
+                while (dr.Read())
+                {
+                    M_TB_CLIE e = new M_TB_CLIE();
+                    e.FS_COD_CLIE = dr["FS_COD_CLIE"].ToString();
+                    e.FS_NOM_CLIE = dr["FS_NOM_CLIE"].ToString();
+                    e.FS_NUM_RUCS = dr["FS_NUM_RUCS"].ToString();       
+                    temp.Add(e);
+                }
+                dr.Close();
+            }
+            return temp;
         }
 
     }

@@ -123,13 +123,14 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\BusquedaController.cs" />
     <Compile Include="Controllers\ConsultaRucController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\OrdenController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="HtmlRequestHelper.cs" />
+    <Compile Include="HtmlMyHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -1079,6 +1080,7 @@
     <Content Include="Views\Orden\Registro.cshtml" />
     <Content Include="Views\Shared\_lista_articulos.cshtml" />
     <Content Include="Views\ConsultaRuc\Index.cshtml" />
+    <Content Include="Views\Busqueda\_busqueda_clientes.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

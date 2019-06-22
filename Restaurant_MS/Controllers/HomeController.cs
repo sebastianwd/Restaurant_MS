@@ -1,4 +1,5 @@
-﻿using RMS_SQL;
+﻿using RMS_MODELOS;
+using RMS_SQL;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,6 +17,10 @@ namespace Restaurant_MS.Controllers
 
             return View(S_TB_MESA.listar_mesas());
         }
+
+
+
+  
 
     }
 }

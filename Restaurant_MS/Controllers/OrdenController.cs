@@ -37,7 +37,7 @@ namespace Restaurant_MS.Controllers
 
      
 
-        [ChildActionOnly]
+       [ChildActionOnly]
         public PartialViewResult Lista_productos_por_clase()
         {
 

@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Mvc.Html;
 
 namespace Restaurant_MS
 {
-    public static class HtmlRequestHelper
+    public static class HtmlMyHelper
     {
         public static string Id(this HtmlHelper htmlHelper)
         {
@@ -38,6 +39,35 @@ namespace Restaurant_MS
                 return (string)routeValues["action"];
 
             return string.Empty;
+        }
+
+        public static MvcHtmlString CheckBoxSimple(this HtmlHelper htmlHelper, string name, object htmlAttributes)
+        {
+            string checkBoxWithHidden = htmlHelper.CheckBox(name, htmlAttributes).ToHtmlString().Trim();
+            string pureCheckBox = checkBoxWithHidden.Substring(0, checkBoxWithHidden.IndexOf("<input", 1));
+            return new MvcHtmlString(pureCheckBox);
+        }
+
+        public static ClientSideValidationDisabler BeginDisableClientSideValidation(this HtmlHelper html)
+        {
+            return new ClientSideValidationDisabler(html);
+        }
+
+        public class ClientSideValidationDisabler : IDisposable
+        {
+            private HtmlHelper _html;
+
+            public ClientSideValidationDisabler(HtmlHelper html)
+            {
+                _html = html;
+                _html.EnableClientValidation(false);
+            }
+
+            public void Dispose()
+            {
+                _html.EnableClientValidation(true);
+                _html = null;
+            }
         }
     }
 }

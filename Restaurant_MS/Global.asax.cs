@@ -31,6 +31,8 @@ namespace Restaurant_MS
     {
         protected void Application_Start()
         {
+            ModelBinders.Binders.DefaultBinder = new EmptyStringModelBinder();
+
             AreaRegistration.RegisterAllAreas();
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);

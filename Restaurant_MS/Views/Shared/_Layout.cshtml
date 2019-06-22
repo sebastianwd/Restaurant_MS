@@ -22,6 +22,7 @@
     <link href="~/Content/animate/animate.css" rel="stylesheet" />
     <link href="~/Content/daterangepicker-master/daterangepicker.css" rel="stylesheet" />
     <link href="~/Content/iziToast/iziToast.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/izimodal/1.5.1/css/iziModal.min.css" rel="stylesheet" />
     <link href="~/Content/Main/custom.min.css" rel="stylesheet" />
 
     @Styles.Render("~/bundles/tablesCss")
@@ -49,12 +50,13 @@
     </style>
 </head>
 <body class="app header-fixed sidebar-fixed aside-menu-fixed  sidebar-lg-show">
+
     @Html.Partial("~/Views/Shared/navbar.cshtml")
     <div class="bg-loader"></div>
     <div class="app-body ">
         @Html.Partial("~/Views/Shared/sidebar.cshtml")
 
-        <main class="main animated fadeIn fast" >
+        <main class="main animated fadeIn fast">
 
             @RenderBody()
         </main>
@@ -69,6 +71,10 @@
             <a href="https://coreui.io">CoreUI</a>
         </div>
     </footer>
+
+    <div id="modal-search" data-izimodal-zindex="99999" class="iziModal">
+
+    </div>
     <!-- CoreUI and necessary plugins-->
     @Scripts.Render("~/bundles/tablesJs")
     <script src="~/Content/smoothState/jquery.smoothState.min.js"></script>
@@ -82,6 +88,7 @@
     <script src="~/Scripts/jquery.validate.min.js"></script>
     <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
     <script src="~/Content/cleavejs/cleave.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/izimodal/1.5.1/js/iziModal.min.js"></script>
     <script src="~/Scripts/util.js"></script>
     <script src="~/Scripts/index.js"></script>
 
@@ -89,13 +96,13 @@
         // Pace (loading bar) restart en cada ajax request
         $(document).ready(function () {
             $(".bg-loader").addClass("_loaded");
-                
+
         });
 
         $(document).ajaxStart(function () { Pace.restart(); });
 
-         console.log("layout activated");
-  
+        console.log("layout activated");
+
 
     </script>
 </body>
