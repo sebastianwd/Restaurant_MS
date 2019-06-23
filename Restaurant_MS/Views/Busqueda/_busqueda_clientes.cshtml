@@ -1,7 +1,9 @@
 ﻿@model RMS_MODELOS.M_TB_CLIE
+@using RMS_MODELOS
 @{
     Layout = null;
     ViewBag.Title = "_busqueda_clientes";
+    IEnumerable<M_TB_TIPO_PERS_SUNA> lista_sunat = (List<M_TB_TIPO_PERS_SUNA>)ViewBag.lista_TB_TIPO_PERS_SUNA;
 }
 
 <div class="row">
@@ -9,215 +11,240 @@
         <div class="card">
             <div class="card-header">
             </div>
-            @using (Html.BeginForm("ejecutar_busqueda", "Busqueda", FormMethod.Post, new { @id = "Frm_Busqueda_Clientes", @class = "form-horizontal" })){
+            @using (Html.BeginForm("ejecutar_busqueda", "Busqueda", FormMethod.Post, new { @id = "Frm_Busqueda_Clientes", @class = "form-horizontal" }))
+            {
 
-            <div class="card-body">
+                <div class="card-body">
 
-                <div class="form-group row">
-                    @using (Html.BeginDisableClientSideValidation())
-                    {
-                    @Html.Label("", String.Format("Código Cliente"), new { @class = "col-md-2 pr-0 col-form-label-sm " })
-                    <div class="col-md-3">
-                        @Html.TextBoxFor(x => @x.FS_COD_CLIE, new { @class = "form-control form-control-sm" })
-                        @Html.ValidationMessageFor(x => x.FS_COD_CLIE, null, new { @class = "label-alert" })
-                    </div>
-                    }
-
-                    @Html.Label("", String.Format("Nombre"), new { @class = "col-md-1 pr-0 col-form-label-sm " })
-                    <div class="col-md-5">
-                        @Html.TextBoxFor(x => @x.FS_NOM_CLIE, new { @class = "form-control form-control-sm" })
-                    </div>
-                </div>
-
-                <div class="form-group row">
-                    @Html.Label("", String.Format("RUC"), new { @class = "col-md-1 pr-0 col-form-label-sm " })
-                    <div class="col-md-2">
-                        @Html.TextBox("nro_documento", new { @class = "form-control form-control-sm" })
-                    </div>
-                    @Html.Label("", String.Format("Tipo de cliente"), new { @class = "col-md-1 pr-0 col-form-label-sm " })
-                    <div class="col-md-3">
-                        <div class="ui fluid search _FS_DES_TIPO_CLIE">
-                            <div class="ui icon input">
-                                @Html.TextBox("FS_DES_TIPO_CLIE", null, new { @class = " prompt form-control form-control-sm border border-info", @id = "TXT_FS_DES_TIPO_CLIE" })
+                    <div class="form-group row">
+                        @using (Html.BeginDisableClientSideValidation())
+                        {
+                            @Html.Label("", String.Format("Código Cliente"), new { @class = "col-md-2 pr-0 col-form-label-sm " })
+                            <div class="col-md-3">
+                                @Html.TextBoxFor(x => @x.FS_COD_CLIE, new { @class = "form-control form-control-sm" })
+                                @Html.ValidationMessageFor(x => x.FS_COD_CLIE, null, new { @class = "label-alert" })
                             </div>
-                            <div class="results" style="z-index: 8999;"></div>
-                        </div>
-                        @Html.ValidationMessageFor(x => x.FS_TIP_CLIE, null, new { @class = "label-alert" })
+                        }
 
-                    </div>
-                    @Html.HiddenFor(x => @x.FS_TIP_CLIE, new { @class = "form-control form-control-sm", @id = "TXT_FS_TIP_CLIE" })
-                    @Html.Label("", String.Format("Situación"), new { @class = "col-md-2 pr-0 col-form-label-sm " })
-                    <div class="col-md-3 col-form-label pt-0">
-                        <div class="form-check">
-                            <input class="form-check-input form-control-sm" id="radio1" type="radio" value="ACT" name="FS_TIP_SITU">
-                            <label class="form-check-label col-form-label-sm" for="radio1">Activo</label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input form-control-sm" id="radio2" type="radio" value="INA" name="FS_TIP_SITU">
-                            <label class="form-check-label col-form-label-sm" for="radio2">Inactivo</label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input form-control-sm" id="radio3" type="radio" value="BLO" name="FS_TIP_SITU">
-                            <label class="form-check-label col-form-label-sm" for="radio3">Bloqueado</label>
+                        @Html.Label("", String.Format("Nombre"), new { @class = "col-md-1 pr-0 col-form-label-sm " })
+                        <div class="col-md-5">
+                            @Html.TextBoxFor(x => @x.FS_NOM_CLIE, new { @class = "form-control form-control-sm" })
                         </div>
                     </div>
-                    @Html.Label("", String.Format("Situación"), new { @class = "col-md-2 pr-0 col-form-label-sm " })
-                    <div class="col-md-3 col-form-label pt-0">
-                        <div class="form-check">
-                            <input class="form-check-input form-control-sm" id="radio1" type="radio" value="ACT" name="FS_COD_TIPE_SUNA">
-                            <label class="form-check-label col-form-label-sm" for="radio1">Activo</label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input form-control-sm" id="radio2" type="radio" value="INA" name="FS_TIP_SITU">
-                            <label class="form-check-label col-form-label-sm" for="radio2">Inactivo</label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input form-control-sm" id="radio3" type="radio" value="BLO" name="FS_TIP_SITU">
-                            <label class="form-check-label col-form-label-sm" for="radio3">Bloqueado</label>
-                        </div>
-                    </div>
-                    @Html.Label("", String.Format("Máximo de resultados"), new { @class = "col-md-2 pr-0 col-form-label-sm " })
-                    <div class="col-md-2">
-                        @Html.TextBox("top", 0, new { @class = "form-control form-control-sm", @type = "number" })
-                        <small>(0 = todos)</small>
 
+                    <div class="form-group row">
+                        @Html.Label("", String.Format("RUC"), new { @class = "col-md-1 pr-0 col-form-label-sm " })
+                        <div class="col-md-2">
+                            @Html.TextBox("nro_documento", null, new { @class = "form-control form-control-sm" })
+                        </div>
+                        @Html.Label("", String.Format("Tipo de cliente"), new { @class = "col-md-1 pr-0 col-form-label-sm " })
+                        <div class="col-md-3">
+                            <div class="ui fluid search _FS_DES_TIPO_CLIE">
+                                <div class="ui icon input">
+                                    @Html.TextBox("FS_DES_TIPO_CLIE", null, new { @class = " prompt form-control form-control-sm border border-info", @id = "TXT_FS_DES_TIPO_CLIE" })
+                                </div>
+                                <div class="results" style="z-index: 8999;"></div>
+                            </div>
+                            @Html.ValidationMessageFor(x => x.FS_TIP_CLIE, null, new { @class = "label-alert" })
+                        </div>
+                        @Html.HiddenFor(x => @x.FS_TIP_CLIE, new { @class = "form-control form-control-sm", @id = "TXT_FS_TIP_CLIE" })
+                        @Html.Label("", String.Format("Situación"), new { @class = "col-md-2 pr-0 col-form-label-sm " })
+                        <div class="col-md-3 col-form-label pt-0">
+                            <div class="form-check">
+                                <input class="form-check-input form-control-sm" id="radio1" type="radio" value="ACT" name="FS_TIP_SITU">
+                                <label class="form-check-label col-form-label-sm" for="radio1">Activo</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input form-control-sm" id="radio2" type="radio" value="INA" name="FS_TIP_SITU">
+                                <label class="form-check-label col-form-label-sm" for="radio2">Inactivo</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input form-control-sm" id="radio3" type="radio" value="BLO" name="FS_TIP_SITU">
+                                <label class="form-check-label col-form-label-sm" for="radio3">Bloqueado</label>
+                            </div>
+                        </div>
+                        @Html.Label("", String.Format("Tipo Persona Sunat"), new { @class = "col-md-2 pr-0 col-form-label-sm " })
+                        <div class="col-md-3 col-form-label pt-0">
+                            @{ int i = 0;}
+                            @foreach (var item in lista_sunat)
+                            {
+                                <div class="form-check">
+                                    <input class="form-check-input form-control-sm" id="radio_persona@(i)" type="radio" value="@item.FS_COD_TIPE_SUNA" name="FS_COD_TIPE_SUNA">
+                                    <label class="form-check-label col-form-label-sm" for="radio_persona@(i)">@item.FS_DES_TIPE_SUNA</label>
+                                </div>
+                                i++;
+                            }
+                        </div>
+                        @Html.Label("", String.Format("Máximo de resultados"), new { @class = "col-md-2 pr-0 col-form-label-sm " })
+                        <div class="col-md-2">
+                            @Html.TextBox("top", 0, new { @class = "form-control form-control-sm", @type = "number" })
+                            <small>(0 = todos)</small>
+                        </div>
                     </div>
                 </div>
-
-                 
-               
-            </div>
-            <div class="card-footer">
-                <div class="ml-auto col-md-4">
-                    <button class="btn btn-sm btn-primary" type="button" id="btnBusquedaFiltro">
-                        <i class="fa fa-dot-circle-o"></i> Realizar búsqueda
-                    </button>
-                    <button class="btn btn-sm btn-danger" type="reset">
-                        <i class="fa fa-trash"></i> Limpiar
-                    </button>
+                <div class="card-footer">
+                    <div class="ml-auto col-md-4">
+                        <button class="btn btn-sm btn-primary" type="button" id="btnBusquedaFiltro">
+                            <i class="fa fa-dot-circle-o"></i> Realizar búsqueda
+                        </button>
+                        <button class="btn btn-sm btn-danger" type="reset">
+                            <i class="fa fa-trash"></i> Limpiar
+                        </button>
+                    </div>
+                    <div class="col-sm-12 p-1">
+                        <table id="TB_BUSQ_CLIE" class="table table-striped table-bordered table-hover table-condensed ctable-with-buttons" cellspacing="0" width="100%">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        Código
+                                    </th>
+                                    <th>RUC</th>
+                                    <th>DNI</th>
+                                    <th>
+                                        <div style="width:180px"></div>Nombre
+                                    </th>
+                                    <th>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
                 </div>
-                <div class="col-sm-12 p-1">
-                    <table id="TB_BUSQ_CLIE" class="table table-striped table-bordered table-hover table-condensed ctable-with-buttons" cellspacing="0" width="100%">
-                        <thead>
-                            <tr>
-                                <th>
-                                    Código
-                                </th>
-                                <th>RUC</th>
-                                <th>
-                                    <div style="width:180px"></div>Nombre
-                                </th>
-                                <th>
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody></tbody>
-                    </table>
-                </div>
-            </div>
-                    }
-
-
+            }
         </div>
 
-            <div id="_tipo_cliente_data_loader" data-request-url="@Url.Action("listar_tipo_cliente", "Orden")"></div>
+        <div id="_tipo_cliente_data_loader" data-request-url="@Url.Action("listar_tipo_cliente", "Orden")"></div>
 
-            <script>
-                $.get($('#_tipo_cliente_data_loader').data('request-url'), function (data) {
-                    $('#Frm_Busqueda_Clientes ._FS_DES_TIPO_CLIE').search({
-                        source: data,
-                        fields: {
-                            description: 'FS_TIP_CLIE',
-                            title: 'FS_DES_TIPO_CLIE'
-                        },
-                        searchFields: [
-                            'FS_TIP_CLIE',
-                            'FS_DES_TIPO_CLIE'
-                        ],
-                        fullTextSearch: true,
-                        onSelect: function (result, response) {
-                            $("#Frm_Busqueda_Clientes #TXT_FS_TIP_CLIE").val(result.FS_TIP_CLIE);
-                        },
-                        error: {
-                            noResults: "No hay resultados"
-                        },
-                        maxResults: 15,
-                        minCharacters: 0
-                    });
-                }).fail(function () {
-                    console.error("error at get in s-ui search");
-                    });
+        <script>
 
+            $("#Frm_Busqueda_Clientes #TXT_FS_DES_TIPO_CLIE").change(function (e) {
+                if ($(this).val() === '') {
+                    $("#Frm_Busqueda_Clientes #TXT_FS_TIP_CLIE").val('');
+                }
 
-                var dTable = $('#TB_BUSQ_CLIE').DataTable({
-                    "scrollX": true,
-                    "columnDefs": [{
-                        "targets": -1,
-                        "data": null,
-                        "defaultContent": "<button>Seleccionar</button>"
-                    }],
-                    columns: [
-                        { data: 'FS_COD_CLIE' },
-                        {
-                            data: 'FS_NUM_RUCS'
-                        },
-                        { data: 'FS_NOM_CLIE' },
-                          { data:null }
+            });
+
+            $.get($('#_tipo_cliente_data_loader').data('request-url'), function (data) {
+                $('#Frm_Busqueda_Clientes ._FS_DES_TIPO_CLIE').search({
+                    source: data,
+                    fields: {
+                        description: 'FS_TIP_CLIE',
+                        title: 'FS_DES_TIPO_CLIE'
+                    },
+                    searchFields: [
+                        'FS_TIP_CLIE',
+                        'FS_DES_TIPO_CLIE'
                     ],
-
-                    dom: 'lrtip',
-                    select: true,
-                    "rowId": function (a) {
-                        return 'id_' + a.FS_COD_CLIE;
+                    fullTextSearch: true,
+                    onSelect: function (result, response) {
+                        $("#Frm_Busqueda_Clientes #TXT_FS_TIP_CLIE").val(result.FS_TIP_CLIE);
                     },
-                    "processing": true,
-                    "lengthMenu": [[5, 10, -1], [5, 10, "Todos"]],
-                    "language": data_Table_Language,
-                    "fnInitComplete": function () {
+                    error: {
+                        noResults: "No hay resultados"
                     },
-
+                    maxResults: 15,
+                    minCharacters: 0
                 });
+            }).fail(function () {
+                console.error("error at get in s-ui search");
+            });
 
-                $("#Frm_Busqueda_Clientes").off("submit").on("submit", function () {
-                    const $form = $(this);
-                    $.validator.unobtrusive.parse($form);
-                    const result = $form.valid();
-                    debugger;
+            var dTable = $('#TB_BUSQ_CLIE').DataTable({
+                "scrollX": true,
+                "columnDefs": [{
+                    "targets": -1,
+                    "data": null,
+                    "defaultContent": "<button type='button' class='btn btn-outline-dark'>Seleccionar</button>"
+                }],
+                columns: [
+                    { data: 'FS_COD_CLIE' },
+                    {
+                        data: 'FS_NUM_RUCS'
+                    },
+                    {
+                        data: 'FS_NUM_DOCU_IDEN'
+                    },
+                    { data: 'FS_NOM_CLIE' },
+                    { data: null }
+                ],
 
-                    if (result) {
-                        $form.ajaxSubmit({
-                            dataType: 'JSON',
-                            type: 'POST',
-                            url: $form.attr('action'),
-                            success: function (res) {
-                                if (res.response) {
-                                    dTable.clear();
-                                    dTable.rows.add(res.data);
-                                    dTable.draw();
-                                }
-                                else {
-                                    msg.error("Aviso", res.error);
-                                }
-                                return false;
-                            },
-                            error: function (jqXHR, textStatus, errorThrown) {
-                                console.log(errorThrown);
-                                msg.error("Aviso", "Error de conexión");
+                dom: 'lfrtip',
+                select: true,
+                "rowId": function (a) {
+                    return 'id_' + a.FS_COD_CLIE;
+                },
+                "processing": true,
+                "lengthMenu": [[5, 10, -1], [5, 10, "Todos"]],
+                "language": data_Table_Language,
+                "fnInitComplete": function () {
+                },
+
+            });
+
+            localStorage.removeItem("FS_COD_CLIE");
+            $('#TB_BUSQ_CLIE tbody').on('click', 'button', function () {
+                const data = dTable.row($(this).parents('tr')).data();
+                localStorage.setItem("FS_COD_CLIE", data.FS_COD_CLIE);
+                modal_ajax(false);
+            });
+
+            $("#Frm_Busqueda_Clientes").off("submit").on("submit", function () {
+                const $form = $(this);
+                $.validator.unobtrusive.parse($form);
+                const result = $form.valid();
+                debugger;
+
+                if (result) {
+                    $form.ajaxSubmit({
+                        dataType: 'JSON',
+                        type: 'POST',
+                        url: $form.attr('action'),
+                        success: function (res) {
+                            if (res.response) {
+                                dTable.clear();
+                                dTable.rows.add(res.data);
+                                dTable.draw();
                             }
-                        });
-                    }
-                    $("#btnBusquedaFiltro").removeAttr("disabled");
-                    return false;
-                });
+                            else {
+                                msg.error("Aviso", res.error);
+                            }
+                            return false;
+                        },
+                        error: function (jqXHR, textStatus, errorThrown) {
+                            console.log(errorThrown);
+                            msg.error("Aviso", "Error de conexión");
+                        }
+                    });
+                }
+                $("#btnBusquedaFiltro").removeAttr("disabled");
+                return false;
+            });
 
-                $("body").off("click", "#btnBusquedaFiltro").on("click", "#btnBusquedaFiltro", function (e) {
-                    $(this).attr("disabled", "disabled");
-                    $("#Frm_Busqueda_Clientes").submit();
-                   
-                });
-                 
-            </script>
-       
+            $("body").off("click", "#btnBusquedaFiltro").on("click", "#btnBusquedaFiltro", function (e) {
+                $(this).attr("disabled", "disabled");
+                $("#Frm_Busqueda_Clientes").submit();
+
+            });
+
+            $("#radio_persona2").on("change", function (e) {
+                if ($(this).prop("checked")) {
+
+                    $(dTable.columns(3).header()).text('Nombre');
+                }
+            });
+            $("#radio_persona1").on("change", function (e) {
+                if ($(this).prop("checked")) {
+
+                    $(dTable.columns(3).header()).text('Razón Social');
+                }
+            });
+            $("#radio_persona0").on("change", function (e) {
+                if ($(this).prop("checked")) {
+
+                    $(dTable.columns(3).header()).text('Nombre');
+                }
+            });
+        </script>
     </div>
-
 </div>

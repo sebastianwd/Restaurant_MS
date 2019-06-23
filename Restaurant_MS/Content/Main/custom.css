@@ -241,3 +241,9 @@ div#main-sideBar.sidebar nav.sidebar-nav.ps--active-y ul.nav li.nav-dropdown.ope
 .icon__dishes {
   width: 4.75rem;
   height: 4.75rem; }
+
+.dataTables_filter {
+  display: inline-block; }
+
+.dataTables_length {
+  max-width: 50%; }

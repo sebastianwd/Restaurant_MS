@@ -7,9 +7,8 @@ using System.Threading.Tasks;
 
 namespace RMS_MODELOS
 {
-   public  class M_TB_CLIE
+    public class M_TB_CLIE
     {
-
         [Required]
         [MaxLength(20)]
         public string FS_COD_CLIE { get; set; }
@@ -56,5 +55,8 @@ namespace RMS_MODELOS
         [MaxLength(200)]
         public string FS_NOM_CLIE { get; set; }
 
+        public int FI_STA_DEFE { get; set; }
+
+        public string FS_DES_TIPO_CLIE { get; set; }
     }
 }

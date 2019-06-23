@@ -1,5 +1,7 @@
 ﻿@model IEnumerable<RMS_MODELOS.M_TB_ARTI_CLAS>
 @{
+    /**/
+
     Layout = null;
     ViewBag.Title = "lista_articulos";
 
@@ -24,41 +26,39 @@
                     @foreach (var articulo in @item.lista_articulos)
                     {
 
-                    <article class="food-card card--1" style="cursor:pointer" data-product="@articulo.FS_COD_ARTI" data-price="@articulo.FN_IMP_VENT">
-                        <div class="card__info-hover">
-                            <div class="card__clock-info">
-                                <svg class="card__clock" viewBox="0 0 24 24">
-                                    <path d="M24 10h-10v-10h-4v10h-10v4h10v10h4v-10h10z" />
-                                </svg><span class="card__time"></span>
+                        <article class="food-card card--1" style="cursor:pointer" data-product="@articulo.FS_COD_ARTI" data-price="@articulo.FN_IMP_VENT">
+                            <div class="card__info-hover">
+                                <div class="card__clock-info">
+                                    <svg class="card__clock" viewBox="0 0 24 24">
+                                        <path d="M24 10h-10v-10h-4v10h-10v4h10v10h4v-10h10z" />
+                                    </svg><span class="card__time"></span>
+                                </div>
                             </div>
+                            <!-- <div class="card__img" style="background-image:url('@articulo.FS_RUT_FOTO')"></div>-->
+                            <div class="card_link">
+                                @try
+                                {
+                                    <div class="card__img--hover" style="background-image:url('@Url.Content(articulo.FS_RUT_FOTO)')"></div>
 
-                        </div>
-                        <!-- <div class="card__img" style="background-image:url('@articulo.FS_RUT_FOTO')"></div>-->
-                        <div class="card_link">
-                            @try
-                            {
-                                <div class="card__img--hover" style="background-image:url('@Url.Content(articulo.FS_RUT_FOTO)')"></div>
+                                }
+                                catch (Exception)
+                                {
 
-                            }
-                            catch (Exception)
-                            {
+                                    <div class="card__img--hover" style="background-image:url('')"></div>
 
-                                <div class="card__img--hover" style="background-image:url('')"></div>
+                                }
+                            </div>
+                            <div class="card__info">
+                                <span class="card__category">S/ @articulo.FN_IMP_VENT.ToString("n2")  </span>
+                                <h5 class="card__title">@articulo.FS_NOM_ARTI</h5>
+                            </div>
+                        </article>
 
-                            }
-                        </div>
-                        <div class="card__info">
-                            <span class="card__category">S/ @articulo.FN_IMP_VENT.ToString("n2")  </span>
-                            <h5 class="card__title">@articulo.FS_NOM_ARTI</h5>
-                        </div>
-                    </article>
-                   
                     }
                 </section>
-                </div>
             </div>
         </div>
+    </div>
 
     i++;
 }
-

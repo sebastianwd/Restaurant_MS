@@ -1,6 +1,4 @@
-﻿
-
-var data_Table_Language = {
+﻿var data_Table_Language = {
     "sProcessing": "Procesando...",
     "sLengthMenu": "Mostrar _MENU_ registros",
     "sZeroRecords": "No se encontraron resultados",
@@ -31,121 +29,122 @@ var data_Table_Language = {
 const button_save = '<span class="fa fa-save fa-lg cicon-save cfirst-dt-button"></span>';
 const button_save_tooltip = 'Grabar Datos (shift + 2)';
 
-function modal_ajax(url, title,subtitle){
-
+function modal_ajax(open, url, callback, title) {
+    if (!open) {
+        $('#modal-search').iziModal('close');
+        return false;
+    }
 
     $("#modal-search").iziModal({
         title: title || 'Búsqueda',
-        subtitle: subtitle || '',
-     history: true,
-     icon: 'fa fa-search',
-    top: 10,
-    // bottom: 50,
-    // timeout: 5000,
-    timeoutProgressbar: false,
-    timeoutProgressbarColor: 'white',
-    arrowKeys: true,
-    width: 900,
-    padding: 20,
-    restoreDefaultContent: true,
-        headerColor: '#2f353a', 
-    group: 'grupo1',
-    loop: true,
+        subtitle: '',
+        history: true,
+        icon: 'fa fa-search',
+        top: 10,
+        // bottom: 50,
+        // timeout: 5000,
+        timeoutProgressbar: false,
+        timeoutProgressbarColor: 'white',
+        arrowKeys: true,
+        width: 900,
+        padding: 20,
+        restoreDefaultContent: true,
+        headerColor: '#2f353a',
+        group: 'grupo1',
+        loop: true,
         fullscreen: true,
-        overlayClose:false,
-    onResize: function (modal) {
-    },
-    afterRender: function (modal) {
-    },
-    onOpening: function (modal) {
-        modal.startLoading();
-        $.get(url, function (data) {
-            $("#modal-search .iziModal-content").html(data);
-            modal.stopLoading();
-        });
-    }
-    /*    transitionIn: false,
-        transitionOut: false,
-        transitionInOverlay: false,
-        transitionOutOverlay: false*/
+        overlayClose: false,
+        onResize: function (modal) {
+        },
+        afterRender: function (modal) {
+        },
+        onOpening: function (modal) {
+            modal.startLoading();
+            $.get(url, function (data) {
+                $("#modal-search .iziModal-content").html(data);
+                modal.stopLoading();
+            });
+        },
+        onClosing: function () {
+            callback() || false;
+        },
+        /*    transitionIn: false,
+            transitionOut: false,
+            transitionInOverlay: false,
+            transitionOutOverlay: false*/
     });
 
     $('#modal-search').iziModal('open');
-
 }
 
 RMS = {
     common: {
         init: function () {
-            // application-wide code 
+            // application-wide code
             $('input.form-control').keydown(function (e) {
                 if (e.keyCode == 13) {
                     return false;
                 }
             });
             setTimeout(() => {
-
                 initFormatters();
-
             }, 200)
 
-            function initFormatters() {            
-
-            $('._valid-number-l-11').toArray().forEach(function (campo) {
-                new Cleave(campo, {
-                    blocks: [11],
-                    numeral: true,
-                    numeralThousandsGroupStyle: 'none',
-                    numeralPositiveOnly: true
+            function initFormatters() {
+                $('._valid-number-l-11').toArray().forEach(function (campo) {
+                    new Cleave(campo, {
+                        blocks: [11],
+                        numeral: true,
+                        numeralThousandsGroupStyle: 'none',
+                        numeralPositiveOnly: true
+                    });
                 });
-            });
-            $('._valid-date').toArray().forEach(function (campo) {
-                new Cleave(campo, {
-                    date: true,
-                    datePattern: ['d', 'm', 'Y']
+                $('._valid-date').toArray().forEach(function (campo) {
+                    new Cleave(campo, {
+                        date: true,
+                        datePattern: ['d', 'm', 'Y']
+                    });
                 });
-            });
-            $('._valid-int-l-2').toArray().forEach(function (campo) {
-                new Cleave(campo, {
-                    blocks: [2],
-                    numericOnly: true,
-                    numeralThousandsGroupStyle: 'none',
-                    numeralDecimalScale: 0
+                $('._valid-int-l-2').toArray().forEach(function (campo) {
+                    new Cleave(campo, {
+                        blocks: [2],
+                        numericOnly: true,
+                        numeralThousandsGroupStyle: 'none',
+                        numeralDecimalScale: 0
+                    });
                 });
-            });
-            $('._valid-int-l-3').toArray().forEach(function (campo) {
-                new Cleave(campo, {
-                    blocks: [3],
-                    numericOnly: true,
-                    numeralThousandsGroupStyle: 'none',
-                    numeralDecimalScale: 0
+                $('._valid-int-l-3').toArray().forEach(function (campo) {
+                    new Cleave(campo, {
+                        blocks: [3],
+                        numericOnly: true,
+                        numeralThousandsGroupStyle: 'none',
+                        numeralDecimalScale: 0
+                    });
                 });
-            });
-            $('._valid-int-l-4').toArray().forEach(function (campo) {
-                new Cleave(campo, {
-                    blocks: [4],
-                    numericOnly: true,
-                    numeralThousandsGroupStyle: 'none',
-                    numeralDecimalScale: 0
+                $('._valid-int-l-4').toArray().forEach(function (campo) {
+                    new Cleave(campo, {
+                        blocks: [4],
+                        numericOnly: true,
+                        numeralThousandsGroupStyle: 'none',
+                        numeralDecimalScale: 0
+                    });
                 });
-            });
-            $('._valid-string-l-3-u').toArray().forEach(function (campo) {
-                new Cleave(campo, {
-                    uppercase: true,
-                    blocks: [3]
+                $('._valid-string-l-3-u').toArray().forEach(function (campo) {
+                    new Cleave(campo, {
+                        uppercase: true,
+                        blocks: [3]
+                    });
                 });
-            });
-            $('._valid-string-l-4-u').toArray().forEach(function (campo) {
-                new Cleave(campo, {
-                    uppercase: true,
-                    blocks: [4]
+                $('._valid-string-l-4-u').toArray().forEach(function (campo) {
+                    new Cleave(campo, {
+                        uppercase: true,
+                        blocks: [4]
+                    });
                 });
-            });
             }
             console.log("js comun para toda la app");
         }
     },
- 
 
     Orden: {
         init: function () {
@@ -158,7 +157,7 @@ RMS = {
             const url_detail_add = $("#_detalle_data_add").data('request-url');
 
             let dTable = $('#TB_DETA_ORDE').DataTable({
-                "scrollX": true,  
+                "scrollX": true,
                 ajax: {
                     "url": $("#_detalle_data_loader").data('request-url'),
                     "dataSrc": ""
@@ -176,7 +175,7 @@ RMS = {
                             return "S/. " + data;
                         }
                     },
-                    { data: 'FN_CAN_ARTI' }                   
+                    { data: 'FN_CAN_ARTI' }
 
                 ],
                 dom: 'lBrtip',
@@ -207,13 +206,12 @@ RMS = {
                 "language": data_Table_Language,
                 "fnInitComplete": function () {
                 },
-
             });
-     
-        dTable.on('user-select', function (e, dt, type, cell, originalEvent) {
-            if ($(cell.node()).parent().hasClass('selected')) {
-                e.preventDefault();
-            }
+
+            dTable.on('user-select', function (e, dt, type, cell, originalEvent) {
+                if ($(cell.node()).parent().hasClass('selected')) {
+                    e.preventDefault();
+                }
             });
 
             $('body').off("click", "[data-product]").on("click", "[data-product]", function (e) {
@@ -226,12 +224,10 @@ RMS = {
                             dTable.draw(false);
                             msg.success("Aviso", res.result);
 
-
                             $("#TXT_FN_IMP_TOTA").val(res.total);
                             $(dTable.column(3).footer()).html(
                                 'S/ ' + res.total
                             );
-
                         }
                         else {
                             msg.error("Aviso", res.error);
@@ -259,8 +255,7 @@ RMS = {
                         dataType: 'JSON',
                         type: 'POST',
                         url: $form.attr('action'),
-                        success: function (data) {                    
-
+                        success: function (data) {
                             dTable.clear();
                             dTable.rows.add(data);
                             dTable.draw(false);
@@ -268,7 +263,7 @@ RMS = {
                         },
                         error: function (jqXHR, textStatus, errorThrown) {
                             console.log(errorThrown);
-                            msg.error("Aviso","Error de conexión");
+                            msg.error("Aviso", "Error de conexión");
                         }
                     });
                 }
@@ -276,44 +271,64 @@ RMS = {
                 return false;
             });
 
- 
-
-            function set_generic_client(searchTerm) {
-                $.get($('#_tipo_cliente_data_search_by_code').data('request-url'), { FS_TIP_CLIE: searchTerm },
+            function set_generic_client(FI_STA_DEFE) {
+                $.get($('#_buscar_cliente_defecto').data('request-url'), { FI_STA_DEFE: FI_STA_DEFE },
                     function (data, textStatus, jqXHR) {
-                        $("#TXT_FS_COD_CLIE").val(data.FS_COD_CLIE).attr("readonly", true);
-                        $("#TXT_FS_NUM_RUCS").val(data.FS_NUM_RUCS).attr("readonly", true);
-                        $("#TXT_FS_NOM_CLIE").val(data.FS_NOM_CLIE).attr("readonly", true);
+                        $("#TXT_FS_COD_CLIE").val(data.FS_COD_CLIE);
+                        $("#TXT_FS_NUM_RUCS").val(data.FS_NUM_RUCS);
+                        $("#TXT_FS_NOM_CLIE").val(data.FS_NOM_CLIE);
+                        $("#TXT_FS_TIP_CLIE").val(data.FS_TIP_CLIE);
+                        $("#TXT_FS_DES_TIPO_CLIE").val(data.FS_DES_TIPO_CLIE);
+                        $("#TXT_FS_NUM_DOCU_IDEN").val(data.FS_NUM_DOCU_IDEN);
                     },
                     "json"
                 );
             }
-            function clean_fields() {       
-                $("#TXT_FS_COD_CLIE").val('').removeAttr("readonly");
-                $("#TXT_FS_NUM_RUCS").val('').removeAttr("readonly");
-                $("#TXT_FS_NOM_CLIE").val('').removeAttr("readonly"); 
-               
-            }
 
-            $("#CHK_isGeneric").off("change").on("change",function (e) {
+            $("#CHK_isGeneric").off("change").on("change", function (e) {
                 if ($(this).prop("checked")) {
-
+                    set_generic_client(1);
+                }
+                else {
+                    $("#TXT_FS_COD_CLIE").val('');
+                    $("#TXT_FS_NUM_RUCS").val('');
+                    $("#TXT_FS_NOM_CLIE").val('');
+                    $("#TXT_FS_DES_TIPO_CLIE").val('');
+                    $("#TXT_FS_NUM_DOCU_IDEN").val('');
                 }
             });
 
             $("#busqueda_cliente").click(function (e) {
-                modal_ajax($("#_busqueda_clientes").data("request-url"), "Búsqueda de clientes");
+                modal_ajax(true, $("#_busqueda_clientes").data("request-url"), set_cliente, "Búsqueda de clientes");
             });
-
+            function set_cliente() {
+                const FS_COD_CLIE = localStorage.getItem("FS_COD_CLIE");
+                debugger;
+                if (FS_COD_CLIE === null) {
+                    return false;
+                }
+                console.log(FS_COD_CLIE);
+                $.get($("#_busqueda_cliente_por_codigo").data("request-url"), { FS_COD_CLIE: FS_COD_CLIE },
+                    function (data, textStatus, jqXHR) {
+                        $("#CHK_isGeneric").prop("checked", false);
+                        $("#TXT_FS_COD_CLIE").val(data.FS_COD_CLIE);
+                        $("#TXT_FS_NUM_RUCS").val(data.FS_NUM_RUCS);
+                        $("#TXT_FS_NOM_CLIE").val(`${data.FS_NOM_CLIE} ${data.FS_NOM_RAZO_SOCI}`);
+                        $("#TXT_FS_TIP_CLIE").val(data.FS_TIP_CLIE);
+                        $("#TXT_FS_DES_TIPO_CLIE").val(data.FS_DES_TIPO_CLIE);
+                        $("#TXT_FS_NUM_DOCU_IDEN").val(data.FS_NUM_DOCU_IDEN);
+                    },
+                    "json"
+                );
+            }
         }
-
     }
     /* ------------------------------------------------------------------------- */
 };
 /* Principal objeto javascript que inicializa todos los scripts específicos de página */
 UTIL = {
     exec: function (controller, action) {
-        /* Definimos nuestro objeto que contendrá las funciones*/ 
+        /* Definimos nuestro objeto que contendrá las funciones*/
         var ns = RMS,
             action = (action === undefined) ? "init" : action;
         if (controller !== "" && ns[controller] && typeof ns[controller][action] == "function") {
@@ -321,17 +336,15 @@ UTIL = {
         }
     },
     init: function () {
-      /* html tag que controlará la inicialización del objeto respectivo */ 
+        /* html tag que controlará la inicialización del objeto respectivo */
         var body = $("._load"),
             controller = body.data("load"),
             action = body.data("load-action");
         UTIL.exec("common");
         UTIL.exec(controller);
-        if (action !== undefined && action !== "")
-        {
+        if (action !== undefined && action !== "") {
             UTIL.exec(controller, action);
         }
-      
     }
 };
 
@@ -341,7 +354,7 @@ function myFunctions() {
 
     $(".btn").on("mouseup", function () {
         $(this).blur();
-    }); 
+    });
 
     /* Activar urls extras para smoothState - necesario para urls fuera del main container*/
     $('#main-navBar a , #main-sideBar a, a.smooth-link').not(".no-smoothState , .nav-dropdown-toggle").off("click").on("click", function (e) {
@@ -351,83 +364,75 @@ function myFunctions() {
         console.log("smooth-State activated");
         content.load(href);
     });
- 
 };
-
-
 
 $(function () {
     $.validator.methods.date = function (value, element) {
         return this.optional(element) || moment(value, "DD/MM/YYYY", true).isValid();
     }
-
 });
 
 /* smoothState Init*/
 
 $(function () {
-   
-var options = {
-    onPopState : function(e) {
-        if(e.state !== null || typeof e.state !== undefined) {
-            var url = window.location.href;
-            var $page = $('#' + e.state.id);	
-            var page = $page.data('smoothState');
-					
-            if (typeof(page.cache[page.href]) !== 'undefined') {
-                var diffUrl = (page.href !== url && !utility.isHash(url, page.href));
-                var diffState = (e.state !== page.cache[page.href].state); 
+    var options = {
+        onPopState: function (e) {
+            if (e.state !== null || typeof e.state !== undefined) {
+                var url = window.location.href;
+                var $page = $('#' + e.state.id);
+                var page = $page.data('smoothState');
 
-                if(diffUrl || diffState) {
-                    if (diffState) {
-                        page.clear(page.href);
+                if (typeof (page.cache[page.href]) !== 'undefined') {
+                    var diffUrl = (page.href !== url && !utility.isHash(url, page.href));
+                    var diffState = (e.state !== page.cache[page.href].state);
+
+                    if (diffUrl || diffState) {
+                        if (diffState) {
+                            page.clear(page.href);
+                        }
+                        page.load(url, false);
                     }
-                    page.load(url, false);
+                }
+                else {
+                    //reload the page if page.cache[page.href] is undefined
+                    location.reload();
                 }
             }
-            else {
-                //reload the page if page.cache[page.href] is undefined
-                location.reload();
+        },
+        prefetch: false,
+        anchors: 'a.smoothState',
+        forms: 'form.smoothState',
+        cacheLength: 2,
+        onStart: {
+            duration: 150, // Duration of our animation
+            render: function ($container) {
+                // Add your CSS animation reversing class
+                $container.addClass('is-exiting');
+
+                setTimeout(function () { $(".bg-loader").removeClass("_loaded"); }, 200);
+
+                // Restart your animation
+                smoothState.restartCSSAnimations();
             }
-					
+        },
+
+        onReady: {
+            duration: 270,
+            render: function ($container, $newContent) {
+                // Remove your CSS animation reversing class
+                $container.removeClass('is-exiting');
+                $container.html($newContent);
+                // Inject the new content
+            }
+        },
+        onAfter: function () {
+            UTIL.init();
+            $(".bg-loader").addClass("_loaded");
+
+            myFunctions();
+            //$(document).ready();
         }
     },
-    prefetch: false,
-    anchors: 'a.smoothState',
-    forms: 'form.smoothState',
-    cacheLength: 2,
-    onStart: {
-        duration: 150, // Duration of our animation
-        render: function ($container) {						 
-            // Add your CSS animation reversing class
-            $container.addClass('is-exiting');	
-
-            setTimeout(function () { $(".bg-loader").removeClass("_loaded");}, 200);
-           
-            // Restart your animation
-            smoothState.restartCSSAnimations();	        
-        }
-    },
-	    
-    onReady: {
-        duration: 270,
-        render: function ($container, $newContent) {
-	    	  
-            // Remove your CSS animation reversing class
-            $container.removeClass('is-exiting');
-            $container.html($newContent);
-            // Inject the new content
-
-        }
-    },
-    onAfter: function () {
-        UTIL.init();
-        $(".bg-loader").addClass("_loaded");
-
-        myFunctions();     
-        //$(document).ready();           
-    }
-},
         smoothState = $('#main_content').smoothState(options).data('smoothState'); /* container => #main_content*/
 });
 

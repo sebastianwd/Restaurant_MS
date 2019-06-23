@@ -50,6 +50,7 @@
     <Compile Include="M_TB_DETA_ORDE.cs" />
     <Compile Include="M_TB_MESA.cs" />
     <Compile Include="M_TB_TIPO_CLIE.cs" />
+    <Compile Include="M_TB_TIPO_PERS_SUNA.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ResponseModel.cs" />
     <Compile Include="RootObject.cs" />

@@ -53,6 +53,7 @@
     <Compile Include="SQL_TB_DETA_ORDE.cs" />
     <Compile Include="SQL_TB_MESA.cs" />
     <Compile Include="SQL_TB_TIPO_CLIE.cs" />
+    <Compile Include="SQL_TB_TIPO_PERS_SUNA.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\RMS_MODELOS\RMS_MODELOS.csproj">

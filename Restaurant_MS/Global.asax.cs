@@ -8,9 +8,9 @@ using System.Web.Routing;
 
 namespace Restaurant_MS
 {
-
     /* Clase - Asigna Anotación ConvertEmptyStringToNull a false globalmente, enviando espacios en blanco en lugar de null
   al Insertar campos vacíos */
+
     public sealed class EmptyStringModelBinder : DefaultModelBinder
     {
         public override object BindModel(ControllerContext controllerContext, ModelBindingContext bindingContext)
@@ -27,6 +27,7 @@ namespace Restaurant_MS
             return controllerContext.RequestContext.HttpContext.Request.IsAjaxRequest();
         }
     }
+
     public class MvcApplication : System.Web.HttpApplication
     {
         protected void Application_Start()

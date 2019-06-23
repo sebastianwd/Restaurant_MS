@@ -11,14 +11,14 @@ namespace Restaurant_MS.Controllers
 {
     public class OrdenController : Controller
     {
-        SQL_TB_ARTI_CLAS S_TB_ARTI_CLAS = new SQL_TB_ARTI_CLAS();
-        SQL_TB_ARTI S_TB_ARTI = new SQL_TB_ARTI();
-        SQL_TB_DETA_ORDE S_TB_DETA_ORDE = new SQL_TB_DETA_ORDE();
-        SQL_TB_CABE_ORDE S_TB_CABE_ORDE = new SQL_TB_CABE_ORDE();
-        SQL_TB_TIPO_CLIE S_TB_TIPO_CLIE = new SQL_TB_TIPO_CLIE();
-        SQL_TB_CLIE S_TB_CLIE = new SQL_TB_CLIE();
+        private SQL_TB_ARTI_CLAS S_TB_ARTI_CLAS = new SQL_TB_ARTI_CLAS();
+        private SQL_TB_ARTI S_TB_ARTI = new SQL_TB_ARTI();
+        private SQL_TB_DETA_ORDE S_TB_DETA_ORDE = new SQL_TB_DETA_ORDE();
+        private SQL_TB_CABE_ORDE S_TB_CABE_ORDE = new SQL_TB_CABE_ORDE();
+        private SQL_TB_TIPO_CLIE S_TB_TIPO_CLIE = new SQL_TB_TIPO_CLIE();
+        private SQL_TB_CLIE S_TB_CLIE = new SQL_TB_CLIE();
 
-        ResponseModel res = new ResponseModel
+        private ResponseModel res = new ResponseModel
         {
             result = "",
             response = true,
@@ -27,20 +27,15 @@ namespace Restaurant_MS.Controllers
 
         public ActionResult Registro()
         {
-
             Session["detalle_orden"] = new List<M_TB_DETA_ORDE>();
-            ViewBag.numero_orden =  S_TB_CABE_ORDE.obtener_numero_nueva_orden(1);
-
+            ViewBag.numero_orden = S_TB_CABE_ORDE.obtener_numero_nueva_orden(1);
 
             return View(new M_TB_CABE_ORDE());
         }
 
-     
-
-       [ChildActionOnly]
+        [ChildActionOnly]
         public PartialViewResult Lista_productos_por_clase()
         {
-
             var clases = S_TB_ARTI_CLAS.listar_clases_producto();
             var articulos_por_clase = clases.Select(p => new M_TB_ARTI_CLAS
             {
@@ -50,17 +45,13 @@ namespace Restaurant_MS.Controllers
                 lista_articulos = S_TB_ARTI.listar_productos().Where(x => x.FS_COD_CLAS == p.FS_COD_CLAS)
             });
 
-
             return PartialView("_lista_articulos", articulos_por_clase);
         }
-
 
         [HttpGet]
         public JsonResult listar_detalle_orden(decimal FN_IDE_ORDE, int FI_COD_EMPR)
         {
-
-          var temp =  S_TB_DETA_ORDE.listar_detalle_orden(FN_IDE_ORDE, FI_COD_EMPR);
-
+            var temp = S_TB_DETA_ORDE.listar_detalle_orden(FN_IDE_ORDE, FI_COD_EMPR);
 
             return Json(temp, JsonRequestBehavior.AllowGet);
         }
@@ -68,9 +59,7 @@ namespace Restaurant_MS.Controllers
         [HttpGet]
         public JsonResult listar_tipo_cliente()
         {
-
             var temp = S_TB_TIPO_CLIE.listar_tipo_cliente();
-
 
             return Json(temp, JsonRequestBehavior.AllowGet);
         }
@@ -80,11 +69,10 @@ namespace Restaurant_MS.Controllers
         {
             decimal total = 0;
 
-
             if (Session["detalle_orden"] == null)
             {
                 Session["detalle_orden"] = new List<M_TB_DETA_ORDE>();
-            }   
+            }
             List<M_TB_DETA_ORDE> auxiliar = (List<M_TB_DETA_ORDE>)Session["detalle_orden"];
 
             if (FS_COD_ARTI == "" || FS_COD_ARTI == null)
@@ -96,20 +84,19 @@ namespace Restaurant_MS.Controllers
 
             if (auxiliar.Count(p => p.FS_COD_ARTI == FS_COD_ARTI) > 0)
             {
-                 auxiliar.Where(p => p.FS_COD_ARTI == FS_COD_ARTI).FirstOrDefault().FN_CAN_ARTI++;
+                auxiliar.Where(p => p.FS_COD_ARTI == FS_COD_ARTI).FirstOrDefault().FN_CAN_ARTI++;
                 res.result = "Cantidad agregada";
 
                 total = auxiliar.Sum(item => item.FN_PRE_VENT * item.FN_CAN_ARTI);
                 return Json(new { response = res.response, result = res.result, data = auxiliar, total }, JsonRequestBehavior.AllowGet);
             }
-            var O_TB_ARTI= S_TB_ARTI.buscar_por_codigo(FS_COD_ARTI).FirstOrDefault();
+            var O_TB_ARTI = S_TB_ARTI.buscar_por_codigo(FS_COD_ARTI).FirstOrDefault();
             if (O_TB_ARTI.FS_COD_ARTI == "" || O_TB_ARTI.FS_COD_ARTI == null)
             {
                 res.response = false;
                 res.error = "Artículo no existe";
                 return Json(res, JsonRequestBehavior.AllowGet);
             }
-
 
             var lastItemNumber = 1;
             if (auxiliar.Count > 0)
@@ -129,13 +116,10 @@ namespace Restaurant_MS.Controllers
             auxiliar.Add(reg);
             total = auxiliar.Sum(item => item.FN_PRE_VENT * item.FN_CAN_ARTI);
 
-            res.result = "Artículo <strong>" +  reg.FS_NOM_ARTI + "</strong> agregado";
-
+            res.result = "Artículo <strong>" + reg.FS_NOM_ARTI + "</strong> agregado";
 
             return Json(new { response = res.response, result = res.result, data = auxiliar, total }, JsonRequestBehavior.AllowGet);
         }
-
-
 
         [HttpPost]
         public JsonResult registrar_orden(M_TB_CABE_ORDE reg)
@@ -168,20 +152,15 @@ namespace Restaurant_MS.Controllers
                 res.error = "Error at OrdenController - method registrar_orden " + e.Message;
             }
 
-      
             return Json(res, JsonRequestBehavior.AllowGet);
         }
 
         [HttpGet]
         public JsonResult buscar_cliente_por_tipo(string FS_TIP_CLIE)
         {
-
             M_TB_CLIE temp = S_TB_CLIE.buscar_por_tipo_cliente(FS_TIP_CLIE).FirstOrDefault();
 
             return Json(temp, JsonRequestBehavior.AllowGet);
         }
-
-
-
     }
 }
