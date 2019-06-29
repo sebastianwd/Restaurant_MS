@@ -8,6 +8,7 @@ namespace Restaurant_MS.Controllers
     public class BusquedaController : Controller
     {
         private SQL_TB_CLIE S_TB_CLIE = new SQL_TB_CLIE();
+        private SQL_TB_CABE_ORDE S_TB_CABE_ORDE = new SQL_TB_CABE_ORDE();
         private SQL_TB_TIPO_PERS_SUNA S_TB_TIPO_PERS_SUNA = new SQL_TB_TIPO_PERS_SUNA();
 
         private ResponseModel res = new ResponseModel
@@ -62,6 +63,14 @@ namespace Restaurant_MS.Controllers
         public PartialViewResult Busqueda_ordenes()
         {
             return PartialView("_busqueda_ordenes", new M_TB_CABE_ORDE());
+        }
+
+        [HttpGet]
+        [AjaxOnly]
+        public JsonResult Busqueda_ordenes_listado()
+        {
+            var data = S_TB_CABE_ORDE.listar_ordenes();
+            return Json(data, JsonRequestBehavior.AllowGet);
         }
     }
 }

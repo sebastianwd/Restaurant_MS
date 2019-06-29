@@ -41,7 +41,7 @@
 
         <script>
             $("body").off("click", "#btnBusquedaFiltro").on("click", "#btnBusquedaFiltro", function (e) {
-                $.getJSON("/url", { name: "value" },
+                $.getJSON(@Url.Action("Busqueda_ordenes_listado","Busqueda"),
                     function (data, textStatus, jqXHR) {
                         dTable.clear();
                         dTable.rows.add(res.data);

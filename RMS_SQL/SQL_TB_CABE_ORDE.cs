@@ -111,7 +111,10 @@ namespace RMS_SQL
                 while (dr.Read())
                 {
                     M_TB_CABE_ORDE e = new M_TB_CABE_ORDE();
-
+                    e.FN_IDE_ORDE = Convert.ToDecimal(dr["FN_IDE_ORDE"].ToString());
+                    e.FD_FEC_ORDE = Convert.ToDateTime(dr["FS_DES_TIDO_SIST"].ToString());
+                    e.FS_COD_CLIE = dr["FS_COD_CLIE"].ToString();
+                    e.FS_COD_CLIE = dr["FS_COD_CLIE"].ToString();
                     temp.Add(e);
                 }
                 dr.Close();
