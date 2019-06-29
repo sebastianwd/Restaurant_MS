@@ -15,9 +15,7 @@
                     <button class="btn btn-sm btn-primary" type="button" id="btnBusquedaFiltro">
                         <i class="fa fa-dot-circle-o"></i> Realizar búsqueda
                     </button>
-                    <button class="btn btn-sm btn-danger" type="reset">
-                        <i class="fa fa-trash"></i> Limpiar
-                    </button>
+                  
                 </div>
                 <div class="col-sm-12 p-1">
                     <table id="TB_BUSQ_ORDE" class="table table-striped table-bordered table-hover table-condensed ctable-with-buttons" cellspacing="0" width="100%">
@@ -42,16 +40,7 @@
         </div>
 
         <script>
-            $("body").off("click", "#btnBusquedaFiltro").on("click", "#btnBusquedaFiltro", function (e) {
-                $.getJSON(@Url.Action("Busqueda_ordenes_listado","Busqueda"),
-                    function (data, textStatus, jqXHR) {
-                        dTable.clear();
-                        dTable.rows.add(res.data);
-                        dTable.draw();
-                    }
-                );
-
-            });
+       
 
             var dTable = $('#TB_BUSQ_ORDE').DataTable({
                 "scrollX": true,
@@ -62,8 +51,11 @@
                 }],
                 columns: [
                     { data: 'FN_IDE_ORDE' },
-                    {
-                        data: 'FD_FEC_ORDE'
+                     {
+                        data: 'FD_FEC_ORDE',
+                        "render": function (data, type, row) {
+                            return moment(data).format('DD/MM/YY');
+                        }
                     },
                     {
                         data: 'FS_COD_CLIE'
@@ -90,6 +82,17 @@
                 const data = dTable.row($(this).parents('tr')).data();
                 localStorage.setItem("FS_COD_CLIE", data.FS_COD_CLIE);
                 modal_ajax(false);
+            });
+
+                 $("body").off("click", "#btnBusquedaFiltro").on("click", "#btnBusquedaFiltro", function (e) {
+                $.getJSON('@Url.Action("Busqueda_ordenes_listado","Busqueda")',
+                    function (data, textStatus, jqXHR) {
+                        dTable.clear();
+                        dTable.rows.add(data);
+                        dTable.draw();
+                    }
+                );
+
             });
         </script>
     </div>

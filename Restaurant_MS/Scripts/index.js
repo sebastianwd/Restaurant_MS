@@ -253,6 +253,7 @@ RMS = {
                     {
                         data: 'FS_NOM_ARTI'
                     },
+
                     {
                         data: 'FN_PRE_VENT',
                         "defaultContent": "0.0",
