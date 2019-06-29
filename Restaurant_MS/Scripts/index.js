@@ -149,7 +149,7 @@ RMS = {
         init: function () {
             moment.locale('es');
 
-            console.log("js para  Venta");    
+            console.log("js para  Venta");
 
             $("#TXT_FD_FEC_DOCU").flatpickr({
                 dateFormat: "d/m/Y",
@@ -220,9 +220,7 @@ RMS = {
             });
 
             function set_orden() {
-
             }
-
         }
     },
     Orden: {
@@ -231,9 +229,8 @@ RMS = {
             // controller-wide code  - general de cada vista
             moment.locale('es');
 
-            console.log("js para  Orden");    
+            console.log("js para  Orden");
 
-            
             $("#TXT_FD_FEC_ORDE").flatpickr({
                 dateFormat: "d/m/Y",
                 minDate: "today",
@@ -341,7 +338,7 @@ RMS = {
                 };
             });
 
-            $("body").off("submit", "#Frm_Orden_Registro").on("submit","#Frm_Orden_Registro", function () {
+            $("body").off("submit", "#Frm_Orden_Registro").on("submit", "#Frm_Orden_Registro", function () {
                 debugger;
                 const $form = $(this);
                 $.validator.unobtrusive.parse($form);
@@ -357,7 +354,6 @@ RMS = {
                                 load_order(res.result);
 
                                 msg.custom("Aviso", `Orden nro. <strong> ${res.result}  </strong> registrada`);
-
                             }
                             else {
                                 msg.error("Aviso", res.error);
@@ -379,7 +375,6 @@ RMS = {
                     function (data, textStatus, jqXHR) {
                         debugger;
                         $("#registro_form_card").html(data);
-
 
                         $("#TXT_FD_FEC_ORDE").flatpickr({
                             dateFormat: "d/m/Y",
@@ -407,7 +402,7 @@ RMS = {
                 );
             }
 
-            $("body").off("change", "#CHK_isGeneric").on("change","#CHK_isGeneric", function (e) {
+            $("body").off("change", "#CHK_isGeneric").on("change", "#CHK_isGeneric", function (e) {
                 if ($(this).prop("checked")) {
                     set_generic_client(1);
                 }
@@ -420,7 +415,7 @@ RMS = {
                 }
             });
 
-            $("body").off("click", "#busqueda_cliente").on("click", "#busqueda_cliente",function (e) {
+            $("body").off("click", "#busqueda_cliente").on("click", "#busqueda_cliente", function (e) {
                 modal_ajax(true, $("#_busqueda_clientes").data("request-url"), set_cliente, "Búsqueda de clientes");
             });
             function set_cliente() {
