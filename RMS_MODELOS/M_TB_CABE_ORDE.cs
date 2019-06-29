@@ -17,6 +17,7 @@ namespace RMS_MODELOS
 
         [Required]
         [DataType(DataType.Date), DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
+        [Display(Name = "Fecha")]
         public DateTime FD_FEC_ORDE { get; set; }
 
         [MaxLength(200)]
@@ -34,8 +35,8 @@ namespace RMS_MODELOS
         [MaxLength(10)]
         public string FS_COD_MESA { get; set; }
 
-        [Required]
         [MaxLength(4)]
+        [Display(Name = "Situación")]
         public string FS_TIP_SITU { get; set; }
 
         [MaxLength(20)]

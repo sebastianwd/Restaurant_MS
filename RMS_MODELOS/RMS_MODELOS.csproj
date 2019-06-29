@@ -45,11 +45,16 @@
   <ItemGroup>
     <Compile Include="M_TB_ARTI.cs" />
     <Compile Include="M_TB_ARTI_CLAS.cs" />
+    <Compile Include="M_TB_CABE_DOCU_VENT.cs" />
     <Compile Include="M_TB_CABE_ORDE.cs" />
     <Compile Include="M_TB_CLIE.cs" />
+    <Compile Include="M_TB_DETA_DOCU_VENT.cs" />
     <Compile Include="M_TB_DETA_ORDE.cs" />
+    <Compile Include="M_TB_EJEC_VENT.cs" />
+    <Compile Include="M_TB_EMPR.cs" />
     <Compile Include="M_TB_MESA.cs" />
     <Compile Include="M_TB_TIPO_CLIE.cs" />
+    <Compile Include="M_TB_TIPO_DOCU_SIST.cs" />
     <Compile Include="M_TB_TIPO_PERS_SUNA.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ResponseModel.cs" />

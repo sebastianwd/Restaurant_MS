@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 
 namespace RMS_SQL
 {
-
     /// <summary>
     /// An ADO.NET helper class
     /// </summary>
@@ -17,17 +16,15 @@ namespace RMS_SQL
     {
         // Internal members
         protected string _connString = null;
+
         protected SqlConnection _conn = null;
         protected SqlTransaction _trans = null;
         protected bool _disposed = false;
-
 
         /// <summary>
         /// Sets or returns the connection string use by all instances of this class.
         /// </summary>
         public static string ConnectionString { get; set; }
-
-
 
         /// <summary>
         /// Returns the current SqlTransaction object or null if no transaction
@@ -91,7 +88,7 @@ namespace RMS_SQL
                 {
                     SqlParameter parm = new SqlParameter();
                     parm.ParameterName = (string)args[i];
-                    parm.Value = args[++i];
+                    parm.Value = args[++i] ?? DBNull.Value;
                     cmd.Parameters.Add(parm);
                 }
                 else if (args[i] is SqlParameter)
@@ -223,7 +220,7 @@ namespace RMS_SQL
             }
         }
 
-        #endregion
+        #endregion Exec Members
 
         #region Transaction Members
 
@@ -231,6 +228,13 @@ namespace RMS_SQL
         /// Begins a transaction
         /// </summary>
         /// <returns>The new SqlTransaction object</returns>
+        public SqlTransaction BeginTransaction(IsolationLevel isolationLevel)
+        {
+            Rollback();
+            _trans = _conn.BeginTransaction(isolationLevel);
+            return Transaction;
+        }
+
         public SqlTransaction BeginTransaction()
         {
             Rollback();
@@ -262,7 +266,7 @@ namespace RMS_SQL
             }
         }
 
-        #endregion
+        #endregion Transaction Members
 
         #region IDisposable Members
 
@@ -290,6 +294,6 @@ namespace RMS_SQL
             }
         }
 
-        #endregion
+        #endregion IDisposable Members
     }
 }

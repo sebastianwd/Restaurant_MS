@@ -1,6 +1,6 @@
-﻿@model RMS_MODELOS.M_TB_CABE_ORDE
+﻿@model RMS_MODELOS.M_TB_CABE_DOCU_VENT
 @{
-    ViewBag.Title = "Registro";
+    ViewBag.Title = "Registro de venta";
     Layout = "~/Views/Shared/_Layout.cshtml";
 
 }
@@ -12,14 +12,13 @@
         <li class="breadcrumb-item">
             <a href="#">Orden </a>
         </li>
-        @Html.ActionLink("ConsultaRuc", "Index", "ConsultaRuc")
         <li class="breadcrumb-item active">@ViewBag.Title </li>
     </ol>
     <div class="container-fluid animated fadeIn">
         <div class="row">
-            <div class="col-md-12 col-lg-5">
+            <div class="col-md-12 col-lg-12">
                 <div id="registro_form_card">
-                    @Html.Partial("_registro_form")
+                    @Html.Partial("_venta_form")
                 </div>
                 <div class="card">
                     <div class="card-header">
@@ -28,7 +27,7 @@
                     <div class="card-body pt-0 pl-3" style="min-height:100px">
                         <div class="row">
                             <div class="col-sm-12 p-1">
-                                <table id="TB_DETA_ORDE" class="table table-striped table-bordered table-hover table-condensed ctable-with-buttons" cellspacing="0" width="100%">
+                                <table id="TB_DETA_DOCU_VENT" class="table table-striped table-bordered table-hover table-condensed ctable-with-buttons" cellspacing="0" width="100%">
                                     <thead>
                                         <tr>
                                             <th>
@@ -55,20 +54,14 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-12 col-lg-7">
-                @{ Html.RenderAction("Lista_productos_por_clase"); }
-            </div>
         </div>
     </div>
-    <div class="_load" data-load="Orden"></div>
+    <div class="_load" data-load="Venta"></div>
 
-    <div id="_detalle_data_loader" data-request-url="@Url.Action("listar_detalle_orden", "Orden",new { FN_IDE_ORDE = ViewBag.numero_orden,FI_COD_EMPR = 1 })"></div>
-
-    <div id="_busqueda_clientes" data-request-url="@Url.Action("Busqueda_clientes", "Busqueda")"></div>
     <div id="_buscar_cliente_defecto" data-request-url="@Url.Action("Busqueda_cliente_defecto", "Busqueda")"></div>
     <div id="_busqueda_cliente_por_codigo" data-request-url="@Url.Action("Busqueda_cliente_por_codigo", "Busqueda")"></div>
 
-    <div id="_busqueda_orden_registrada" data-request-url="@Url.Action("registro_form", "Orden")"></div>
-    <div id="_partial_lista_productos_por_clase" data-request-url="@Url.Action("Lista_productos_por_clase", "Orden")"></div>
+    <div id="_busqueda_ordenes" data-request-url="@Url.Action("Busqueda_ordenes", "Busqueda")"></div>
+    <div id="_detalle_data_loader" data-request-url="@Url.Action("listar_detalle_venta", "Venta",new { FN_IDE_DOCU = ViewBag.numero_orden,FI_COD_EMPR = 1 })"></div>
     <script src="~/Content/ui-search/search.min.js"></script>
 </section>

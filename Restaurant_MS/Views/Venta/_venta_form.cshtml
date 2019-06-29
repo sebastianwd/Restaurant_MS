@@ -1,0 +1,130 @@
+﻿@model RMS_MODELOS.M_TB_CABE_DOCU_VENT
+@{
+    /**/
+
+    Layout = null;
+
+    decimal numero_venta = Decimal.One;
+    if (Model.FN_IDE_DOCU != 0)
+    {
+        numero_venta = Model.FN_IDE_DOCU;
+    }
+    else if (ViewBag.numero_venta != null)
+    {
+        numero_venta = (decimal)ViewBag.numero_venta == 0 ? 1 : (decimal)ViewBag.numero_venta;
+
+    }
+    if (Model.FD_FEC_DOCU == DateTime.MinValue)
+    {
+        Model.FD_FEC_DOCU = DateTime.Today;
+    }
+
+    if (Model.FS_NUM_DOCU == null)
+    {
+        Model.FS_NUM_DOCU = (string)ViewBag.numero_correlativo;
+    }
+}
+<div class="card">
+    <div class="card-header d-md-inline-flex justify-content-center align-items-center">
+        <i class="fa fa-edit"></i> Registro de Venta
+        <div class="col-3 ml-auto">
+            @Html.TextBox("FS_TIP_SITU", Model.FS_COD_ESTA_DOCU != "" ? "ACTIVO" : Model.FS_COD_ESTA_DOCU, new { @class = "form-control form-control-sm text-center", @id = "TXT_FS_COD_ESTA_DOCU", @disabled = "disabled" })
+        </div>
+    </div>
+    <div class="card-body">
+        @using (Html.BeginForm("registrar_venta", "Venta", FormMethod.Post, new { @id = "Frm_Venta_Registro", @class = "form-horizontal" }))
+        {
+            <div class="form-group row">
+                @Html.Label("", String.Format("Nro. de Venta"), new { @class = "col-lg-1 pr-0 col-form-label-sm " })
+                <div class="col-lg-1">
+                    @Html.TextBox("FN_IDE_DOCU", numero_venta, new { @class = "form-control form-control-sm", @id = "TXT_FN_IDE_DOCU", @disabled = "disabled" })
+                </div>
+
+                @Html.Label("", String.Format("Tipo de Documento"), new { @class = "col-lg-1 pr-0 col-form-label-sm " })
+                <div class="col-lg-2">
+                    @Html.DropDownList("FS_TIP_DOCU", (SelectList)ViewBag.lista_tipo_documentos, new { @class = "form-control form-control-sm", @id = "TXT_FS_TIP_DOCU", @readonly = "readonly" })
+                </div>
+
+                @Html.Label("", String.Format("Nro. de Documento"), new { @class = "col-lg-1 pr-0 col-form-label-sm " })
+                <div class="col-lg-2">
+                    @Html.TextBoxFor(x => x.FS_NUM_DOCU, new { @class = "form-control form-control-sm", @id = "TXT_FS_NUM_DOCU", @disabled = "disabled" })
+                </div>
+
+                @Html.Label("", String.Format("Fecha"), new { @class = "col-lg-1 pr-0 col-form-label-sm" })
+                <div class="col-lg-2">
+                    <div class="input-group">
+                        @Html.TextBoxFor(x => x.FD_FEC_DOCU, new { @class = "form-control  form-control-sm _valid-date", @id = "TXT_FD_FEC_DOCU", data_val_date = "Ingrese una fecha válida" })
+                        <span class="input-group-append">
+                            <span class="input-group-text">
+                                <i class="fa fa-calendar"></i>
+                            </span>
+                        </span>
+                    </div>
+                    @Html.ValidationMessageFor(x => x.FD_FEC_DOCU, null, new { @class = "label-alert" })
+                </div>
+            </div>
+
+            <div class="form-group row">
+
+                @Html.Label("", String.Format("Orden relacionada"), new { @class = "col-lg-1 pr-0 col-form-label-sm " })
+                <div class="col-lg-1">
+                    <div class="input-group">
+                        @Html.TextBoxFor(x => x.FN_IDE_DOCU, new { @class = "form-control form-control-sm", @id = "TXT_FN_IDE_DOCU", @readonly = "readonly" })
+                        <button class="btn btn-sm btn-outline-dark" type="button" id="busqueda_ordenes">...</button>
+                    </div>
+                </div>
+                @Html.Label("", String.Format("DNI / RUC"), new { @class = "col-lg-1 col-sm-12 pr-0 col-form-label-sm " })
+                <div class="col-sm-2 pr-lg-0 pb-lg-0">
+                    @Html.TextBoxFor(x => @x.FS_NUM_RUCS, new { @class = "form-control form-control-sm", @id = "TXT_FS_NUM_RUCS",
+                   @readonly = "readonly" })
+                    @Html.ValidationMessageFor(x => x.FS_NUM_RUCS, null, new { @class = "label-alert" })
+                </div>
+                @Html.Label("", String.Format("Cód. cliente"), new { @class = "col-lg-1 pr-0 col-form-label-sm " })
+                <div class="col-lg-1">
+                    @Html.TextBoxFor(x => @x.FS_COD_CLIE, new { @class = "form-control form-control-sm", @id = "TXT_FS_COD_CLIE",
+                   @readonly = "readonly"
+               })
+                    @Html.ValidationMessageFor(x => x.FS_COD_CLIE, null, new { @class = "label-alert" })
+                </div>
+
+                @Html.Label("", String.Format("Nom. cliente"), new { @class = "col-lg-1  pr-0 col-form-label-sm" })
+                <div class=" col-lg-2 pl-lg-0 ">
+                    @Html.TextAreaFor(x => @x.FS_NOM_CLIE, new { @class = "form-control form-control-sm", @id = "TXT_FS_NOM_CLIE",
+                   @rows = "1", @style = "resize: none",
+                   @readonly = "readonly"
+               })
+                    @Html.ValidationMessageFor(x => @x.FS_NOM_CLIE, null, new { @class = "label-alert" })
+                </div>
+            </div>
+            <div class="form-group row">
+                @Html.Label("", String.Format("Observación"), new { @class = "col-lg-1 pr-0 col-form-label-sm" })
+                <div class="col-lg-2">
+                    @Html.TextAreaFor(x => @x.FS_DES_OBSE, new { @class = "form-control form-control-lg", @id = "TXT_FN_IMP_TOTA",
+                   @rows = "1",
+                   @style = "resize: none",
+                   @readonly = "readonly"
+               })
+                </div>
+
+                @Html.Label("", String.Format("Total S/"), new { @class = "col-lg-2 pr-0 col-form-label-sm" })
+                <div class="col-lg-2 ">
+                    @Html.TextBoxFor(x => @x.FN_IMP_TOTA, new { @class = "form-control form-control-lg", @id = "TXT_FN_IMP_TOTA", @readonly = "readonly" })
+                </div>
+
+                <div class="btn-group ml-auto mr-1 mt-sm-3">
+                    <button class="btn btn-secondary btn-lg btn-ghost-light" id="submitSaleButton" type="button"
+                            title="Procesar Venta">
+                        <span>
+                            <span class="fa fa-check fa-lg text-success">
+                            </span>
+                        </span>
+                    </button>
+                </div>
+            </div>
+
+        }
+    </div>
+</div>
+<script>
+    $('#FD_FEC_DOCU').removeAttr("data-val-date");
+</script>

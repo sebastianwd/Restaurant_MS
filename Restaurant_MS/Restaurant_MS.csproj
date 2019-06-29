@@ -127,6 +127,7 @@
     <Compile Include="Controllers\ConsultaRucController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\OrdenController.cs" />
+    <Compile Include="Controllers\VentaController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -988,6 +989,7 @@
     <Content Include="Content\ui-search\search.min.js" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Content\Main\imagenes\check_msg.svg" />
     <Content Include="Fotos\comida\ceviche.jpg" />
     <Content Include="Global.asax" />
     <Content Include="Content\bootstrap\css\bootstrap.min.css.map" />
@@ -1081,6 +1083,10 @@
     <Content Include="Views\Shared\_lista_articulos.cshtml" />
     <Content Include="Views\ConsultaRuc\Index.cshtml" />
     <Content Include="Views\Busqueda\_busqueda_clientes.cshtml" />
+    <Content Include="Views\Orden\_registro_form.cshtml" />
+    <Content Include="Views\Venta\_venta_form.cshtml" />
+    <Content Include="Views\Venta\Registro.cshtml" />
+    <Content Include="Views\Busqueda\_busqueda_ordenes.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

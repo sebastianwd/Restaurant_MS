@@ -33,6 +33,16 @@ namespace Restaurant_MS.Controllers
             return View(new M_TB_CABE_ORDE());
         }
 
+        [HttpGet]
+        [AjaxOnly]
+        public PartialViewResult registro_form(decimal FN_IDE_ORDE)
+        {
+            M_TB_CABE_ORDE obj = new M_TB_CABE_ORDE();
+            obj = S_TB_CABE_ORDE.buscar_por_codigo(FN_IDE_ORDE, 1);
+
+            return PartialView("_registro_form", obj);
+        }
+
         [ChildActionOnly]
         public PartialViewResult Lista_productos_por_clase()
         {
@@ -124,10 +134,13 @@ namespace Restaurant_MS.Controllers
         [HttpPost]
         public JsonResult registrar_orden(M_TB_CABE_ORDE reg)
         {
+            reg.FS_TIP_SITU = "ACT";
+
             if (!ModelState.IsValid)
             {
                 res.response = false;
-                res.error = "Por favor, complete los datos";
+                ModelError error_msg = ModelState.Values.SelectMany(v => v.Errors).FirstOrDefault();
+                res.error = error_msg.ErrorMessage;
                 return Json(res, JsonRequestBehavior.AllowGet);
             }
 
@@ -135,7 +148,8 @@ namespace Restaurant_MS.Controllers
             {
                 reg.FN_IDE_ORDE = S_TB_CABE_ORDE.obtener_numero_nueva_orden(1);
                 reg.FI_COD_EMPR = 1;
-                var n = S_TB_CABE_ORDE.agregar_orden(reg);
+
+                var n = S_TB_CABE_ORDE.agregar_orden(reg, (List<M_TB_DETA_ORDE>)Session["detalle_orden"]);
 
                 if (n < 1)
                 {
@@ -144,7 +158,7 @@ namespace Restaurant_MS.Controllers
                     return Json(res, JsonRequestBehavior.AllowGet);
                 }
 
-                res.result = "Orden nro. " + reg.FN_IDE_ORDE + " registrada";
+                res.result = reg.FN_IDE_ORDE.ToString();
             }
             catch (Exception e)
             {

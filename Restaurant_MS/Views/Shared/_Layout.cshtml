@@ -1,5 +1,5 @@
 ﻿@{
-    Layout = null;   
+    Layout = null;
 }
 
 <!DOCTYPE html>
@@ -20,7 +20,7 @@
     <link href="~/Content/core-ui/style.css" rel="stylesheet" />
     <link href="~/Content/core-ui/pace-progress/css/pace.min.css" rel="stylesheet" />
     <link href="~/Content/animate/animate.css" rel="stylesheet" />
-    <link href="~/Content/daterangepicker-master/daterangepicker.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <link href="~/Content/iziToast/iziToast.min.css" rel="stylesheet" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/izimodal/1.5.1/css/iziModal.min.css" rel="stylesheet" />
     <link href="~/Content/Main/custom.min.css" rel="stylesheet" />
@@ -72,8 +72,8 @@
         </div>
     </footer>
 
+    <div id="_img_check_msg" data-url="@Url.Content("~/Content/Main/imagenes/check_msg.svg")"></div>
     <div id="modal-search" data-izimodal-zindex="99999" class="iziModal">
-
     </div>
     <!-- CoreUI and necessary plugins-->
     @Scripts.Render("~/bundles/tablesJs")
@@ -82,7 +82,8 @@
     <script src="~/Content/core-ui/perfect-scrollbar/perfect-scrollbar.min.js"></script>
     <script src="~/Content/core-ui/coreui.min.js"></script>
     <script src="~/Content/moment/min/moment.min.js"></script>
-    <script src="~/Content/daterangepicker-master/daterangepicker.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://npmcdn.com/flatpickr/dist/l10n/es.js"></script>
     <script src="~/Content/iziToast/iziToast.min.js"></script>
     <script src="~/Scripts/jquery.form.min.js"></script>
     <script src="~/Scripts/jquery.validate.min.js"></script>
@@ -102,8 +103,6 @@
         $(document).ajaxStart(function () { Pace.restart(); });
 
         console.log("layout activated");
-
-
     </script>
 </body>
 </html>

@@ -7,7 +7,7 @@ alertConfirm = {
         if (position === undefined) { position = alertConfirm.position; }
         if (icon === undefined) { icon = alertConfirm.icon; }
         iziToast.question({
-            color: 'dark',
+            color: '#ffffff',
             timeout: false,
             class: 'pv-confirmation',
             close: true,
@@ -44,18 +44,14 @@ alertConfirm = {
         });
     },
     yes: function () {
-
-
     },
     no: function () {
         return false;
-
     }
-
 };
 
 msg = {
-    success: function (title,msg ) {
+    success: function (title, msg) {
         iziToast.success({
             title: title,
             message: msg,
@@ -66,14 +62,35 @@ msg = {
             title: title,
             message: msg,
         });
-
     },
     warning: function (title, msg) {
-          iziToast.warning({
+        iziToast.warning({
             title: title,
             message: msg,
         });
-
+    },
+    custom: function (title, msg, position) {
+        iziToast.show({
+            id: 'sebastian',
+            theme: 'dark',
+            icon: '',
+            title: title,
+            displayMode: 2,
+            message: msg,
+            position: position || 'bottomCenter',
+            transitionIn: 'flipInX',
+            transitionOut: 'flipOutX',
+            progressBarColor: 'rgb(0, 255, 184)',
+            image: $("#_img_check_msg").data("url"),
+            imageWidth: 90,
+            layout: 2,
+            overlay: true,
+            overlayClose: true,
+            onClosing: function () {
+            },
+            onClosed: function (instance, toast, closedBy) {
+            },
+            iconColor: 'rgb(0, 255, 184)'
+        });
     }
-     
 }

@@ -57,5 +57,11 @@ namespace Restaurant_MS.Controllers
 
             return Json(data, JsonRequestBehavior.AllowGet);
         }
+
+        [AjaxOnly]
+        public PartialViewResult Busqueda_ordenes()
+        {
+            return PartialView("_busqueda_ordenes", new M_TB_CABE_ORDE());
+        }
     }
 }

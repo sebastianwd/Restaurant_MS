@@ -145,18 +145,19 @@ RMS = {
             console.log("js comun para toda la app");
         }
     },
-
-    Orden: {
+    Venta: {
         init: function () {
-            //debugger;
-            // controller-wide code  - general de cada vista
-            console.log("js para  Orden");
+            moment.locale('es');
 
-            $('#FD_FEC_ORDE').removeAttr("data-val-date");
+            console.log("js para  Venta");    
 
-            const url_detail_add = $("#_detalle_data_add").data('request-url');
-
-            let dTable = $('#TB_DETA_ORDE').DataTable({
+            $("#TXT_FD_FEC_DOCU").flatpickr({
+                dateFormat: "d/m/Y",
+                minDate: "today",
+                "locale": "es",
+                maxDate: new Date().fp_incr(360)
+            });
+            var dTable = $('#TB_DETA_DOCU_VENT').DataTable({
                 "scrollX": true,
                 ajax: {
                     "url": $("#_detalle_data_loader").data('request-url'),
@@ -214,6 +215,95 @@ RMS = {
                 }
             });
 
+            $("body").off("click", "#busqueda_ordenes").on("click", "#busqueda_ordenes", function (e) {
+                modal_ajax(true, $("#_busqueda_ordenes").data("request-url"), set_orden, "Búsqueda de Órdenes");
+            });
+
+            function set_orden() {
+
+            }
+
+        }
+    },
+    Orden: {
+        init: function () {
+            //debugger;
+            // controller-wide code  - general de cada vista
+            moment.locale('es');
+
+            console.log("js para  Orden");    
+
+            
+            $("#TXT_FD_FEC_ORDE").flatpickr({
+                dateFormat: "d/m/Y",
+                minDate: "today",
+                "locale": "es",
+                maxDate: new Date().fp_incr(360)
+            });
+
+            $('#FD_FEC_ORDE').removeAttr("data-val-date");
+
+            const url_detail_add = $("#_detalle_data_add").data('request-url');
+
+            var dTable = $('#TB_DETA_ORDE').DataTable({
+                "scrollX": true,
+                ajax: {
+                    "url": $("#_detalle_data_loader").data('request-url'),
+                    "dataSrc": ""
+                },
+                columns: [
+                    { data: 'FI_NUM_SECU' },
+                    {
+                        data: 'FS_NOM_ARTI'
+                    },
+                    {
+                        data: 'FN_PRE_VENT',
+                        "defaultContent": "0.0",
+                        "render": function (data, type, row) {
+                            // return moment(date).format('HH:mm a, D MMM , YY');
+                            return "S/. " + data;
+                        }
+                    },
+                    { data: 'FN_CAN_ARTI' }
+
+                ],
+                dom: 'lBrtip',
+                select: true,
+                "rowId": function (a) {
+                    return 'id_' + a.FI_NUM_SECU;
+                },
+                "processing": true,
+                buttons: [
+
+                    {
+                        text: button_save,
+                        key: {
+                            shiftKey: true,
+                            key: '2',
+                        },
+                        className: 'btn btn-lg btn-transparent',
+                        titleAttr: "Procesar Orden (shift + 2)",
+                        action: function (e, dt, node, config) {
+                            msg.success("test", "test");
+                        },
+                        init: function (api, node, config) {
+                            $(node).removeClass('btn-default')
+                        }
+                    }
+                ],
+                "lengthMenu": [[5, 10, -1], [5, 10, "Todos"]],
+                "language": data_Table_Language,
+                "fnInitComplete": function () {
+                },
+            });
+
+            dTable.on('user-select', function (e, dt, type, cell, originalEvent) {
+                if ($(cell.node()).parent().hasClass('selected')) {
+                    e.preventDefault();
+                }
+            });
+
+            /* Agregamos producto a una lista de sesión y añadimos a la tabla */
             $('body').off("click", "[data-product]").on("click", "[data-product]", function (e) {
                 let $this = $(this);
                 $.post(url_detail_add, { FS_COD_ARTI: $this.data("product") },
@@ -241,11 +331,17 @@ RMS = {
             });
 
             $('body').off("click", "#submitButton").on("click", "#submitButton", function (e) {
-                $(this).attr("disabled", "disabled");
-                $("#Frm_Orden_Registro").submit();
+                const totalRecords = dTable.rows().count();
+                if (totalRecords === 0) { msg.warning("Aviso", "Ingrese al menos un detalle"); return false; }
+
+                alertConfirm.show("¿Desea registrar la orden?", "");
+                alertConfirm.yes = function () {
+                    $(this).attr("disabled", "disabled");
+                    $("#Frm_Orden_Registro").submit();
+                };
             });
 
-            $("#Frm_Orden_Registro").off("submit").on("submit", function () {
+            $("body").off("submit", "#Frm_Orden_Registro").on("submit","#Frm_Orden_Registro", function () {
                 debugger;
                 const $form = $(this);
                 $.validator.unobtrusive.parse($form);
@@ -255,10 +351,17 @@ RMS = {
                         dataType: 'JSON',
                         type: 'POST',
                         url: $form.attr('action'),
-                        success: function (data) {
-                            dTable.clear();
-                            dTable.rows.add(data);
-                            dTable.draw(false);
+                        success: function (res) {
+                            debugger;
+                            if (res.response) {
+                                load_order(res.result);
+
+                                msg.custom("Aviso", `Orden nro. <strong> ${res.result}  </strong> registrada`);
+
+                            }
+                            else {
+                                msg.error("Aviso", res.error);
+                            }
                             return false;
                         },
                         error: function (jqXHR, textStatus, errorThrown) {
@@ -270,6 +373,25 @@ RMS = {
                 $("#submitButton").removeAttr("disabled");
                 return false;
             });
+
+            function load_order(FN_IDE_ORDE) {
+                $.get($("#_busqueda_orden_registrada").data("request-url"), { FN_IDE_ORDE: FN_IDE_ORDE },
+                    function (data, textStatus, jqXHR) {
+                        debugger;
+                        $("#registro_form_card").html(data);
+
+
+                        $("#TXT_FD_FEC_ORDE").flatpickr({
+                            dateFormat: "d/m/Y",
+                            minDate: "today",
+                            "locale": "es",
+                            maxDate: new Date().fp_incr(360)
+                        });
+                        dTable.ajax.reload();
+                    },
+                    "html"
+                );
+            }
 
             function set_generic_client(FI_STA_DEFE) {
                 $.get($('#_buscar_cliente_defecto').data('request-url'), { FI_STA_DEFE: FI_STA_DEFE },
@@ -285,7 +407,7 @@ RMS = {
                 );
             }
 
-            $("#CHK_isGeneric").off("change").on("change", function (e) {
+            $("body").off("change", "#CHK_isGeneric").on("change","#CHK_isGeneric", function (e) {
                 if ($(this).prop("checked")) {
                     set_generic_client(1);
                 }
@@ -298,12 +420,11 @@ RMS = {
                 }
             });
 
-            $("#busqueda_cliente").click(function (e) {
+            $("body").off("click", "#busqueda_cliente").on("click", "#busqueda_cliente",function (e) {
                 modal_ajax(true, $("#_busqueda_clientes").data("request-url"), set_cliente, "Búsqueda de clientes");
             });
             function set_cliente() {
                 const FS_COD_CLIE = localStorage.getItem("FS_COD_CLIE");
-                debugger;
                 if (FS_COD_CLIE === null) {
                     return false;
                 }
