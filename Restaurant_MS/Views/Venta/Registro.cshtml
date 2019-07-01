@@ -17,7 +17,7 @@
     <div class="container-fluid animated fadeIn">
         <div class="row">
             <div class="col-md-12 col-lg-12">
-                <div id="registro_form_card">
+                <div id="registro_venta_form_card">
                     @Html.Partial("_venta_form")
                 </div>
                 <div class="card">
@@ -42,12 +42,6 @@
                                         </tr>
                                     </thead>
                                     <tbody></tbody>
-                                    <tfoot>
-                                        <tr>
-                                            <th colspan="3" style="text-align:right">Total:</th>
-                                            <th></th>
-                                        </tr>
-                                    </tfoot>
                                 </table>
                             </div>
                         </div>
@@ -57,11 +51,9 @@
         </div>
     </div>
     <div class="_load" data-load="Venta"></div>
-
-    <div id="_buscar_cliente_defecto" data-request-url="@Url.Action("Busqueda_cliente_defecto", "Busqueda")"></div>
-    <div id="_busqueda_cliente_por_codigo" data-request-url="@Url.Action("Busqueda_cliente_por_codigo", "Busqueda")"></div>
-
+    <div id="_detalle_data_loader_orden" data-request-url="@Url.Action("listar_detalle_orden", "Venta",new { FI_COD_EMPR = 1 })"></div>
+    <div id="_cargar_orden" data-request-url="@Url.Action("Cargar_Orden", "Venta")"></div>
     <div id="_busqueda_ordenes" data-request-url="@Url.Action("Busqueda_ordenes", "Busqueda")"></div>
-    <div id="_detalle_data_loader" data-request-url="@Url.Action("listar_detalle_venta", "Venta",new { FN_IDE_DOCU = ViewBag.numero_orden,FI_COD_EMPR = 1 })"></div>
+    <div id="_detalle_data_loader_venta" data-request-url="@Url.Action("listar_detalle_venta", "Venta",new { FN_IDE_DOCU = ViewBag.numero_venta,FI_COD_EMPR = 1 })"></div>
     <script src="~/Content/ui-search/search.min.js"></script>
 </section>

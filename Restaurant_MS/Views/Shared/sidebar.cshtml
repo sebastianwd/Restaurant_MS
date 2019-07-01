@@ -1,7 +1,7 @@
 ﻿@{
 
     Layout = null;
-  
+
 }
 
 <div class="sidebar" id="main-sideBar">
@@ -9,9 +9,8 @@
         <ul class="nav">
             <li class="nav-item" style="z-index:999">
                 <select class="form-control" id="cboTest" style="z-index:999">
-        
-                                <option value="1">Test</option>
-                     
+
+                    <option value="1">Test</option>
                 </select>
             </li>
             <li class="nav-item">
@@ -26,7 +25,7 @@
                     <i class="nav-icon icon-drop"></i> Venta
                 </a>
             </li>
- 
+
             <li class="nav-title">Reportes</li>
             <li class="nav-item nav-dropdown">
                 <a class="nav-link nav-dropdown-toggle" href="">
@@ -34,16 +33,15 @@
                 </a>
                 <ul class="nav-dropdown-items">
                     <li class="nav-item">
-                        <a class="nav-link" href="@Url.Action("Index", "CL_Trabajador_Solicitud_Licencias", new { Area = "RR_HH" },null)">
+                        <a class="nav-link" href="@Url.Action("Index", "CL_Trabajador_Solicitud_Licencias",null)">
                             <i class="nav-icon icon-puzzle"></i> Clientes
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="@Url.Action("Index", "CL_Trabajador_Solicitud_Licencias", new { Area = "RR_HH" },null)">
+                        <a class="nav-link" href="@Url.Action("Index", "CL_Trabajador_Solicitud_Licencias",null)">
                             <i class="nav-icon icon-puzzle"></i> Ventas
                         </a>
                     </li>
-
                 </ul>
             </li>
             <li class="nav-item nav-dropdown">
@@ -52,25 +50,17 @@
                 </a>
                 <ul class="nav-dropdown-items">
                     <li class="nav-item">
-                        <a class="nav-link" href="@Url.Action("Index", "CL_Admin_Gestion_Licencias", new { Area = "RR_HH" }, null)">
+                        <a class="nav-link" href="@Url.Action("Index", "Clientes",null)">
                             <i class="nav-icon icon-cursor"></i> Clientes
                         </a>
                     </li>
+                   
                     <li class="nav-item">
-                        <a class="nav-link" href="@Url.Action("Index", "CL_Admin_Gestion_Prestamo", new { Area = "RR_HH" }, null)">
-                            <i class="nav-icon icon-cursor"></i> Mesas
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="@Url.Action("Index", "CL_Admin_Gestion_Vacaciones", new { Area = "RR_HH" }, null)">
+                        <a class="nav-link" href="@Url.Action("Index", "CL_Admin_Gestion_Vacaciones", null)">
                             <i class="nav-icon icon-cursor"></i> Artículos
                         </a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="buttons/brand-buttons.html">
-                            <i class="nav-icon icon-cursor"></i> Ejecutivos de venta
-                        </a>
-                    </li>
+                
 
                     <li class="nav-item">
                         <a class="nav-link" href="buttons/brand-buttons.html">
@@ -78,18 +68,8 @@
                         </a>
                     </li>
                 </ul>
-            </li>          
-            <li class="nav-item mt-auto">
-                <a class="nav-link nav-link-success" href="https://coreui.io" target="_top">
-                    <i class="nav-icon icon-cloud-download"></i> Download CoreUI
-                </a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link nav-link-danger" href="https://coreui.io/pro/" target="_top">
-                    <i class="nav-icon icon-layers"></i> Try CoreUI
-                    <strong>PRO</strong>
-                </a>
-            </li>
+            
         </ul>
     </nav>
     <button class="sidebar-minimizer brand-minimizer" type="button"></button>

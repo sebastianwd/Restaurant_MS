@@ -1,0 +1,118 @@
+﻿@model RMS_MODELOS.M_TB_CLIE
+@{
+    Layout = null;
+
+}
+<div class="card">
+    <div class="card-header d-md-inline-flex justify-content-start align-items-center">
+        <small class="mr-1">Consulta SUNAT</small>
+        <input class="form-control col-1 form-control-sm" id="consulta_ruc" />
+        <button class="btn btn-sm btn-outline-dark " type="button" id="busqueda_ruc"><i class="fa fa-search"></i> </button>
+
+        <div class="dot_loader ml-5 mr-auto invisible"></div>
+
+        <i class="fa fa-edit"></i> Mantenimiento de clientes
+    </div>
+    <div class="card-body">
+        @using (Html.BeginForm("registrar_cliente", "Clientes", FormMethod.Post, new { @id = "Frm_Cliente_Registro", @class = "form-horizontal" }))
+        {
+            <input name="status" id="status" class="invisible d-none" value="@ViewBag.status">
+            <div class="form-group row">
+                @Html.Label("", String.Format("Cód. cliente"), new { @class = "col-lg-1 pr-0 col-form-label-sm " })
+                <div class="col-lg-2">
+                    @Html.TextBoxFor(x => x.FS_COD_CLIE, new { @class = "form-control  form-control-sm", @id = "TXT_FS_COD_CLIE" })
+                    @Html.ValidationMessageFor(x => x.FS_COD_CLIE, null, new { @class = "label-alert" })
+                </div>
+
+                @Html.Label("", String.Format("Ape. paterno"), new { @class = "col-lg-1 pr-0 col-form-label-sm" })
+                <div class="col-lg-1">
+                    @Html.TextBoxFor(x => x.FS_APE_PATE_CLIE, new { @class = "form-control  form-control-sm", @id = "TXT_FS_APE_PATE_CLIE" })
+                    @Html.ValidationMessageFor(x => x.FS_COD_CLIE, null, new { @class = "label-alert" })
+                </div>
+
+                @Html.Label("", String.Format("Ape. materno"), new { @class = "col-lg-1 pr-0 col-form-label-sm" })
+                <div class="col-lg-1">
+                    @Html.TextBoxFor(x => x.FS_APE_MATE_CLIE, new { @class = "form-control  form-control-sm", @id = "TXT_FS_APE_MATE_CLIE" })
+                    @Html.ValidationMessageFor(x => x.FS_APE_MATE_CLIE, null, new { @class = "label-alert" })
+                </div>
+
+                @Html.Label("", String.Format("Nombres"), new { @class = "col-lg-1 pr-0 col-form-label-sm" })
+                <div class="col-lg-2">
+                    @Html.TextBoxFor(x => x.FS_NOM_CLIE_NA01, new { @class = "form-control  form-control-sm", @id = "TXT_FS_COD_CLIE" })
+                    @Html.ValidationMessageFor(x => x.FS_NOM_CLIE_NA01, null, new { @class = "label-alert" })
+                </div>
+                <div class="col-lg-2">
+                    @Html.TextBoxFor(x => x.FS_NOM_CLIE_NA02, new { @class = "form-control  form-control-sm", @id = "TXT_FS_COD_CLIE" })
+                    @Html.ValidationMessageFor(x => x.FS_NOM_CLIE_NA02, null, new { @class = "label-alert" })
+                </div>
+            </div>
+
+            <div class="form-group row">
+                @Html.Label("", String.Format("Razón Social"), new { @class = "col-lg-1 pr-0 col-form-label-sm " })
+                <div class="col-lg-2">
+                    @Html.TextBoxFor(x => x.FS_NOM_RAZO_SOCI, new { @class = "form-control  form-control-sm", @id = "TXT_FS_NOM_RAZO_SOCI" })
+                    @Html.ValidationMessageFor(x => x.FS_NOM_RAZO_SOCI, null, new { @class = "label-alert" })
+                </div>
+
+                @Html.Label("", String.Format("DNI"), new { @class = "col-lg-1 pr-0 col-form-label-sm " })
+                <div class="col-lg-2">
+                    @Html.TextBoxFor(x => x.FS_NUM_DOCU_IDEN, new { @class = "form-control  form-control-sm", @id = "TXT_FS_NUM_DOCU_IDEN" })
+                    @Html.ValidationMessageFor(x => x.FS_NUM_DOCU_IDEN, null, new { @class = "label-alert" })
+                </div>
+
+                @Html.Label("", String.Format("RUC"), new { @class = "col-lg-1 pr-0 col-form-label-sm " })
+                <div class="col-lg-2">
+                    @Html.TextBoxFor(x => x.FS_NUM_RUCS, new { @class = "form-control  form-control-sm", @id = "TXT_FS_NUM_RUCS" })
+                    @Html.ValidationMessageFor(x => x.FS_NUM_RUCS, null, new { @class = "label-alert" })
+                </div>
+                @Html.Label("", String.Format("Mail"), new { @class = "col-lg-1 pr-0 col-form-label-sm " })
+                <div class="col-lg-2">
+                    @Html.TextBoxFor(x => x.FS_DES_MAIL, new { @class = "form-control  form-control-sm", @id = "TXT_FS_DES_MAIL" })
+                    @Html.ValidationMessageFor(x => x.FS_DES_MAIL, null, new { @class = "label-alert" })
+                </div>
+            </div>
+
+            <div class="form-group row">
+                @Html.Label("", String.Format("Dirección"), new { @class = "col-lg-1 pr-0 col-form-label-sm " })
+                <div class="col-lg-2">
+                    @Html.TextAreaFor(x => @x.FS_DES_DIRE, new { @class = "form-control form-control-sm", @id = "TXT_FS_DES_DIRE",
+               })
+                    @Html.ValidationMessageFor(x => x.FS_DES_DIRE, null, new { @class = "label-alert" })
+                </div>
+
+                @Html.Label("", String.Format("Observación"), new { @class = "col-lg-1 pr-0 col-form-label-sm " })
+                <div class="col-lg-2">
+                    @Html.TextAreaFor(x => @x.FS_DES_OBSE, new { @class = "form-control form-control-sm", @id = "TXT_FS_DES_OBSE",
+               })
+                    @Html.ValidationMessageFor(x => x.FS_DES_OBSE, null, new { @class = "label-alert" })
+                </div>
+
+                @Html.Label("", String.Format("Tipo de cliente"), new { @class = "col-lg-1  pr-0 col-form-label-sm" })
+                <div class=" col-lg-1 pl-lg-0 ">
+                    @Html.TextBoxFor(x => @x.FS_COD_TIPE_SUNA, new { @class = "form-control form-control-sm", @id = "TXT_FS_COD_TIPE_SUNA",
+                  @readonly = "readonly"
+              })
+                    @Html.ValidationMessageFor(x => @x.FS_COD_TIPE_SUNA, null, new { @class = "label-alert" })
+                </div>
+                <div class=" col-lg-1 pl-lg-0 ">
+                    @Html.TextBox("des_tipo_persona", null, new { @class = "form-control  form-control-sm", @id = "TXT_FS_DES_TIPE_SUNA", @readonly = "readonly" })
+                </div>
+            </div>
+            <div class="form-group row">
+
+                <div class="btn-group ml-auto mr-1 mt-sm-1">
+                    <button class="btn btn-secondary btn-lg btn-ghost-light" id="submitButton" type="button"
+                            title="Registrar/Actualizar cliente">
+                        <span>
+                            <span class="fa fa-check fa-lg text-success">
+                            </span>
+                        </span>
+                    </button>
+                </div>
+            </div>
+
+        }
+    </div>
+</div>
+<script>
+</script>

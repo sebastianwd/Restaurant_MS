@@ -70,6 +70,8 @@ namespace Restaurant_MS.Controllers
         public JsonResult Busqueda_ordenes_listado()
         {
             var data = S_TB_CABE_ORDE.listar_ordenes();
+
+            Session["detalle_venta"] = data;
             return Json(data, JsonRequestBehavior.AllowGet);
         }
     }

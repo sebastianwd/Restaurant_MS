@@ -29,12 +29,15 @@
 const button_save = '<span class="fa fa-save fa-lg cicon-save cfirst-dt-button"></span>';
 const button_save_tooltip = 'Grabar Datos (shift + 2)';
 
+var url_content;
+var callback_modal;
 function modal_ajax(open, url, callback, title) {
     if (!open) {
         $('#modal-search').iziModal('close');
         return false;
     }
-
+    url_content = url;
+    callback_modal = callback;
     $("#modal-search").iziModal({
         title: title || 'Búsqueda',
         subtitle: '',
@@ -60,13 +63,13 @@ function modal_ajax(open, url, callback, title) {
         },
         onOpening: function (modal) {
             modal.startLoading();
-            $.get(url, function (data) {
+            $.get(url_content, function (data) {
                 $("#modal-search .iziModal-content").html(data);
                 modal.stopLoading();
             });
         },
         onClosing: function () {
-            callback() || false;
+            callback_modal() || false;
         },
         /*    transitionIn: false,
             transitionOut: false,
@@ -145,6 +148,144 @@ RMS = {
             console.log("js comun para toda la app");
         }
     },
+    Cliente: {
+        init: function () {
+            moment.locale('es');
+            $("body").off("input", "#TXT_FS_COD_CLIE").on("input","#TXT_FS_COD_CLIE",function (e) {
+                $("#status").val("AGREGAR");
+            });
+
+            var dTable = $('#TB_CLIE').DataTable({
+                "scrollX": true,
+                ajax: {
+                    "url": $("#_listar_clientes").data('request-url'),
+                    "dataSrc": ""
+                },
+                "columnDefs": [{
+                    "targets": -1,
+                    "data": null,
+                    "defaultContent": `<div style="inline-block"><button type='button' class='btn  btn-outline-success _edit'><i class="fa fa-pencil"></i></button>
+                        <button type='button' class='btn  btn-outline-danger _delete'><i class="fa fa-trash"></i></button></div>`
+                }],
+                columns: [
+                    { data: 'FS_COD_CLIE' },
+                    { data: 'FS_NOM_CLIE' },
+                    { data: 'FS_NOM_RAZO_SOCI' },
+                    { data: 'FS_NUM_RUCS' },
+                    { data: 'FS_DES_OBSE' },
+                    { data: 'FS_TIP_SITU' },
+                    { data: 'FS_DES_TIPO_CLIE' },
+                    { data: null }
+                ],
+                dom: 'lfrtip',
+                select: true,
+                "rowId": function (a) {
+                    return 'id_' + a.FS_COD_CLIE;
+                },
+                "processing": true,
+
+                "lengthMenu": [[5, 10, -1], [5, 10, "Todos"]],
+                "language": data_Table_Language,
+                "fnInitComplete": function () {
+                },
+            });
+
+            dTable.on('user-select', function (e, dt, type, cell, originalEvent) {
+                if ($(cell.node()).parent().hasClass('selected')) {
+                    e.preventDefault();
+                }
+            });
+            $('#TB_CLIE tbody').on('click', '._edit', function () {
+                const data = dTable.row($(this).parents('tr')).data();
+                $.post($("#_cargar_cliente").data('request-url'), { FS_COD_CLIE: data.FS_COD_CLIE },
+                    function (data, textStatus, jqXHR) {
+                        $("#registro_cliente_card").html(data);
+                    },
+                    "html"
+                );
+            });
+
+            $('#TB_CLIE tbody').on('click', '._delete', function () {
+                const data = dTable.row($(this).parents('tr')).data();
+                $.post($("#_eliminar_cliente").data('request-url'), { FS_COD_CLIE: data.FS_COD_CLIE },
+                    function (data, textStatus, jqXHR) {
+                    },
+                    "json"
+                );
+            });
+            $('body').off("click", "#submitButton").on("click", "#submitButton", function (e) {
+                alertConfirm.show("¿Desea registrar el cliente?", "");
+                alertConfirm.yes = function () {
+                    $(this).attr("disabled", "disabled");
+                    $("#Frm_Cliente_Registro").submit();
+                };
+            });
+            function load_cliente(FS_COD_CLIE) {
+                if (FS_COD_CLIE === null) {
+                    return false;
+                }
+                $.get($("#_cargar_cliente").data("request-url"), { FS_COD_CLIE: FS_COD_CLIE },
+                    function (data, textStatus, jqXHR) {
+                        $("#registro_cliente_card").html(data);
+                    },
+                    "html"
+                );
+            }
+            $("body").off("submit", "#Frm_Cliente_Registro").on("submit", "#Frm_Cliente_Registro", function () {
+                const $form = $(this);
+                $.validator.unobtrusive.parse($form);
+                const result = $form.valid();
+                if (result) {
+                    $form.ajaxSubmit({
+                        dataType: 'JSON',
+                        type: 'POST',
+                        url: $form.attr('action'),
+                        success: function (res) {
+                            if (res.response) {
+                                msg.custom("Aviso", `Cliente <strong> ${res.result}  </strong> registrado`);
+                                load_cliente(res.result);
+                                dTable.ajax.reload();
+                            }
+                            else {
+                                msg.error("Aviso", res.error);
+                            }
+                            return false;
+                        },
+                        error: function (jqXHR, textStatus, errorThrown) {
+                            console.log(errorThrown);
+                            msg.error("Aviso", "Error de conexión");
+                        }
+                    });
+                }
+                $("#submitSaleButton").removeAttr("disabled");
+                return false;
+            });
+
+            $("#busqueda_ruc").click(function (e) {
+                var ruc = $("#consulta_ruc").val();
+                $(".dot_loader").removeClass("invisible");
+                $.get($("#_consulta_ruc").data("request-url"), { codigo: ruc },
+                    function (res, textStatus, jqXHR) {
+                        $("#TXT_FS_NOM_RAZO_SOCI").val(res.result.razon_social);
+                        $("#TXT_FS_COD_CLIE").val(res.result.ruc);
+                        $("#TXT_FS_NUM_RUCS").val(res.result.ruc);
+                        $("#TXT_FS_DES_OBSE").val(res.result.condicion);
+                        $("#TXT_FS_DES_DIRE").val(res.result.direccion);
+                        if (ruc.substring(0, 2) == "20") {
+                            $("#TXT_FS_COD_TIPE_SUNA").val("02");
+                            $("#TXT_FS_DES_TIPE_SUNA").val("Jurídica");
+                        }
+                        if (ruc.substring(0, 2) == "10") {
+                            $("#TXT_FS_COD_TIPE_SUNA").val("01");
+                            $("#TXT_FS_DES_TIPE_SUNA").val("Natural");
+                        }
+                        $(".dot_loader").addClass("invisible");
+                    },
+                    "json"
+                );
+            });
+        },
+    },
     Venta: {
         init: function () {
             moment.locale('es');
@@ -160,7 +301,7 @@ RMS = {
             var dTable = $('#TB_DETA_DOCU_VENT').DataTable({
                 "scrollX": true,
                 ajax: {
-                    "url": $("#_detalle_data_loader").data('request-url'),
+                    "url": $("#_detalle_data_loader_venta").data('request-url'),
                     "dataSrc": ""
                 },
                 columns: [
@@ -179,30 +320,13 @@ RMS = {
                     { data: 'FN_CAN_ARTI' }
 
                 ],
-                dom: 'lBrtip',
+                dom: 'lrtip',
                 select: true,
                 "rowId": function (a) {
                     return 'id_' + a.FI_NUM_SECU;
                 },
                 "processing": true,
-                buttons: [
 
-                    {
-                        text: button_save,
-                        key: {
-                            shiftKey: true,
-                            key: '2',
-                        },
-                        className: 'btn btn-lg btn-transparent',
-                        titleAttr: "Procesar Orden (shift + 2)",
-                        action: function (e, dt, node, config) {
-                            msg.success("test", "test");
-                        },
-                        init: function (api, node, config) {
-                            $(node).removeClass('btn-default')
-                        }
-                    }
-                ],
                 "lengthMenu": [[5, 10, -1], [5, 10, "Todos"]],
                 "language": data_Table_Language,
                 "fnInitComplete": function () {
@@ -216,10 +340,78 @@ RMS = {
             });
 
             $("body").off("click", "#busqueda_ordenes").on("click", "#busqueda_ordenes", function (e) {
-                modal_ajax(true, $("#_busqueda_ordenes").data("request-url"), set_orden, "Búsqueda de Órdenes");
+                modal_ajax(true, $("#_busqueda_ordenes").data("request-url"), load_orden, "Búsqueda de Órdenes");
             });
 
-            function set_orden() {
+            function load_orden() {
+                const FN_IDE_ORDE = localStorage.getItem("FN_IDE_ORDE");
+                if (FN_IDE_ORDE === null) {
+                    return false;
+                }
+
+                $.get($("#_detalle_data_loader_orden").data("request-url"), { FN_IDE_ORDE: FN_IDE_ORDE },
+                    function (data, textStatus, jqXHR) {
+                        dTable.clear();
+                        dTable.rows.add(data);
+                        dTable.draw(false);
+                    },
+                    "json"
+                );
+                $.get($("#_cargar_orden").data("request-url"), { FN_IDE_ORDE: FN_IDE_ORDE },
+                    function (data, textStatus, jqXHR) {
+                        $("#registro_venta_form_card").html(data);
+                        $("#TXT_FD_FEC_DOCU").flatpickr({
+                            dateFormat: "d/m/Y",
+                            minDate: "today",
+                            "locale": "es",
+                            maxDate: new Date().fp_incr(360)
+                        });
+                    },
+                    "html"
+                );
+
+                $('body').off("click", "#submitSaleButton").on("click", "#submitSaleButton", function (e) {
+                    const totalRecords = dTable.rows().count();
+                    if (totalRecords === 0) { msg.warning("Aviso", "Se debe tener al menos un detalle"); return false; }
+
+                    alertConfirm.show("¿Desea registrar la venta?", "");
+                    alertConfirm.yes = function () {
+                        $(this).attr("disabled", "disabled");
+                        $("#Frm_Venta_Registro").submit();
+                    };
+                });
+                $("body").off("submit", "#Frm_Venta_Registro").on("submit", "#Frm_Venta_Registro", function () {
+                    debugger;
+                    const $form = $(this);
+                    $.validator.unobtrusive.parse($form);
+                    const result = $form.valid();
+                    if (result) {
+                        $form.ajaxSubmit({
+                            dataType: 'JSON',
+                            type: 'POST',
+                            url: $form.attr('action'),
+                            success: function (res) {
+                                debugger;
+                                if (res.response) {
+
+                                    msg.custom("Aviso", `Venta nro. <strong> ${res.result}  </strong> registrada`);
+                                    load_venta(res.result);
+
+                                }
+                                else {
+                                    msg.error("Aviso", res.error);
+                                }
+                                return false;
+                            },
+                            error: function (jqXHR, textStatus, errorThrown) {
+                                console.log(errorThrown);
+                                msg.error("Aviso", "Error de conexión");
+                            }
+                        });
+                    }
+                    $("#submitSaleButton").removeAttr("disabled");
+                    return false;
+                });
             }
         }
     },

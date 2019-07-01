@@ -19,7 +19,6 @@ namespace RMS_MODELOS
         [MaxLength(50)]
         public string FS_APE_MATE_CLIE { get; set; }
 
-        [Required]
         [MaxLength(50)]
         public string FS_NOM_CLIE_NA01 { get; set; }
 
@@ -58,5 +57,7 @@ namespace RMS_MODELOS
         public int FI_STA_DEFE { get; set; }
 
         public string FS_DES_TIPO_CLIE { get; set; }
+
+        public string FS_DES_DIRE { get; set; }
     }
 }

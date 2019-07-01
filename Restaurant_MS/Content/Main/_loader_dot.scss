@@ -1,0 +1,44 @@
+﻿$c: #f86c6b;
+$s: 10px;
+
+.dot_loader {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: $s;
+    height: $s;
+    background-color: $c;
+    border-radius: 50%;
+    position: relative;
+
+    &:before {
+        content: "";
+        width: inherit;
+        height: inherit;
+        border: $s/2 solid $c;
+        border-radius: inherit;
+        position: absolute;
+        z-index: 10;
+        opacity: 0;
+        animation: 2s expand cubic-bezier(.29,0,0,1) infinite;
+        animation-delay: 1s;
+    }
+}
+
+@keyframes expand {
+    /* Starting at 1 to prevent IOS flicker */
+    1% {
+        width: 0;
+        height: 0;
+        opacity: 1;
+    }
+
+    100% {
+        width: 750%;
+        height: 750%;
+        opacity: 0;
+        border-color: #fff;
+        background-color: none;
+        border-width: 2px;
+    }
+}

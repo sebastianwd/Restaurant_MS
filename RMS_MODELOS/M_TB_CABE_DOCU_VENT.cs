@@ -41,23 +41,22 @@ namespace RMS_MODELOS
         [Required]
         public decimal FN_IMP_TOTA { get; set; }
 
-        [Required]
         [MaxLength(4)]
         public string FS_COD_MONE { get; set; }
 
-        [Required]
         [MaxLength(4)]
         public string FS_COD_ESTA_DOCU { get; set; }
 
         [MaxLength(100)]
         public string FS_DES_OBSE { get; set; }
 
-        [Required]
         [MaxLength(20)]
         public string FS_COD_EJEC { get; set; }
 
         [Required]
         [MaxLength(20)]
         public string FS_NUM_DOCU { get; set; }
+
+        public string FS_NUM_DOCU_CLIE { get; set; }
     }
 }
