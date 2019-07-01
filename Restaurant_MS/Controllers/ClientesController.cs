@@ -44,7 +44,7 @@ namespace Restaurant_MS.Controllers
         }
 
         [HttpPost]
-        public JsonResult registrar_cliente(M_TB_CLIE reg)
+        public JsonResult registrar_cliente(M_TB_CLIE reg, string status)
         {
             reg.FS_TIP_SITU = "ACTIVO";
             reg.FS_TIP_CLIE = "0200";
@@ -59,7 +59,15 @@ namespace Restaurant_MS.Controllers
 
             try
             {
-                var n = S_TB_CLIE.agregar_cliente(reg);
+                var n = 0;
+                if  (status == "AGREGAR")
+                {
+                     n = S_TB_CLIE.agregar_cliente(reg);
+                }else if ( status == "EDITAR")
+                {
+                    // actualizar
+                     n = S_TB_CLIE.actualizar_cliente(reg);
+                }
 
                 if (n < 1)
                 {
@@ -72,8 +80,30 @@ namespace Restaurant_MS.Controllers
             }
             catch (Exception e)
             {
-                res.response = false;
                 res.error = "Error at OrdenController - method registrar_cliente" + e.Message;
+                if (e.Message.Contains("PRIMARY KEY"))
+                {
+                    res.error = "Cliente con código " + reg.FS_COD_CLIE + " ya existe";
+                }
+                res.response = false;
+            }
+
+            return Json(res, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public JsonResult eliminar_cliente(string FS_COD_CLIE)
+        {
+            try
+            {
+                var result = S_TB_CLIE.eliminar_cliente(FS_COD_CLIE);
+
+                res.result = "Cliente eliminado";
+            }
+            catch (Exception e)
+            {
+                res.response = false;
+                res.error = e.Message;
             }
 
             return Json(res, JsonRequestBehavior.AllowGet);

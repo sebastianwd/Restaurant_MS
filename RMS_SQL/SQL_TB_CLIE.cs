@@ -172,7 +172,7 @@ namespace RMS_SQL
             int result = 0;
             using (AdoHelper db = new AdoHelper())
             {
-                result = db.ExecNonQueryProc("SP_CABE_ORDE_AD01",
+                result = db.ExecNonQueryProc("SP_CLIE_AD01",
                      "@ISCOD_CLIE", reg.FS_COD_CLIE,
                      "@ISAPE_PATE_CLIE", reg.FS_APE_PATE_CLIE,
                      "@ISAPE_MATE_CLIE", reg.FS_APE_MATE_CLIE,
@@ -190,6 +190,44 @@ namespace RMS_SQL
                      "@IISTA_DEFE", reg.FI_STA_DEFE,
                      "@ISDES_DIRE", reg.FS_DES_DIRE
              );
+            }
+            return result;
+        }
+
+        public int actualizar_cliente(M_TB_CLIE reg)
+        {
+            int result = 0;
+            using (AdoHelper db = new AdoHelper())
+            {
+                result = db.ExecNonQueryProc("SP_CLIE_AC01",
+                     "@ISCOD_CLIE", reg.FS_COD_CLIE,
+                     "@ISAPE_PATE_CLIE", reg.FS_APE_PATE_CLIE,
+                     "@ISAPE_MATE_CLIE", reg.FS_APE_MATE_CLIE,
+                     "@ISNOM_CLIE_NA01", reg.FS_NOM_CLIE_NA01,
+                     "@ISNOM_CLIE_NA02", reg.FS_NOM_CLIE_NA02,
+                     "@ISNOM_RAZO_SOCI", reg.FS_NOM_RAZO_SOCI,
+                     "@IDFEC_REGI", reg.FD_FEC_REGI,
+                     "@ISNUM_DOCU_IDEN", reg.FS_NUM_DOCU_IDEN,
+                     "@ISNUM_RUCS", reg.FS_NUM_RUCS,
+                     "@ISDES_MAIL", reg.FS_DES_MAIL,
+                     "@ISDES_OBSE", reg.FS_DES_OBSE,
+                     "@ISTIP_SITU", reg.FS_TIP_SITU,
+                     "@ISCOD_TIPE_SUNA", reg.FS_COD_TIPE_SUNA,
+                     "@ISTIP_CLIE", reg.FS_TIP_CLIE,
+                     "@IISTA_DEFE", reg.FI_STA_DEFE,
+                     "@ISDES_DIRE", reg.FS_DES_DIRE
+             );
+            }
+            return result;
+        }
+
+        public int eliminar_cliente(string FS_COD_CLIE)
+        {
+            int result = 0;
+            using (AdoHelper db = new AdoHelper())
+            {
+                result = db.ExecNonQuery("delete  TB_CLIE Where FS_COD_CLIE = @ISCOD_CLIE"
+                    , "@ISCOD_CLIE", FS_COD_CLIE);
             }
             return result;
         }

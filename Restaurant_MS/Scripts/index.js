@@ -206,15 +206,31 @@ RMS = {
             });
 
             $('#TB_CLIE tbody').on('click', '._delete', function () {
+                alertConfirm.show("¿Desea eliminar el cliente?", "");
                 const data = dTable.row($(this).parents('tr')).data();
-                $.post($("#_eliminar_cliente").data('request-url'), { FS_COD_CLIE: data.FS_COD_CLIE },
-                    function (data, textStatus, jqXHR) {
-                    },
-                    "json"
-                );
+
+                alertConfirm.yes = function () {
+                    $.post($("#_eliminar_cliente").data('request-url'), { FS_COD_CLIE: data.FS_COD_CLIE },
+                        function (res, textStatus, jqXHR) {
+                            if (res.response) {
+                                msg.success("Aviso", `Cliente ${data.FS_COD_CLIE} eliminado`);
+                                dTable.ajax.reload();
+                            }
+                        },
+                        "json"
+                    );
+                };
+              
             });
             $('body').off("click", "#submitButton").on("click", "#submitButton", function (e) {
-                alertConfirm.show("¿Desea registrar el cliente?", "");
+                if ($("#status").val() === "AGREGAR") {
+                    alertConfirm.show("¿Desea registrar el cliente?", "");
+
+                } else {
+                    alertConfirm.show("¿Desea actualizar el cliente?", "");
+
+                }
+
                 alertConfirm.yes = function () {
                     $(this).attr("disabled", "disabled");
                     $("#Frm_Cliente_Registro").submit();
@@ -242,7 +258,11 @@ RMS = {
                         url: $form.attr('action'),
                         success: function (res) {
                             if (res.response) {
-                                msg.custom("Aviso", `Cliente <strong> ${res.result}  </strong> registrado`);
+                                if ($("#status").val() === "AGREGAR") {
+                                    msg.custom("Aviso", `Cliente <strong> ${res.result}  </strong> registrado`);
+                                } else {
+                                    msg.custom("Aviso", `Cliente <strong> ${res.result}  </strong> actualizado`);
+                                }
                                 load_cliente(res.result);
                                 dTable.ajax.reload();
                             }
