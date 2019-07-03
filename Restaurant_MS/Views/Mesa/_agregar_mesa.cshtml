@@ -1,0 +1,41 @@
+﻿@model RMS_MODELOS.M_TB_MESA
+@using RMS_MODELOS
+@{
+    Layout = null;
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+            </div>
+            @using (Html.BeginForm("agregar_mesa", "Mesa", FormMethod.Post, new { @id = "Frm_Registrar_Mesa", @class = "form-horizontal" }))
+            {
+
+                <div class="card-body">
+
+                    <div class="form-group row">
+                        @Html.Label("", String.Format("Código"), new { @class = "col-md-2 pr-0 col-form-label-sm " })
+                        <div class="col-md-2">
+                            @Html.TextBoxFor(x => @x.FS_COD_MESA, new { @class = "_valid-string-l-10 form-control form-control-sm" })
+                            @Html.ValidationMessageFor(x => x.FS_COD_MESA, null, new { @class = "label-alert" })
+                        </div>
+
+                        <div class="ml-auto col-md-4">
+                            <button class="btn btn-sm btn-primary" type="button" id="btnRegistrarMesa">
+                                <i class="fa fa-dot-circle-o"></i> Registrar mesa
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+        <script>
+            $('._valid-string-l-10').toArray().forEach(function (campo) {
+                new Cleave(campo, {
+                    blocks: [10]
+                });
+            });
+        </script>
+    </div>
+</div>

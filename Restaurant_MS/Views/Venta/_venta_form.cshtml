@@ -37,7 +37,13 @@
             <div class="form-group row">
                 @Html.Label("", String.Format("Nro. de Venta"), new { @class = "col-lg-1 pr-0 col-form-label-sm " })
                 <div class="col-lg-1">
-                    @Html.TextBox("FN_IDE_DOCU", numero_venta, new { @class = "form-control form-control-sm", @id = "TXT_FN_IDE_DOCU", @readonly = "readonly" })
+                    <div class="input-group">
+                        @Html.TextBox("FN_IDE_DOCU", numero_venta, new { @class = "form-control form-control-sm", @id = "TXT_FN_IDE_DOCU", @readonly = "readonly" })
+
+                        <span class="input-group-append">
+                            <button class="btn btn-sm btn-outline-dark" type="button" id="busqueda_ventas">...</button>
+                        </span>
+                    </div>
                 </div>
 
                 @Html.Label("", String.Format("Tipo de Documento"), new { @class = "col-lg-1 pr-0 col-form-label-sm " })
@@ -118,9 +124,12 @@
                 <div class="btn-group ml-auto mr-1 mt-sm-3">
                     <button class="btn btn-secondary btn-lg btn-ghost-light" id="submitSaleButton" type="button"
                             title="Procesar Venta">
-                        <span>
-                            <span class="fa fa-check fa-lg text-success">
-                            </span>
+                        <span class="fa fa-check fa-lg text-success">
+                        </span>
+                    </button>
+                    <button class="btn btn-secondary btn-lg btn-ghost-light" id="printSaleButton" type="button"
+                            title="Generar documento">
+                        <span class="fa fa-print fa-lg text-info">
                         </span>
                     </button>
                 </div>

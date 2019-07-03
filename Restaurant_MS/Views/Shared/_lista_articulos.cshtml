@@ -22,7 +22,7 @@
                 </h5>
             </div>
             <div class="collapse show" id="collapse@(i)" role="tabpanel" aria-labelledby="heading@(i)" data-parent="#accordion@(i)">
-                <section class="cards">
+                <section class="cards row">
                     @foreach (var articulo in @item.lista_articulos)
                     {
 
@@ -50,7 +50,7 @@
                             </div>
                             <div class="card__info">
                                 <span class="card__category">S/ @articulo.FN_IMP_VENT.ToString("n2")  </span>
-                                <h5 class="card__title">@articulo.FS_NOM_ARTI</h5>
+                                <h6 class="card__title">@articulo.FS_NOM_ARTI</h6>
                             </div>
                         </article>
 

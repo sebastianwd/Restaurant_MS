@@ -39,6 +39,7 @@
                                             <th>Precio</th>
 
                                             <th>Cantidad</th>
+                                            <th></th>
                                         </tr>
                                     </thead>
                                     <tbody></tbody>
@@ -66,8 +67,11 @@
     <div id="_busqueda_clientes" data-request-url="@Url.Action("Busqueda_clientes", "Busqueda")"></div>
     <div id="_buscar_cliente_defecto" data-request-url="@Url.Action("Busqueda_cliente_defecto", "Busqueda")"></div>
     <div id="_busqueda_cliente_por_codigo" data-request-url="@Url.Action("Busqueda_cliente_por_codigo", "Busqueda")"></div>
-
+    <div id="_busqueda_ordenes" data-request-url="@Url.Action("Busqueda_ordenes", "Busqueda")"></div>
     <div id="_busqueda_orden_registrada" data-request-url="@Url.Action("registro_form", "Orden")"></div>
     <div id="_partial_lista_productos_por_clase" data-request-url="@Url.Action("Lista_productos_por_clase", "Orden")"></div>
+    <div id="_eliminar_detalle" data-request-url="@Url.Action("eliminar_detalle", "Orden")"></div>
+
+
     <script src="~/Content/ui-search/search.min.js"></script>
 </section>

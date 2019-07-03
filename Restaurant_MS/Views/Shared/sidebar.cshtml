@@ -10,7 +10,7 @@
             <li class="nav-item" style="z-index:999">
                 <select class="form-control" id="cboTest" style="z-index:999">
 
-                    <option value="1">Test</option>
+                    <option value="1">  @Html.Action("GetNombreEmpresa", "Home", new { Area = "" })</option>
                 </select>
             </li>
             <li class="nav-item">
@@ -56,7 +56,7 @@
                     </li>
                    
                     <li class="nav-item">
-                        <a class="nav-link" href="@Url.Action("Index", "CL_Admin_Gestion_Vacaciones", null)">
+                        <a class="nav-link" href="@Url.Action("Index", "Articulos", null)">
                             <i class="nav-icon icon-cursor"></i> Artículos
                         </a>
                     </li>

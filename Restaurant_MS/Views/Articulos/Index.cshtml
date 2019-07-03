@@ -1,0 +1,56 @@
+﻿@model RMS_MODELOS.M_TB_ARTI
+@{
+    ViewBag.Title = "Mantenimiento de Artículos";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+<!-- ORDEN -->
+<section class="" id="main_content">
+
+    <link href="~/Content/ui-search/search.min.css" rel="stylesheet" />
+    <ol class="breadcrumb">
+
+        <li class="breadcrumb-item active">@ViewBag.Title </li>
+    </ol>
+    <div class="container-fluid animated fadeIn">
+        <div class="row">
+            <div class="col-md-12 col-lg-12">
+                <div id="registro_articulo_card">
+                    @Html.Partial("_form")
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fa fa-edit"></i> Listado
+                    </div>
+                    <div class="card-body pt-0 pl-3" style="min-height:100px">
+                        <div class="row">
+                            <div class="col-sm-12 p-1">
+                                <table id="TB_ARTI" class="table table-striped table-bordered table-hover table-condensed ctable-with-buttons" cellspacing="0" width="100%">
+                                    <thead>
+                                        <tr>
+                                            <th> Código</th>
+                                            <th> Descripción</th>
+                                            <th> Cód. clase</th>
+                                            <th> Desc. clase</th>
+                                            <th> Precio</th>
+                                            <th> Situación</th>
+                                            <th> Observación</th>
+                                            <th>Foto</th>
+                                            <th>Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="_load" data-load="Articulo"></div>
+
+    <div id="_cargar_articulo" data-request-url="@Url.Action("cargar_articulo","Articulos")"></div>
+    <div id="_listar_articulos" data-request-url="@Url.Action("listar_articulos","Articulos")"></div>
+    <script src="~/Content/ui-search/search.min.js"></script>
+</section>

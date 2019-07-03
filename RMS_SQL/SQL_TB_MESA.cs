@@ -9,12 +9,11 @@ using RMS_MODELOS;
 
 namespace RMS_SQL
 {
-   public class SQL_TB_MESA
+    public class SQL_TB_MESA
     {
+        private AdoHelper db = new AdoHelper();
 
-        AdoHelper db = new AdoHelper();
-
-        public IEnumerable <M_TB_MESA> listar_mesas()
+        public IEnumerable<M_TB_MESA> listar_mesas()
         {
             var temp = new List<M_TB_MESA>();
 
@@ -33,8 +32,46 @@ namespace RMS_SQL
             }
 
             return temp;
-
         }
 
+        public int registrar_reservacion(M_TB_MESA reg)
+        {
+            int result = 0;
+            using (AdoHelper db = new AdoHelper())
+            {
+                result = db.ExecNonQueryProc("SP_MESA_AC01"
+                    , "@ISCOD_MESA", reg.FS_COD_MESA
+                    , "@ISSTA_OCUP", reg.FS_STA_OCUP
+                    , "@ISHOR_INIC_RESE", reg.FS_HOR_INIC_RESE
+                    , "@ISHOR_FINA_RESE", reg.FS_HOR_FINA_RESE);
+            }
+            return result;
+        }
+
+        public int registrar_mesa(M_TB_MESA reg)
+        {
+            int result = 0;
+            using (AdoHelper db = new AdoHelper())
+            {
+                result = db.ExecNonQueryProc("SP_MESA_AD01"
+                    , "@ISCOD_MESA", reg.FS_COD_MESA
+                    , "@ISSTA_OCUP", reg.FS_STA_OCUP
+                    , "@ISHOR_INIC_RESE", reg.FS_HOR_INIC_RESE
+                    , "@ISHOR_FINA_RESE", reg.FS_HOR_FINA_RESE);
+            }
+            return result;
+        }
+
+        public int eliminar_mesa(string FS_COD_MESA)
+        {
+            int result = 0;
+            using (AdoHelper db = new AdoHelper())
+            {
+                result = db.ExecNonQueryProc("SP_MESA_EL01"
+                    , "@IICOD_MESA", FS_COD_MESA
+                  );
+            }
+            return result;
+        }
     }
 }

@@ -52,10 +52,12 @@
     <Compile Include="SQL_TB_CABE_ORDE.cs" />
     <Compile Include="SQL_TB_CLIE.cs" />
     <Compile Include="SQL_TB_DETA_ORDE.cs" />
+    <Compile Include="SQL_TB_EMPR.cs" />
     <Compile Include="SQL_TB_MESA.cs" />
     <Compile Include="SQL_TB_TIPO_CLIE.cs" />
     <Compile Include="SQL_TB_TIPO_DOCU_SIST.cs" />
     <Compile Include="SQL_TB_TIPO_PERS_SUNA.cs" />
+    <Compile Include="SQL_TB_USUA.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\RMS_MODELOS\RMS_MODELOS.csproj">

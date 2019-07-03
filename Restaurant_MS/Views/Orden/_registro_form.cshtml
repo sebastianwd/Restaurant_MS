@@ -3,6 +3,7 @@
     Layout = null;
 
     decimal nro_orden = Decimal.One;
+    string color = "";
     if (Model.FN_IDE_ORDE != 0)
     {
         nro_orden = Model.FN_IDE_ORDE;
@@ -12,24 +13,49 @@
         nro_orden = (decimal)ViewBag.numero_orden == 0 ? 1 : (decimal)ViewBag.numero_orden;
 
     }
-    if (Model.FD_FEC_ORDE == DateTime.MinValue) {
+    if (Model.FD_FEC_ORDE == DateTime.MinValue)
+    {
         Model.FD_FEC_ORDE = DateTime.Today;
     }
+
+    switch (Model.FS_TIP_SITU)
+    {
+        case "ACT":
+            color = "text-success";
+            break;
+        case "ANU":
+            color = "text-danger";
+            break;
+        case "PAG":
+            color = "text-info";
+            break;
+        default:
+            break;
+    }
+
 }
 <div class="card">
     <div class="card-header d-md-inline-flex justify-content-center align-items-center">
         <i class="fa fa-edit"></i> Registro de Orden
         <div class="col-5 ml-auto">
-            @Html.TextBox("FS_TIP_SITU", (string)ViewBag.FS_TIP_SITU != "" ? "ACTIVO" : (string)ViewBag.FS_TIP_SITU, new { @class = "form-control form-control-sm text-center", @id = "TXT_FS_TIP_SITU", @disabled = "disabled" })
+            @Html.TextBoxFor(x => x.FS_TIP_SITU, new { @class = "form-control form-control-sm text-center" + " " + color, @id = "TXT_FS_TIP_SITU", @disabled = "disabled" })
         </div>
     </div>
     <div class="card-body">
+
         @using (Html.BeginForm("registrar_orden", "Orden", FormMethod.Post, new { @id = "Frm_Orden_Registro", @class = "form-horizontal" }))
         {
+            <input name="status" type="hidden" id="status" value="@ViewBag.status" />
             <div class="form-group row">
                 @Html.Label("", String.Format("Nro. de Orden"), new { @class = "col-lg-2 pr-0 col-form-label-sm " })
                 <div class="col-lg-3">
-                    @Html.TextBox("FN_IDE_ORDE", nro_orden, new { @class = "form-control form-control-sm", @id = "TXT_FN_IDE_ORDE", @disabled = "disabled" })
+                    <div class="input-group">
+                        @Html.TextBox("FN_IDE_ORDE", nro_orden, new { @class = "form-control form-control-sm", @id = "TXT_FN_IDE_ORDE", @readonly = "readonly" })
+
+                        <span class="input-group-append">
+                            <button class="btn btn-sm btn-outline-dark" type="button" id="busqueda_ordenes">...</button>
+                        </span>
+                    </div>
                 </div>
 
                 @Html.Label("", String.Format("Fecha"), new { @class = "col-lg-2 pr-0 col-form-label-sm" })
@@ -130,7 +156,12 @@
 </div>
 <script>
     $('#FD_FEC_ORDE').removeAttr("data-val-date");
-
+    $('._valid-date').toArray().forEach(function (campo) {
+        new Cleave(campo, {
+            date: true,
+            datePattern: ['d', 'm', 'Y']
+        });
+    });
 </script>
 <div id="_detalle_data_loader" data-request-url="@Url.Action("listar_detalle_orden", "Orden",new { FN_IDE_ORDE = ViewBag.numero_orden,FI_COD_EMPR = 1 })"></div>
 <div id="_detalle_data_add" data-request-url="@Url.Action("agregar_detalle_orden", "Orden",new { FN_IDE_ORDE = ViewBag.numero_orden })"></div>

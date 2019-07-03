@@ -1,7 +1,6 @@
 ﻿@import "food_cards";
 @import "loader_dot";
-
-
+@import "input_file";
 
 @font-face {
     font-family: 'Poppins-Regular';
@@ -17,10 +16,9 @@ $cfont-family: "Poppins-Regular";
 
 $cmain-dark: rgb(58, 65, 73);
 $cmain-blue: #566bb5;
-$cmain-red: #f86c6b ;
-$cmain-green: #4dbd74 ;
-$cbtn-size:26px;
-
+$cmain-red: #f86c6b;
+$cmain-green: #4dbd74;
+$cbtn-size: 26px;
 
 html {
     font-family: $cfont-family, sans-serif;
@@ -29,10 +27,10 @@ html {
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 
-    
 .c-highlight:hover {
     color: #007bff !important
 }
+
 .invalid-feedback {
     font-family: $cfont-family;
 }
@@ -62,17 +60,16 @@ html {
     .cdisplay-2-sm {
         font-size: 1.5rem;
     }
-    .ctext-sm-1{
-        font-size:0.7rem;
+
+    .ctext-sm-1 {
+        font-size: 0.7rem;
     }
 }
-
 
 .dataTables_length {
     display: inline-block;
     width: 80%;
 }
-
 
 .btn-transparent {
     background: transparent;
@@ -87,20 +84,21 @@ html {
     }
 }
 
-
-
 @media screen and (max-width: 767px) {
-    div.dt-buttons {  
-        width: auto !important;       
+    div.dt-buttons {
+        width: auto !important;
     }
 }
+
 .cicon-save {
     font-size: $cbtn-size;
     color: $cmain-blue !important;
 }
+
 .cicon-red {
     color: $cmain-red !important;
 }
+
 .cicon-green {
     color: $cmain-green !important;
 }
@@ -144,20 +142,19 @@ table > thead:nth-child(1) > tr:nth-child(1) th {
     padding: 0.3rem 0.7rem 0.3rem 0.7rem;
 }
 
-
 label.error {
-    position:relative;
+    position: relative;
     margin-bottom: -10px;
     font-size: 11.5px;
     color: #ff6a73 !important;
 }
 
-.no-margin-bottom{
-    margin-bottom:0px;
+.no-margin-bottom {
+    margin-bottom: 0px;
 }
 
-table.dataTable.dtr-inline.collapsed > tbody > tr[role="row"] > td:first-child::before{
-    top:5px !important;
+table.dataTable.dtr-inline.collapsed > tbody > tr[role="row"] > td:first-child::before {
+    top: 5px !important;
 }
 
 div#main-sideBar.sidebar nav.sidebar-nav.ps--active-y ul.nav li.nav-dropdown.open ul.nav-dropdown-items {
@@ -165,24 +162,23 @@ div#main-sideBar.sidebar nav.sidebar-nav.ps--active-y ul.nav li.nav-dropdown.ope
     border-top: 3px solid #20a8d8;
 }
 
-
-
-
-
 .bg-loader._loaded {
     opacity: 0;
 }
-
 
 .icon__dishes {
     width: 4.75rem;
     height: 4.75rem;
 }
 
-
-.dataTables_filter{
-    display:inline-block;
+.dataTables_filter {
+    display: inline-block;
 }
-.dataTables_length{
-    max-width:50%;
+
+.dataTables_length {
+    max-width: 50%;
+}
+
+.c-pointer{
+    cursor  : pointer;
 }

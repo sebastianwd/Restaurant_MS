@@ -24,6 +24,38 @@ namespace RMS_SQL
             return FS_IDE_DOCU;
         }
 
+        public M_TB_CABE_DOCU_VENT cargar_venta(decimal FN_IDE_DOCU, int FI_COD_EMPR)
+        {
+            var temp = new List<M_TB_CABE_DOCU_VENT>();
+
+            using (AdoHelper db = new AdoHelper())
+            using (SqlDataReader dr = db.ExecDataReaderProc("SP_CABE_DOCU_VENT_BU02",
+                        "@IICOD_EMPR", FI_COD_EMPR,
+                        "@INIDE_DOCU", FN_IDE_DOCU))
+            {
+                while (dr.Read())
+                {
+                    M_TB_CABE_DOCU_VENT e = new M_TB_CABE_DOCU_VENT();
+                    e.FI_COD_EMPR = Convert.ToInt32(dr["FI_COD_EMPR"].ToString());
+                    e.FN_IDE_ORDE = Convert.ToDecimal(dr["FN_IDE_ORDE"].ToString());
+                    e.FN_IDE_DOCU = Convert.ToDecimal(dr["FN_IDE_DOCU"].ToString());
+                    e.FD_FEC_DOCU = Convert.ToDateTime(dr["FD_FEC_DOCU"].ToString());
+                    e.FS_NOM_CLIE = dr["FS_NOM_CLIE"].ToString();
+                    e.FS_NUM_RUCS = dr["FS_NUM_RUCS"].ToString();
+                    e.FS_NUM_DOCU = dr["FS_NUM_DOCU"].ToString();
+                    e.FS_COD_CLIE = dr["FS_COD_CLIE"].ToString();
+
+                    e.FS_TIP_DOCU = dr["FS_TIP_DOCU"].ToString();
+                    e.FN_IMP_TOTA = Convert.ToDecimal(dr["FN_IMP_TOTA"]);
+                    e.FS_COD_EJEC = dr["FS_COD_EJEC"].ToString();
+
+                    temp.Add(e);
+                }
+                dr.Close();
+            }
+            return temp.FirstOrDefault();
+        }
+
         public M_TB_CABE_DOCU_VENT cargar_orden(decimal FN_IDE_ORDE, int FI_COD_EMPR)
         {
             var temp = new List<M_TB_CABE_DOCU_VENT>();
@@ -84,6 +116,8 @@ namespace RMS_SQL
                     e.FS_COD_ARTI = dr["FS_COD_ARTI"].ToString();
                     e.FN_CAN_ARTI = Convert.ToDecimal(dr["FN_CAN_ARTI"].ToString());
                     e.FN_PRE_VENT = Convert.ToDecimal(dr["FN_PRE_VENT"].ToString());
+
+                    e.FS_NOM_ARTI = dr["FS_NOM_ARTI"].ToString();
                     temp.Add(e);
                 }
                 dr.Close();
@@ -140,6 +174,29 @@ namespace RMS_SQL
                 }
                 return result;
             }
+        }
+
+        public IEnumerable<M_TB_CABE_DOCU_VENT> listar_ventas()
+        {
+            var temp = new List<M_TB_CABE_DOCU_VENT>();
+
+            using (AdoHelper db = new AdoHelper())
+            using (SqlDataReader dr = db.ExecDataReader("select * from TB_CABE_DOCU_VENT"))
+            {
+                while (dr.Read())
+                {
+                    M_TB_CABE_DOCU_VENT e = new M_TB_CABE_DOCU_VENT();
+                    e.FN_IDE_DOCU = Convert.ToDecimal(dr["FN_IDE_DOCU"].ToString());
+                    e.FN_IDE_ORDE = Convert.ToDecimal(dr["FN_IDE_ORDE"].ToString());
+                    e.FS_NUM_DOCU = dr["FS_NUM_DOCU"].ToString();
+                    e.FD_FEC_DOCU = Convert.ToDateTime(dr["FD_FEC_DOCU"].ToString());
+                    e.FS_COD_CLIE = dr["FS_COD_CLIE"].ToString();
+                    temp.Add(e);
+                }
+                dr.Close();
+            }
+
+            return temp;
         }
     }
 }

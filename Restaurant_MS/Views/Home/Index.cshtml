@@ -12,7 +12,6 @@
                     Módulo de Gestión de restaurante
                 </a>
             </li>
-
         </ol>
         <article class="animated fadeIn slow">
             <div class="container-fluid">
@@ -20,59 +19,34 @@
                 <div class="row">
 
                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 pt-3 pl-sm-2 pl-lg-5 card">
-                        <h5 class="cdisplay-2-sm">
-                            Gestión de mesas
+                        <h5 class="cdisplay-2-sm d-inline-flex align-items-center">
+                            <span>
+                                Gestión de mesas
+                            </span>
+                            <span class="ml-auto">
+                                <a class="btn btn-outline-success _agregar_mesa ml-auto" href="#" role="button">
+                                    Agregar mesa <i class="fa fa-plus" aria-hidden="true"></i>
+                                </a>
+                            </span>
                         </h5>
-                        <div class="row">
-                            @foreach (var item in Model)
-                            {
 
-                                <div class="col-sm-6 col-lg-2 col-md-3">
-                                    <div class="card text-white bg-light">
-                                        <div class="card-body pb-0">
-                                            <div class="btn-group float-right">
-                                                <button class="btn btn-light dropdown-toggle p-0" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                    <i class="icon-settings"></i>
-                                                </button>
-                                                <div class="dropdown-menu dropdown-menu-right">
-                                                    <a class="dropdown-item" href="#">Liberar/Ocupar mesa</a>
-                                                    <a class="dropdown-item" href="#">Reservar mesa</a>
-                                                    <a class="dropdown-item" href="#">Eliminar mesa</a>
-                                                </div>
-                                            </div>
-
-
-                                            <div class="text-black-50">@item.FS_COD_MESA</div>
-                                            @if (item.FS_STA_OCUP == "R")
-                                            {
-                                                <div class="text-info">Reservado</div>
-                                            }
-                                            else if (item.FS_STA_OCUP == "S")
-                                            {
-                                                <div class="text-danger">Ocupado</div>
-                                            }
-                                            else
-                                            {
-                                                <div class="text-success">Libre</div>
-                                            }
-                                        </div>
-                                        <img src="~/Content/Main/imagenes/dishes.svg" style="height:7rem;" />
-
-                                    </div>
-                                </div>
-
-                            }
-
+                        <div class="row" id="lista_mesas">
+                            @Html.Partial("_lista_mesas")
                         </div>
                         <div class="pb-5">
-                            <a class="btn btn-outline-success smooth-link" href="@Url.Action("Registro", "Orden")" role="button">
+                            <a class="btn btn-outline-info smooth-link" href="@Url.Action("Registro", "Orden")" role="button">
                                 Nuevo pedido <i class="fa fa-long-arrow-right" aria-hidden="true"></i>
                             </a>
                         </div>
-
                     </div>
                 </div>
             </div>
         </article>
+        <div class="_load" data-load="Home"></div>
+        <div id="_registrar_mesa" data-request-url="@Url.Action("registrar_mesa", "Mesa")"></div>
+        <div id="_gestion_mesa" data-request-url="@Url.Action("gestion_mesa", "Mesa")"></div>
+        <div id="_liberar_mesa" data-request-url="@Url.Action("liberar_mesa", "Mesa")"></div>
+        <div id="_lista_mesas" data-request-url="@Url.Action("lista_mesas", "Mesa")"></div>
+        <div id="_eliminar_mesa" data-request-url="@Url.Action("eliminar_mesa", "Mesa")"></div>
     </section>
 </div>

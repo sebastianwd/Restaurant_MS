@@ -1,4 +1,5 @@
-﻿.cards {
+﻿@charset "UTF-8";
+.cards {
   width: 100%;
   display: flex;
   display: -webkit-flex;
@@ -117,6 +118,123 @@
 .food-card:hover .card__info-hover {
   opacity: 0.6; }
 
+figure {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 3em auto;
+  background: #fff;
+  font-size: 0.875em; }
+
+.image-left, .image-right {
+  width: 500px;
+  height: 250px; }
+
+.image-top, .image-bottom {
+  width: 250px;
+  height: 500px; }
+
+.image-left {
+  flex-direction: row; }
+
+.image-right {
+  flex-direction: row-reverse; }
+
+.image-top {
+  flex-wrap: wrap; }
+
+.image-bottom {
+  flex-wrap: wrap-reverse; }
+
+figcaption:before {
+  position: absolute;
+  content: '';
+  display: block;
+  height: 0;
+  widht: 0;
+  border-style: solid;
+  border-width: 1em; }
+
+.image-left figcaption:before {
+  border-color: transparent #fff transparent transparent;
+  top: 50%;
+  margin-top: -1em;
+  left: -2em; }
+
+.image-right figcaption:before {
+  border-color: transparent transparent transparent #fff;
+  top: 50%;
+  margin-top: -1em;
+  right: -2em; }
+
+.image-top figcaption:before {
+  border-color: transparent transparent #fff transparent;
+  top: -2em;
+  left: 50%;
+  margin-left: -1em; }
+
+.image-bottom figcaption:before {
+  border-color: #fff transparent transparent transparent;
+  bottom: -2em;
+  left: 50%;
+  margin-left: -1em; }
+
+figure > * {
+  width: 250px;
+  height: 250px; }
+
+figcaption {
+  padding: 1.25em;
+  box-sizing: border-box;
+  position: relative; }
+
+figcaption h4 {
+  margin-bottom: 1em; }
+
+figcaption h4 span {
+  margin-right: 0.875em; }
+
+figcaption h2 {
+  font-size: 1.5em;
+  font-weight: 300;
+  text-transform: uppercase;
+  margin-bottom: 0.5em; }
+
+figcaption h2 span {
+  display: block;
+  font-weight: bold; }
+
+figcaption p {
+  width: 100%;
+  height: 4.5em;
+  margin-bottom: 1.5em;
+  overflow: hidden;
+  text-overflow: ellipsis; }
+
+.readmore {
+  text-decoration: none;
+  font-weight: 600;
+  font-style: italic;
+  color: #e74c3c; }
+
+.controls {
+  width: 500px;
+  margin: 0 auto; }
+
+.controls li {
+  float: left;
+  width: 125px;
+  text-align: center; }
+
+.controls li a {
+  text-decoration: none;
+  color: #2980b9; }
+
+.controls li a:hover {
+  color: #3498db; }
+
+.controls li a.active {
+  border-bottom: 1px dotted #3498db; }
+
 .dot_loader {
   display: flex;
   justify-content: center;
@@ -151,6 +269,98 @@
     border-color: #fff;
     background-color: none;
     border-width: 2px; } }
+
+.input-file-container {
+  position: relative;
+  max-width: 225px; }
+
+.input-file-trigger {
+  display: block;
+  transition: all .4s;
+  cursor: pointer; }
+
+.input-file:hover + .input-file-trigger,
+.input-file:focus + .input-file-trigger,
+.input-file-trigger:hover,
+.input-file-trigger:focus {
+  background: #3a4248;
+  color: #fff; }
+
+.file-return {
+  margin: 0; }
+
+.file-return:not(:empty) {
+  margin: .4em 0; }
+
+.file-return {
+  font-style: italic;
+  font-size: .9em;
+  font-weight: bold; }
+
+.file-return:not(:empty):before {
+  content: "Archivo seleccionado: ";
+  font-style: normal;
+  font-weight: normal; }
+
+.input-file-container canvas {
+  max-width: 70%;
+  display: none; }
+
+.filupp > input[type="file"] {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0; }
+
+.filupp {
+  position: relative;
+  background: #262a2e;
+  display: block;
+  padding: 0.8em;
+  font-size: 0.8em;
+  width: 70%;
+  height: 3.1em;
+  color: #fff;
+  cursor: pointer;
+  box-shadow: 0 1px 3px #0b0b0b; }
+
+.filupp:before {
+  content: "";
+  position: absolute;
+  top: 1.5em;
+  right: 0.75em;
+  width: 2em;
+  height: 1.25em;
+  border: 3px solid #dd4040;
+  border-top: 0;
+  text-align: center; }
+
+.filupp:after {
+  content: "➜";
+  -webkit-transform: rotate(-90deg);
+  -moz-transform: rotate(-90deg);
+  -ms-transform: rotate(-90deg);
+  -o-transform: rotate(-90deg);
+  transform: rotate(-90deg);
+  position: absolute;
+  top: 0.65em;
+  right: 0.45em;
+  font-size: 2em;
+  color: #dd4040;
+  line-height: 0; }
+
+.filupp-file-name {
+  width: 75%;
+  display: inline-block;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  word-wrap: normal; }
 
 @font-face {
   font-family: 'Poppins-Regular';
@@ -282,3 +492,6 @@ div#main-sideBar.sidebar nav.sidebar-nav.ps--active-y ul.nav li.nav-dropdown.ope
 
 .dataTables_length {
   max-width: 50%; }
+
+.c-pointer {
+  cursor: pointer; }

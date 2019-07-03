@@ -41,7 +41,7 @@ function modal_ajax(open, url, callback, title) {
     $("#modal-search").iziModal({
         title: title || 'Búsqueda',
         subtitle: '',
-        history: true,
+        history: false,
         icon: 'fa fa-search',
         top: 10,
         // bottom: 50,
@@ -138,6 +138,11 @@ RMS = {
                         blocks: [3]
                     });
                 });
+                $('._valid-string-l-10').toArray().forEach(function (campo) {
+                    new Cleave(campo, {
+                        blocks: [10]
+                    });
+                });
                 $('._valid-string-l-4-u').toArray().forEach(function (campo) {
                     new Cleave(campo, {
                         uppercase: true,
@@ -148,10 +153,308 @@ RMS = {
             console.log("js comun para toda la app");
         }
     },
+    Usuario: {
+        init: function () {
+            $('body').off("click", "#saveUserData").on('click', '#saveUserData', function () {
+                $("#Frm_Datos_Usuario").submit();
+            });
+            init_file_input();
+            $("body").off("submit", "#Frm_Datos_Usuario").on("submit", "#Frm_Datos_Usuario", function () {
+                const $form = $(this);
+                $.validator.unobtrusive.parse($form);
+                const result = $form.valid();
+                if (result) {
+                    $form.ajaxSubmit({
+                        dataType: 'JSON',
+                        type: 'POST',
+                        url: $form.attr('action'),
+                        success: function (res) {
+                            if (res.response) {
+                                msg.success("Aviso", `Datos actualizados`);
+
+                                setTimeout(function () { location.reload(); }, 1500);
+                            }
+                            else {
+                                msg.error("Aviso", res.error);
+                            }
+                            return false;
+                        },
+                        error: function (jqXHR, textStatus, errorThrown) {
+                            console.log(errorThrown);
+                            msg.error("Aviso", "Error de conexión");
+                        }
+                    });
+                }
+                return false;
+            });
+        }
+    },
+    Home: {
+        init: function () {
+            $('body').off("click", "._fill_table").on('click', '._fill_table', function () {
+                let url = $("#_gestion_mesa").data("request-url");
+                const id = $(this).data("id");
+                url = `${url}?FS_COD_MESA=${id}`;
+                modal_ajax(true, url, load_mesa, "Ocupar mesa");
+            });
+
+            $('body').off("click", "._agregar_mesa").on('click', '._agregar_mesa', function () {
+                let url = $("#_registrar_mesa").data("request-url");
+                modal_ajax(true, url, load_mesa, "Registrar mesa");
+            });
+
+            $('body').off("click", "._delete_table").on('click', '._delete_table', function () {
+                var prm = {
+                    FS_COD_MESA: $(this).data("id"),
+                }
+                $.post($("#_eliminar_mesa").data("request-url"), prm,
+                    function (res, textStatus, jqXHR) {
+                        if (res.response) {
+                            msg.success("Aviso", `Mesa ${res.result} eliminada`);
+                            $.get($("#_lista_mesas").data("request-url"),
+                                function (data, textStatus, jqXHR) {
+                                    $("#lista_mesas").html(data);
+                                },
+                                "html"
+                            );
+                        }
+                        else {
+                            msg.error("Aviso", res.error);
+                        }
+                        return false;
+                    },
+                    "json"
+                );
+            });
+
+            $('body').off("click", "._open_table").on('click', '._open_table', function () {
+                var prm = {
+                    FS_COD_MESA: $(this).data("id"),
+                    FS_STA_OCUP: 'N'
+                }
+                $.post($("#_liberar_mesa").data("request-url"), prm,
+                    function (res, textStatus, jqXHR) {
+                        if (res.response) {
+                            msg.success("Aviso", `Mesa ${res.result} liberada`);
+                            $.get($("#_lista_mesas").data("request-url"),
+                                function (data, textStatus, jqXHR) {
+                                    $("#lista_mesas").html(data);
+                                },
+                                "html"
+                            );
+                        }
+                        else {
+                            msg.error("Aviso", res.error);
+                        }
+                        return false;
+                    },
+                    "json"
+                );
+            });
+
+            function load_mesa() {
+                $.get($("#_lista_mesas").data("request-url"),
+                    function (data, textStatus, jqXHR) {
+                        $("#lista_mesas").html(data);
+                    },
+                    "html"
+                );
+            }
+            $('body').off("click", "#btnRegistrarReservacion").on('click', '#btnRegistrarReservacion', function () {
+                $("#Frm_Reservacion_Mesa").submit();
+            });
+
+            $("body").off("submit", "#Frm_Reservacion_Mesa").on("submit", "#Frm_Reservacion_Mesa", function () {
+                const $form = $(this);
+                $.validator.unobtrusive.parse($form);
+                const result = $form.valid();
+                if (result) {
+                    $form.ajaxSubmit({
+                        dataType: 'JSON',
+                        type: 'POST',
+                        url: $form.attr('action'),
+                        success: function (res) {
+                            if (res.response) {
+                                msg.success("Aviso", `Mesa ${res.result} reservada`);
+                                modal_ajax(false);
+                            }
+                            else {
+                                msg.error("Aviso", res.error);
+                            }
+                            return false;
+                        },
+                        error: function (jqXHR, textStatus, errorThrown) {
+                            console.log(errorThrown);
+                            msg.error("Aviso", "Error de conexión");
+                        }
+                    });
+                }
+                return false;
+            });
+
+            $('body').off("click", "#btnRegistrarMesa").on('click', '#btnRegistrarMesa', function () {
+                $("#Frm_Registrar_Mesa").submit();
+            });
+            $("body").off("submit", "#Frm_Registrar_Mesa").on("submit", "#Frm_Registrar_Mesa", function () {
+                const $form = $(this);
+                $.validator.unobtrusive.parse($form);
+                const result = $form.valid();
+                if (result) {
+                    $form.ajaxSubmit({
+                        dataType: 'JSON',
+                        type: 'POST',
+                        url: $form.attr('action'),
+                        success: function (res) {
+                            if (res.response) {
+                                msg.success("Aviso", `Mesa ${res.result} registrada`);
+                                modal_ajax(false);
+                            }
+                            else {
+                                msg.error("Aviso", res.error);
+                            }
+                            return false;
+                        },
+                        error: function (jqXHR, textStatus, errorThrown) {
+                            console.log(errorThrown);
+                            msg.error("Aviso", "Error de conexión");
+                        }
+                    });
+                }
+                return false;
+            });
+        }
+    },
+
+    Articulo: {
+        init: function () {
+            moment.locale('es');
+            init_file_input();
+            $("body").off("input", "#TXT_FS_COD_ARTI").on("input", "#TXT_FS_COD_ARTI", function (e) {
+                $("#status").val("AGREGAR");
+            });
+            var dTable = $('#TB_ARTI').DataTable({
+                "scrollX": true,
+                ajax: {
+                    "url": $("#_listar_articulos").data('request-url'),
+                    "dataSrc": ""
+                },
+                "columnDefs": [{
+                    "targets": -1,
+                    "data": null,
+                    "defaultContent": `<div style="inline-block"><button type='button' class='btn  btn-outline-success _edit'><i class="fa fa-pencil"></i></button>
+                        <button type='button' class='btn  btn-outline-danger _delete'><i class="fa fa-trash"></i></button></div>`
+                }],
+                columns: [
+                    { data: 'FS_COD_ARTI' },
+                    { data: 'FS_NOM_ARTI' },
+                    { data: 'FS_COD_CLAS' },
+                    { data: 'FS_DES_CLAS' },
+                    { data: 'FN_IMP_VENT' },
+                    { data: 'FS_TIP_SITU' },
+                    { data: 'FS_DES_OBSE' },
+                    {
+                        data: 'FS_RUT_FOTO',
+                        "defaultContent": "",
+                        "render": function (data, type, row) {
+                            return `<img style="max-height:40px" src="${data}">`;
+                        }
+                    },
+                    { data: null }
+                ],
+                dom: 'lfrtip',
+                select: true,
+                "rowId": function (a) {
+                    return 'id_' + a.FS_COD_ARTI;
+                },
+                "processing": true,
+
+                "lengthMenu": [[5, 10, -1], [5, 10, "Todos"]],
+                "language": data_Table_Language,
+                "fnInitComplete": function () {
+                },
+            });
+
+            dTable.on('user-select', function (e, dt, type, cell, originalEvent) {
+                if ($(cell.node()).parent().hasClass('selected')) {
+                    e.preventDefault();
+                }
+            });
+
+            $('body').off("click", "#submitButton").on("click", "#submitButton", function (e) {
+                if ($("#status").val() === "AGREGAR") {
+                    alertConfirm.show("¿Desea registrar el artículo?", "");
+                } else {
+                    alertConfirm.show("¿Desea actualizar el artículo?", "");
+                }
+                alertConfirm.yes = function () {
+                    $("#Frm_Articulo_Registro").submit();
+                };
+            });
+            $('#TB_ARTI tbody').on('click', '._edit', function () {
+                const data = dTable.row($(this).parents('tr')).data();
+                $.post($("#_cargar_articulo").data('request-url'), { FS_COD_ARTI: data.FS_COD_ARTI },
+                    function (data, textStatus, jqXHR) {
+                        $("#registro_articulo_card").html(data);
+                        init_file_input();
+                    },
+                    "html"
+                );
+            });
+
+            $('#TB_ARTI tbody').on('click', '._delete', function () {
+                alertConfirm.show("¿Desea eliminar el cliente?", "");
+                const data = dTable.row($(this).parents('tr')).data();
+
+                alertConfirm.yes = function () {
+                    $.post($("#_eliminar_cliente").data('request-url'), { FS_COD_CLIE: data.FS_COD_CLIE },
+                        function (res, textStatus, jqXHR) {
+                            if (res.response) {
+                                msg.success("Aviso", `Cliente ${data.FS_COD_CLIE} eliminado`);
+                                dTable.ajax.reload();
+                            }
+                        },
+                        "json"
+                    );
+                };
+            });
+            $("body").off("submit", "#Frm_Articulo_Registro").on("submit", "#Frm_Articulo_Registro", function () {
+                const $form = $(this);
+                $.validator.unobtrusive.parse($form);
+                const result = $form.valid();
+                if (result) {
+                    $form.ajaxSubmit({
+                        dataType: 'JSON',
+                        type: 'POST',
+                        url: $form.attr('action'),
+                        success: function (res) {
+                            if (res.response) {
+                                if ($("#status").val() === "AGREGAR") {
+                                    msg.custom("Aviso", `Artículo <strong> ${res.result}  </strong> registrado`);
+                                } else {
+                                    msg.custom("Aviso", `Artículo <strong> ${res.result}  </strong> actualizado`);
+                                }
+                                dTable.ajax.reload();
+                                load_articulo(res.result);
+                            }
+                            else {
+                                msg.error("Aviso", res.error);
+                            }
+                            return false;
+                        },
+                        error: function (jqXHR, textStatus, errorThrown) {
+                            console.log(errorThrown);
+                            msg.error("Aviso", "Error de conexión");
+                        }
+                    });
+                }
+                return false;
+            });
+        }
+    },
     Cliente: {
         init: function () {
             moment.locale('es');
-            $("body").off("input", "#TXT_FS_COD_CLIE").on("input","#TXT_FS_COD_CLIE",function (e) {
+            $("body").off("input", "#TXT_FS_COD_CLIE").on("input", "#TXT_FS_COD_CLIE", function (e) {
                 $("#status").val("AGREGAR");
             });
 
@@ -220,19 +523,15 @@ RMS = {
                         "json"
                     );
                 };
-              
             });
             $('body').off("click", "#submitButton").on("click", "#submitButton", function (e) {
                 if ($("#status").val() === "AGREGAR") {
                     alertConfirm.show("¿Desea registrar el cliente?", "");
-
                 } else {
                     alertConfirm.show("¿Desea actualizar el cliente?", "");
-
                 }
 
                 alertConfirm.yes = function () {
-                    $(this).attr("disabled", "disabled");
                     $("#Frm_Cliente_Registro").submit();
                 };
             });
@@ -277,11 +576,10 @@ RMS = {
                         }
                     });
                 }
-                $("#submitSaleButton").removeAttr("disabled");
                 return false;
             });
 
-            $("#busqueda_ruc").click(function (e) {
+            $("body").off("click", "#busqueda_ruc").on("click", "#busqueda_ruc", function (e) {
                 var ruc = $("#consulta_ruc").val();
                 $(".dot_loader").removeClass("invisible");
                 $.get($("#_consulta_ruc").data("request-url"), { codigo: ruc },
@@ -363,6 +661,38 @@ RMS = {
                 modal_ajax(true, $("#_busqueda_ordenes").data("request-url"), load_orden, "Búsqueda de Órdenes");
             });
 
+            $("body").off("click", "#busqueda_ventas").on("click", "#busqueda_ventas", function (e) {
+                modal_ajax(true, $("#_busqueda_ventas").data("request-url"), load_venta, "Búsqueda de Ventas");
+            });
+            function load_venta() {
+                const FN_IDE_DOCU = localStorage.getItem("FN_IDE_DOCU");
+                if (FN_IDE_DOCU === null) {
+                    return false;
+                }
+
+                $.get($("#_detalle_data_loader_venta2").data("request-url"), { FN_IDE_DOCU: FN_IDE_DOCU },
+                    function (data, textStatus, jqXHR) {
+                        dTable.clear();
+                        dTable.rows.add(data);
+                        dTable.draw(false);
+                    },
+                    "json"
+                );
+                $.get($("#_cargar_venta").data("request-url"), { FN_IDE_DOCU: FN_IDE_DOCU },
+                    function (data, textStatus, jqXHR) {
+                        $("#registro_venta_form_card").html(data);
+                        $("#TXT_FD_FEC_DOCU").flatpickr({
+                            dateFormat: "d/m/Y",
+                            minDate: "today",
+                            "locale": "es",
+                            maxDate: new Date().fp_incr(360)
+                        });
+                    },
+                    "html"
+                );
+            }
+            
+
             function load_orden() {
                 const FN_IDE_ORDE = localStorage.getItem("FN_IDE_ORDE");
                 if (FN_IDE_ORDE === null) {
@@ -389,50 +719,119 @@ RMS = {
                     },
                     "html"
                 );
-
-                $('body').off("click", "#submitSaleButton").on("click", "#submitSaleButton", function (e) {
-                    const totalRecords = dTable.rows().count();
-                    if (totalRecords === 0) { msg.warning("Aviso", "Se debe tener al menos un detalle"); return false; }
-
-                    alertConfirm.show("¿Desea registrar la venta?", "");
-                    alertConfirm.yes = function () {
-                        $(this).attr("disabled", "disabled");
-                        $("#Frm_Venta_Registro").submit();
-                    };
-                });
-                $("body").off("submit", "#Frm_Venta_Registro").on("submit", "#Frm_Venta_Registro", function () {
-                    debugger;
-                    const $form = $(this);
-                    $.validator.unobtrusive.parse($form);
-                    const result = $form.valid();
-                    if (result) {
-                        $form.ajaxSubmit({
-                            dataType: 'JSON',
-                            type: 'POST',
-                            url: $form.attr('action'),
-                            success: function (res) {
-                                debugger;
-                                if (res.response) {
-
-                                    msg.custom("Aviso", `Venta nro. <strong> ${res.result}  </strong> registrada`);
-                                    load_venta(res.result);
-
-                                }
-                                else {
-                                    msg.error("Aviso", res.error);
-                                }
-                                return false;
-                            },
-                            error: function (jqXHR, textStatus, errorThrown) {
-                                console.log(errorThrown);
-                                msg.error("Aviso", "Error de conexión");
-                            }
-                        });
-                    }
-                    $("#submitSaleButton").removeAttr("disabled");
-                    return false;
-                });
             }
+            $('body').off("click", "#submitSaleButton").on("click", "#submitSaleButton", function (e) {
+                const totalRecords = dTable.rows().count();
+                if (totalRecords === 0) { msg.warning("Aviso", "Se debe tener al menos un detalle"); return false; }
+
+                alertConfirm.show("¿Desea registrar la venta?", "");
+                alertConfirm.yes = function () {
+                    $(this).attr("disabled", "disabled");
+                    $("#Frm_Venta_Registro").submit();
+                };
+            });
+            $('body').off("click", "#printSaleButton").on("click", "#printSaleButton", function (e) {
+                var rows = dTable.rows().data().toArray();
+                console.table(rows);
+                var doc = new jsPDF();
+
+                function headRows() {
+                    return [{ FI_NUM_SECU: 'Sec.', FS_COD_ARTI: 'Código', FS_NOM_ARTI: 'Artículo', FN_CAN_ARTI: 'Cantidad', FN_PRE_VENT: 'Precio'}];
+                }
+
+                var total = 0;
+
+                rows.forEach(function (v) { delete v.FD_FEC_DOCU; delete v.FI_COD_EMPR; delete v.FN_IDE_DOCU; delete v.FS_TIP_DOCU; total = total + v.FN_PRE_VENT * v.FN_CAN_ARTI  });
+
+
+                function footerRows() {
+                    return [{
+                        FI_NUM_SECU: '', FS_COD_ARTI: '', FS_NOM_ARTI: '', FN_CAN_ARTI: '', FN_PRE_VENT: `Total: ${total} `}];
+                }
+                doc.autoTable({
+                    head: headRows(),
+                    body: rows,
+                    foot:footerRows() ,
+                    startY: 42,
+                    tableLineColor: [231, 76, 60],
+                    tableLineWidth: 1,
+                    styles: {
+                        lineColor: [44, 62, 80],
+                        lineWidth: 1
+                    },
+                    headStyles: {
+                        fillColor: [47, 53, 58],
+                        fontSize: 15
+                    },
+                    footStyles: {
+                        fontSize: 15
+                    },
+                    bodyStyles: {
+                        fillColor: [52, 73, 94],
+                        textColor: 240
+                    },
+                    alternateRowStyles: {
+                        fillColor: [74, 96, 117]
+                    },
+                 
+                    columnStyles: {
+                        FN_PRE_VENT: {
+                            fontStyle: 'bold'
+                        },
+               
+                        FN_CAN_ARTI: {
+                            halign: 'right'
+                        }
+                    },
+                    allSectionHooks: true,
+                              didDrawPage: function (data) {
+                        doc.setFontSize(18);
+                        doc.text("Documento N° " + $("#TXT_FS_NUM_DOCU").val(), data.settings.margin.left, 22);
+                        if (rows[0].FS_TIP_DOCU === 'BOL') {
+                            doc.text("Boleta", data.settings.margin.left, 30);
+                        } else {
+                            doc.text("Factura", data.settings.margin.left, 30);
+
+                        }
+
+                        var date = new Date();
+                        date =    moment(date).format('HH:mm a, D MMM , YYYY');
+                        doc.setFontSize(11);
+                        doc.text("Fecha de impresión: "+  date, data.settings.margin.left, 38)
+                    },
+                });
+                doc.save('a4.pdf')
+            });
+            $("body").off("submit", "#Frm_Venta_Registro").on("submit", "#Frm_Venta_Registro", function () {
+                debugger;
+                const $form = $(this);
+                $.validator.unobtrusive.parse($form);
+                const result = $form.valid();
+                if (result) {
+                    $form.ajaxSubmit({
+                        dataType: 'JSON',
+                        type: 'POST',
+                        url: $form.attr('action'),
+                        success: function (res) {
+                            debugger;
+                            if (res.response) {
+                                msg.custom("Aviso", `Venta nro. <strong> ${res.result}  </strong> registrada`);
+                                load_venta(res.result);
+                            }
+                            else {
+                                msg.error("Aviso", res.error);
+                            }
+                            return false;
+                        },
+                        error: function (jqXHR, textStatus, errorThrown) {
+                            console.log(errorThrown);
+                            msg.error("Aviso", "Error de conexión");
+                        }
+                    });
+                }
+                $("#submitSaleButton").removeAttr("disabled");
+                return false;
+            });
         }
     },
     Orden: {
@@ -460,12 +859,17 @@ RMS = {
                     "url": $("#_detalle_data_loader").data('request-url'),
                     "dataSrc": ""
                 },
+                "columnDefs": [{
+                    "targets": -1,
+                    "data": null,
+                    "defaultContent": `<div style="inline-block">
+                        <button type='button' class='btn  btn-outline-danger _delete'><i class="fa fa-trash"></i></button></div>`
+                }],
                 columns: [
                     { data: 'FI_NUM_SECU' },
                     {
                         data: 'FS_NOM_ARTI'
                     },
-
                     {
                         data: 'FN_PRE_VENT',
                         "defaultContent": "0.0",
@@ -474,33 +878,16 @@ RMS = {
                             return "S/. " + data;
                         }
                     },
-                    { data: 'FN_CAN_ARTI' }
-
+                    { data: 'FN_CAN_ARTI' },
+                    { data: null }
                 ],
-                dom: 'lBrtip',
+                dom: 'lrtip',
                 select: true,
                 "rowId": function (a) {
                     return 'id_' + a.FI_NUM_SECU;
                 },
                 "processing": true,
-                buttons: [
 
-                    {
-                        text: button_save,
-                        key: {
-                            shiftKey: true,
-                            key: '2',
-                        },
-                        className: 'btn btn-lg btn-transparent',
-                        titleAttr: "Procesar Orden (shift + 2)",
-                        action: function (e, dt, node, config) {
-                            msg.success("test", "test");
-                        },
-                        init: function (api, node, config) {
-                            $(node).removeClass('btn-default')
-                        }
-                    }
-                ],
                 "lengthMenu": [[5, 10, -1], [5, 10, "Todos"]],
                 "language": data_Table_Language,
                 "fnInitComplete": function () {
@@ -544,7 +931,14 @@ RMS = {
                 const totalRecords = dTable.rows().count();
                 if (totalRecords === 0) { msg.warning("Aviso", "Ingrese al menos un detalle"); return false; }
 
-                alertConfirm.show("¿Desea registrar la orden?", "");
+                if ($("#status").val() === "AGREGAR") {
+                    alertConfirm.show("¿Desea registrar la orden?", "");
+
+                }
+                else {
+                    alertConfirm.show("¿Desea actualizar la orden?", "");
+
+                }
                 alertConfirm.yes = function () {
                     $(this).attr("disabled", "disabled");
                     $("#Frm_Orden_Registro").submit();
@@ -566,7 +960,12 @@ RMS = {
                             if (res.response) {
                                 load_order(res.result);
 
-                                msg.custom("Aviso", `Orden nro. <strong> ${res.result}  </strong> registrada`);
+                                if ($("#status").val() === "AGREGAR") {
+                                    msg.custom("Aviso", `Orden nro. <strong> ${res.result}  </strong> registrada`);
+                                }
+                                else {
+                                    msg.custom("Aviso", `Orden nro. <strong> ${res.result}  </strong> actualizada`);
+                                }
                             }
                             else {
                                 msg.error("Aviso", res.error);
@@ -595,7 +994,14 @@ RMS = {
                             "locale": "es",
                             maxDate: new Date().fp_incr(360)
                         });
-                        dTable.ajax.reload();
+                        $.get($("#_detalle_data_loader").data('request-url'),
+                            function (data, textStatus, jqXHR) {
+                                dTable.clear();
+                                dTable.rows.add(data);
+                                dTable.draw(false);
+                            },
+                            "json"
+                        );
                     },
                     "html"
                 );
@@ -649,6 +1055,44 @@ RMS = {
                     },
                     "json"
                 );
+            }
+
+            $('#TB_DETA_ORDE tbody').on('click', '._delete', function () {
+                const data = dTable.row($(this).parents('tr')).data();
+
+                $.post($("#_eliminar_detalle").data('request-url'), { FS_COD_ARTI: data.FS_COD_ARTI },
+                    function (res, textStatus, jqXHR) {
+                        if (res.response) {
+                            dTable.clear();
+                            dTable.rows.add(res.data);
+                            dTable.draw(false);
+                            msg.success("Aviso", res.result);
+
+                            $("#TXT_FN_IMP_TOTA").val(res.total);
+                            $(dTable.column(3).footer()).html(
+                                'S/ ' + res.total
+                            );
+                        }
+                        else {
+                            msg.error("Aviso", res.error);
+                        }
+                        return false;
+                    },
+                    "json"
+                );
+            });
+
+            $("body").off("click", "#busqueda_ordenes").on("click", "#busqueda_ordenes", function (e) {
+                modal_ajax(true, $("#_busqueda_ordenes").data("request-url"), load_orden, "Búsqueda de Órdenes");
+            });
+
+            function load_orden() {
+                const FN_IDE_ORDE = localStorage.getItem("FN_IDE_ORDE");
+                if (FN_IDE_ORDE === null) {
+                    return false;
+                }
+
+                load_order(FN_IDE_ORDE);
             }
         }
     }

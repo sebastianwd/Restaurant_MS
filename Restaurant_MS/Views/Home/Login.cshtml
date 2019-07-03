@@ -1,0 +1,133 @@
+﻿@model RMS_MODELOS.M_TB_USUA
+
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+
+<html lang="es">
+<head>
+    <title>RManagementSystem</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--===============================================================================================-->
+    @Styles.Render("~/bundles/loginCss")
+    <!--===============================================================================================-->
+    <link href="~/Content/animate/animate.css" rel="stylesheet" />
+    <link href="~/Content/Main/custom.min.css" rel="stylesheet" />
+    <link href="~/Content/core-ui/icons/font-awesome.min.css" rel="stylesheet" />
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+</head>
+
+<body>
+
+    <div class="limiter">
+        <div class="container-login100" style=" background: linear-gradient(135deg, rgba(36, 46, 77, 0.9), rgba(137, 126, 121, 0.9));">
+            <div class="wrap-login100 animated fadeIn fast" style="min-height:671.4px; box-shadow: 0 0 250px #000;">
+                <div class="login100-pic">
+
+                    <img src="@Url.Content("~/Content/Main/imagenes/logo.svg")" class="animated fadeIn clogo-login" style="animation-delay:0.4s; margin:5px;height:190px" />
+                </div>
+                <form class="login100-form validate-form" id="Frm_Login" method="post">
+                    <div class="login_wrapper">
+                        <span class="login100-form-title">
+                            Bienvenido
+                        </span>
+
+                        <div class="wrap-input100">
+
+                            @Html.TextBoxFor(x => x.FS_COD_USUA,
+                    new { @class = "input100 validaCodigo_10", @id = "TXT_FS_COD_USUA", @placeholder= "Usuario", @required = "required"})
+                            <span class="focus-input100"></span>
+                            <span class="symbol-input100">
+
+                                <i class="fa fa-user" aria-hidden="true"></i>
+                            </span>
+                        </div>
+                        <div class="wrap-input100">
+
+                            @Html.TextBoxFor(x => x.FS_CLA_USUA, new { @class = "input100", @id = "TXT_FS_CLA_USUA", @type = "password", @placeholder = "Contraseña" })
+                            <span class="focus-input100"></span>
+                            <span class="symbol-input100">
+                                <i class="fa fa-lock" aria-hidden="true"></i>
+                            </span>
+                        </div>
+                        <div style=" position: relative;  width: 100%;">
+                            @Html.ValidationMessageFor(x => x.FS_CLA_USUA, null, new { @class = "label-alert" })
+                            <label for="TXT_FS_CLA_USUA" class="label-alert invalid-feedback"></label>
+                        </div>
+                        <div class="container-login100-form-btn">
+
+                            <button id="btnSubmit" class="login100-form-btn" type="button">
+                                <i id="btn_loader" style="margin-left: -12px; display:none;
+  margin-right: 8px;" class="fa fa-circle-o-notch fa-spin"></i> Ingresar
+                            </button>
+                        </div>
+
+                        <div class="text-center" style="padding-top:12px">
+                            <span class="txt1">
+                                Recuperar
+                            </span>
+                            <a class="txt2" href="#">
+                                Nombre de usuario / Contraseña
+                            </a>
+                        </div>
+
+                        <div class="text-center" style="padding-top:136px">
+                            <a class="txt2" href="#">
+                                Crear cuenta
+                                <i class="fa fa-long-arrow-right " aria-hidden="true" style="margin-left:5px"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="conexion-empresa" style="display:none"></div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    @Scripts.Render("~/bundles/formsJs")
+    <script src="~/Scripts/util.js"></script>
+    <script>
+        $("#TXT_FS_CLA_USUA").on('input', function () {
+            $("[for='TXT_FS_CLA_USUA']").text("");
+        });
+
+        $('#btnSubmit').off("click").on("click", function (e) {
+            var $form = $("#Frm_Login");
+            $.validator.unobtrusive.parse($form);
+            var result = $form.valid();
+            if (result) {
+                $("#btn_loader").show();
+                $form.ajaxSubmit({
+                    dataType: 'JSON',
+                    type: 'POST',
+                    url:"@Url.Action("Ingresar", "Home")",
+                    success: function (res) {
+                        if (res.response) {
+                            // window.location = res.redirect;
+                            $.post("@Url.Action("ConexionEmpresa", "Home")",
+                                function (res, textStatus, jqXHR) {
+                                    $(".login_wrapper").fadeOut(function () {
+                                        $(".conexion-empresa").html(res).fadeIn();
+                                    });
+                                }, 'html');
+                        }
+                        else {
+                            $("[for='TXT_FS_CLA_USUA']").text(res.error + "").show();
+                            msg.error(res.error);
+                            $("#btn_loader").hide();
+                            return false;
+                        }
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        $("#btn_loader").hide();
+                    }
+                });
+            }
+            return false;
+        });
+    </script>
+</body>
+</html>

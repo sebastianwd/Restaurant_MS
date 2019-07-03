@@ -1,96 +1,169 @@
 ﻿@model RMS_MODELOS.M_TB_USUA
-    @{
-        Layout = "~/Views/Shared/_Layout.cshtml";
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    Random rand = new Random();
 
-    }
+}
 
-    <section class="" id="main_content">
+<section class="" id="main_content">
 
-        <link href="~/Content/ui-search/search.min.css" rel="stylesheet" />
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item">
-                <a href="#">Perfil de Usuario </a>
-            </li>
-        </ol>
+    <link href="~/Content/ui-search/search.min.css" rel="stylesheet" />
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a href="#">Perfil de Usuario </a>
+        </li>
+    </ol>
 
-        <div class="container-fluid animated fadeIn">
-            <div class="container-fluid">
-                <div id="ui-view">
-                    <div>
-                        <div class="card">
-                            <div class="card-header">
-                                Invoice
-                                <strong>#90-98792</strong>
-                                <a class="btn btn-sm btn-secondary float-right mr-1 d-print-none" href="#" onclick="javascript:window.print();">
-                                    <i class="fa fa-print"></i> Print
-                                </a>
-                                <a class="btn btn-sm btn-info float-right mr-1 d-print-none" href="#">
-                                    <i class="fa fa-save"></i> Save
-                                </a>
-                            </div>
-                            <div class="card-body">
-                                <div class="row mb-4">
-                                    <div class="col-sm-4">
-                                        <h6 class="mb-3">From:</h6>
-                                        <div>
-                                            <strong>BootstrapMaster.com</strong>
-                                        </div>
-                                        <div>Konopnickiej 42</div>
-                                        <div>43-190 Mikolow, Poland</div>
-                                        <div>Email: lukasz@bootstrapmaster.com</div>
-                                        <div>Phone: +48 123 456 789</div>
-                                    </div>
-                                    <div class="col-sm-8">
-                                        <div class="card mx-4">
-                                            <div class="card-body p-4">
-                                                <h1>Register</h1>
-                                                <p class="text-muted">Create your account</p>
-                                                <div class="input-group mb-3">
-                                                    <div class="input-group-prepend">
-                                                        <span class="input-group-text">
-                                                            <i class="icon-user"></i>
-                                                        </span>
+    <div class="container-fluid animated fadeIn">
+        <div class="container-fluid">
+            <div id="ui-view">
+                <div>
+                    <div class="card">
+                        <div class="card-header">
+                            Fecha de creación
+                            <strong>@Model.FD_FEC_USCR</strong>
+                            <a class="btn btn-sm btn-secondary float-right mr-1 d-print-none" href="#" onclick="javascript:window.print();">
+                                <i class="fa fa-print"></i> Print
+                            </a>
+                            <button class="btn btn-sm btn-info float-right mr-1 d-print-none" id="saveUserData" href="#">
+                                <i class="fa fa-save"></i> Actualizar datos
+                            </button>
+                        </div>
+                        <div class="card-body">
+                            <div class="row mb-4">
+                                <div class="col-sm-4">
+                                    <figure id="figure" class="image-top">
+                                        @if (Model.FS_RUT_FOTO != null && Model.FS_RUT_FOTO != "")
+                                        {
+                                            <img src=@Url.Content(Model.FS_RUT_FOTO) />
+                                        }
+                                        else
+                                        {
+                                            <img src=@Url.Content("~/Content/Main/imagenes/user_default.svg") />
+
+                                        }
+
+                                        <figcaption>
+                                            <h4><i class="fa fa-user"></i> @Model.FS_COD_USUA</h4>
+                                            <h2>@Model.FS_DES_ROLE</h2>
+                                            <p>@Model.FS_DES_OBSE</p>
+                                            <h6>
+                                                <strong>@Model.FS_NOM_PRIM @Model.FS_APE_PATE</strong>
+                                            </h6>
+                                            <div>@Model.FS_DES_MAIL / @Model.FS_NUM_TEL1</div>
+                                            @if (Model.FS_TIP_SITU == "ACT")
+                                            {
+                                                <span>Estado :</span> <a href="#" class="text-success">Activo</a>
+                                            }
+                                            else
+                                            {
+                                                <span>Estado :</span> <a href="#" class="readmore">Inactivo</a>
+                                            }
+                                        </figcaption>
+                                    </figure>
+                                </div>
+                                <div class="col-sm-8">
+                                    <div class="card mx-2">
+                                        <div class="card-body p-4">
+                                            @using (@Html.BeginForm("actualizar_usuario", "Usuarios", FormMethod.Post, new { @id = "Frm_Datos_Usuario", enctype = "multipart/form-data" }))
+                                            {
+
+                                                <h3>Datos de usuario</h3>
+
+                                                <div class="row ">
+                                                    <div class="input-group mb-3 col-lg-6">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text">
+                                                                <i class="icon-user"></i>
+                                                            </span>
+                                                        </div>
+                                                        @Html.TextBoxFor(x => x.FS_COD_USUA, new { @class = "form-control text-dark", @id = "TXT_FS_COD_USUA", @placeholder = "Nombre de usuario", @readonly = "readonly" })
+                                                        @Html.ValidationMessageFor(x => x.FS_COD_USUA, null, new { @class = "label-alert" })
                                                     </div>
-                                                    <input class="form-control" type="text" placeholder="Username">
-                                                </div>
-                                                <div class="input-group mb-3">
-                                                    <div class="input-group-prepend">
-                                                        <span class="input-group-text">@@</span>
+                                                    <div class="input-group mb-3 col-lg-6">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text">
+                                                                @@
+                                                            </span>
+                                                        </div>
+                                                        @Html.TextBoxFor(x => x.FS_DES_MAIL, new { @class = "form-control", @id = "TXT_FS_DES_MAIL", @placeholder = "Correo" })
+                                                        @Html.ValidationMessageFor(x => x.FS_DES_MAIL, null, new { @class = "label-alert" })
                                                     </div>
-                                                    <input class="form-control" type="text" placeholder="Email">
                                                 </div>
-                                                <div class="input-group mb-3">
-                                                    <div class="input-group-prepend">
-                                                        <span class="input-group-text">
-                                                            <i class="icon-lock"></i>
-                                                        </span>
-                                                    </div>
-                                                    <input class="form-control" type="password" placeholder="Password">
-                                                </div>
-                                                <div class="input-group mb-4">
-                                                    <div class="input-group-prepend">
-                                                        <span class="input-group-text">
-                                                            <i class="icon-lock"></i>
-                                                        </span>
-                                                    </div>
-                                                    <input class="form-control" type="password" placeholder="Repeat password">
-                                                </div>
-                                                <button class="btn btn-block btn-success" type="button">Create Account</button>
-                                            </div>
-                                            <div class="card-footer p-4">
                                                 <div class="row">
-                                                    <div class="col-6">
-                                                        <button class="btn btn-block btn-facebook" type="button">
-                                                            <span>facebook</span>
-                                                        </button>
+                                                    <div class="input-group mb-3 col-lg-6">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text">
+                                                                <i class="icon-info"></i>
+                                                            </span>
+                                                        </div>
+                                                        @Html.TextBoxFor(x => x.FS_NOM_PRIM, new { @class = "form-control text-dark", @id = "TXT_FS_COD_USUA", @placeholder = "Primer nombre" })
+                                                        @Html.ValidationMessageFor(x => x.FS_NOM_PRIM, null, new { @class = "label-alert" })
                                                     </div>
-                                                    <div class="col-6">
-                                                        <button class="btn btn-block btn-twitter" type="button">
-                                                            <span>twitter</span>
-                                                        </button>
+                                                    <div class="input-group mb-3 col-lg-6">
+
+                                                        @Html.TextBoxFor(x => x.FS_NOM_SECU, new { @class = "form-control text-dark", @id = "TXT_FS_DES_MAIL", @placeholder = "Segundo nombre" })
+                                                        @Html.ValidationMessageFor(x => x.FS_NOM_SECU, null, new { @class = "label-alert" })
+                                                    </div>
+                                                    <div class="input-group mb-3 col-lg-6">
+
+                                                        @Html.TextBoxFor(x => x.FS_APE_PATE, new { @class = "form-control text-dark", @id = "TXT_FS_COD_USUA", @placeholder = "Apellido paterno" })
+                                                        @Html.ValidationMessageFor(x => x.FS_APE_PATE, null, new { @class = "label-alert" })
+                                                    </div>
+                                                    <div class="input-group mb-3 col-lg-6">
+
+                                                        @Html.TextBoxFor(x => x.FS_APE_MATE, new { @class = "form-control text-dark", @id = "TXT_FS_DES_MAIL", @placeholder = "Apellido materno" })
+                                                        @Html.ValidationMessageFor(x => x.FS_APE_MATE, null, new { @class = "label-alert" })
                                                     </div>
                                                 </div>
-                                            </div>
+
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">
+                                                            <i class="icon-phone"></i>
+                                                        </span>
+                                                    </div>
+                                                    @Html.TextBoxFor(x => x.FS_NUM_TEL1, new { @class = "form-control text-dark", @id = "TXT_FS_NUM_TEL1", @placeholder = "Teléfono" })
+                                                    @Html.ValidationMessageFor(x => x.FS_NUM_TEL1, null, new { @class = "label-alert" })
+                                                </div>
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">
+                                                            <i class="icon-doc"></i>
+                                                        </span>
+                                                    </div>
+                                                    @Html.TextBoxFor(x => x.FS_DES_OBSE, new { @class = "form-control text-dark", @id = "TXT_FS_DES_OBSE", @placeholder = "Descripción" })
+                                                    @Html.ValidationMessageFor(x => x.FS_DES_OBSE, null, new { @class = "label-alert" })
+                                                </div>
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">
+                                                            <i class="icon-lock"></i>
+                                                        </span>
+                                                    </div>
+                                                    <input class="form-control _valid-string-l-10" name="FS_CLA_USUA" type="password" placeholder="Contraseña" value="@rand.Next()">
+                                                </div>
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">
+                                                            <i class="icon-lock"></i>
+                                                        </span>
+                                                    </div>
+                                                    <input class="form-control _valid-string-l-10" name="pwd_check" type="password" placeholder="Repita la contraseña" value="">
+                                                </div>
+
+                                                <div class="input-group mb-3">
+                                                    <div class="col-form-label mr-2">Imagen de perfil</div>
+                                                    <div class="input-file-container">
+                                                        <canvas id="imageCanvas"></canvas>
+                                                        <label for="custom-file-upload" class="filupp input-file-trigger" style="min-width:180px">
+                                                            <span class="filupp-file-name js-value">Buscar archivo</span>
+                                                            <input type="file" name="imagen_usuario" class="input-file" value="1" id="custom-file-upload" />
+                                                        </label>
+                                                        <p class="file-return">@Model.FS_RUT_FOTO</p>
+                                                    </div>
+                                                </div>
+                                            }
                                         </div>
                                     </div>
                                 </div>
@@ -100,4 +173,6 @@
                 </div>
             </div>
         </div>
-    </section>
+        <div class="_load" data-load="Usuario"></div>
+    </div>
+</section>

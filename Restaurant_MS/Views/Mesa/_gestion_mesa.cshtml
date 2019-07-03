@@ -1,0 +1,61 @@
+﻿@model RMS_MODELOS.M_TB_MESA
+@using RMS_MODELOS
+@{
+    Layout = null;
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+            </div>
+            @using (Html.BeginForm("registrar_reservacion", "Mesa", FormMethod.Post, new { @id = "Frm_Reservacion_Mesa", @class = "form-horizontal" }))
+            {
+
+                <div class="card-body">
+                    <div class="form-group row col-4">
+                        @Html.TextBoxFor(x => @x.FS_COD_MESA, new { @class = "form-control form-control-sm text-center", @readonly = "readonly" })
+                    </div>
+                    <div class="form-group row">
+                        @Html.Label("", String.Format("Desde"), new { @class = "col-md-2 pr-0 col-form-label-sm " })
+                        <div class="col-md-2">
+                            @Html.TextBoxFor(x => @x.FS_HOR_INIC_RESE, new { @class = "_flatpickr form-control form-control-sm", @readonly = "readonly" })
+                            @Html.ValidationMessageFor(x => x.FS_HOR_INIC_RESE, null, new { @class = "label-alert" })
+                        </div>
+
+                        @Html.Label("", String.Format("A"), new { @class = "col-md-1 pr-0 col-form-label-sm " })
+                        <div class="col-md-2">
+                            @Html.TextBoxFor(x => @x.FS_HOR_FINA_RESE, new { @class = "_flatpickr form-control form-control-sm", @readonly = "readonly" })
+                            @Html.ValidationMessageFor(x => x.FS_HOR_FINA_RESE, null, new { @class = "label-alert" })
+                        </div>
+                        <div class="ml-auto col-md-4">
+                            <button class="btn btn-sm btn-primary" type="button" id="btnRegistrarReservacion">
+                                <i class="fa fa-dot-circle-o"></i> Registrar reservación
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+        <script>
+            var calendars = document.querySelectorAll("._flatpickr").flatpickr({
+                enableTime: true,
+                noCalendar: true,
+                allowInput: true,
+                defaultDate: new Date().getTime()
+            });
+
+            calendars[0].config.onClose = [() => {
+                setTimeout(() => calendars[1].open(), 1);
+            }];
+
+            calendars[0].config.onChange = [(selDates) => {
+                calendars[1].set("minDate", selDates[0]);
+            }];
+
+            calendars[1].config.onChange = [(selDates) => {
+                calendars[0].set("maxDate", selDates[0]);
+            }]
+        </script>
+    </div>
+</div>

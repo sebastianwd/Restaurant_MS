@@ -1,0 +1,44 @@
+﻿@model IEnumerable<RMS_MODELOS.M_TB_MESA>
+@{
+    Layout = null;
+}
+
+@foreach (var item in Model)
+{
+
+    <div class="col-sm-6 col-lg-2 col-md-3">
+        <div class="card text-white bg-light">
+            <div class="card-body pb-0">
+                <div class="btn-group float-right">
+                    <button class="btn btn-light dropdown-toggle p-0" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="icon-settings"></i>
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-right">
+                        @if (item.FS_STA_OCUP == "N")
+                        {
+                            <span class="dropdown-item _fill_table c-pointer" data-id="@item.FS_COD_MESA" href="#">Ocupar mesa</span>
+                            <span class="dropdown-item _delete_table c-pointer" data-id="@item.FS_COD_MESA" href="#">Eliminar mesa</span>
+                        }
+                        else
+                        {
+                            <span class="dropdown-item _open_table c-pointer" data-id="@item.FS_COD_MESA" href="#">Liberar mesa</span>
+
+                        }
+                    </div>
+                </div>
+
+                <div class="text-black-50">@item.FS_COD_MESA</div>
+                @if (item.FS_STA_OCUP == "S")
+                {
+                    <small><span class="text-danger">Ocupado</span> <span class="ml-1 text-black-50">@item.FS_HOR_INIC_RESE - @item.FS_HOR_FINA_RESE</span></small>
+                }
+                else
+                {
+                    <div class="text-success">Libre</div>
+                }
+            </div>
+            <img src="~/Content/Main/imagenes/dishes.svg" style="height:6rem;" />
+        </div>
+    </div>
+
+}

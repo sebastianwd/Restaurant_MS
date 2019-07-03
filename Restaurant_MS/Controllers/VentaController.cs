@@ -44,6 +44,17 @@ namespace Restaurant_MS.Controllers
             return PartialView("_venta_form", reg);
         }
 
+        public PartialViewResult Cargar_Venta(decimal FN_IDE_DOCU)
+        {
+            M_TB_CABE_DOCU_VENT reg = new M_TB_CABE_DOCU_VENT();
+            reg = S_TB_CABE_DOCU_VENT.cargar_venta(FN_IDE_DOCU, 1);
+            ViewBag.numero_venta = FN_IDE_DOCU;
+            ViewBag.lista_tipo_documentos = new SelectList(S_TB_TIPO_DOCU_SIST.listar_tipos_documentos(), "FS_COD_TIDO_SIST", "FS_DES_TIDO_SIST", reg.FS_TIP_DOCU);
+            ViewBag.numero_correlativo = reg.FS_NUM_DOCU;
+
+            return PartialView("_venta_form", reg);
+        }
+
         [HttpGet]
         public JsonResult listar_detalle_venta(decimal FN_IDE_DOCU)
         {

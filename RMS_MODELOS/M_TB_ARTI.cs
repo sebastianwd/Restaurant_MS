@@ -27,6 +27,7 @@ namespace RMS_MODELOS
         [MaxLength(6)]
         public string FS_TIP_PRES { get; set; }
 
+        [Required]
         public decimal FN_IMP_VENT { get; set; }
 
         [MaxLength(4)]

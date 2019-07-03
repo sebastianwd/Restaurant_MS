@@ -77,9 +77,25 @@ ul, li {
 
 /*---------------------------------------------*/
 input {
-	outline: none;
-	border: none;
+    outline: none;
+    border: none;
+    font-family: Poppins-Regular;
 }
+    input::-webkit-input-placeholder {
+        font-family: Poppins-Regular;
+    }
+
+    input:-ms-input-placeholder {
+        font-family: Poppins-Regular;
+    }
+
+    input:-moz-placeholder {
+        font-family: Poppins-Regular;
+    }
+
+    input::-moz-placeholder {
+        font-family: Poppins-Regular;
+    }
 
 textarea {
   outline: none;

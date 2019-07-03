@@ -29,6 +29,8 @@ namespace RMS_MODELOS
         [MaxLength(20)]
         public string FS_COD_ARTI { get; set; }
 
+        public string FS_NOM_ARTI { get; set; }
+
         [Required]
         public decimal FN_CAN_ARTI { get; set; }
 

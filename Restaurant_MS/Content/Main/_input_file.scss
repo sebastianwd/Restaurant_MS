@@ -1,0 +1,110 @@
+﻿.input-file-container {
+    position: relative;
+    max-width: 225px;
+}
+
+.input-file-trigger {
+    display: block;
+    transition: all .4s;
+    cursor: pointer;
+}
+
+
+
+.input-file:hover + .input-file-trigger,
+.input-file:focus + .input-file-trigger,
+.input-file-trigger:hover,
+.input-file-trigger:focus {
+    background: #3a4248;
+    color: #fff;
+}
+
+.file-return {
+    margin: 0;
+}
+
+.file-return:not(:empty) {
+    margin: .4em 0;
+}
+
+.file-return {
+    font-style: italic;
+    font-size: .9em;
+    font-weight: bold;
+}
+
+.file-return:not(:empty):before {
+    content: "Archivo seleccionado: ";
+    font-style: normal;
+    font-weight: normal;
+}
+
+
+.input-file-container canvas {
+    max-width: 70%;
+    display: none ;
+}
+
+
+
+
+.filupp > input[type="file"] {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+}
+
+.filupp {
+    position: relative;
+    background: #262a2e;
+    display: block;
+    padding: 0.8em;
+    font-size: 0.8em;
+    width: 70%;
+    height: 3.1em;
+    color: #fff;
+    cursor: pointer;
+    box-shadow: 0 1px 3px #0b0b0b;
+}
+
+.filupp:before {
+    content: "";
+    position: absolute;
+    top: 1.5em;
+    right: 0.75em;
+    width: 2em;
+    height: 1.25em;
+    border: 3px solid #dd4040;
+    border-top: 0;
+    text-align: center;
+}
+
+.filupp:after {
+    content: "➜";
+    -webkit-transform: rotate(-90deg);
+    -moz-transform: rotate(-90deg);
+    -ms-transform: rotate(-90deg);
+    -o-transform: rotate(-90deg);
+    transform: rotate(-90deg);
+    position: absolute;
+    top: 0.65em;
+    right: 0.45em;
+    font-size: 2em;
+    color: #dd4040;
+    line-height: 0;
+}
+
+.filupp-file-name {
+    width: 75%;
+    display: inline-block;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    word-wrap: normal;
+}

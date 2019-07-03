@@ -30,7 +30,11 @@ namespace Restaurant_MS.Controllers
             Session["detalle_orden"] = new List<M_TB_DETA_ORDE>();
             ViewBag.numero_orden = S_TB_CABE_ORDE.obtener_numero_nueva_orden(1);
 
-            return View(new M_TB_CABE_ORDE());
+            var reg = new M_TB_CABE_ORDE { FS_TIP_SITU = "ACT" };
+
+            ViewBag.status = "AGREGAR";
+
+            return View(reg);
         }
 
         [HttpGet]
@@ -40,6 +44,9 @@ namespace Restaurant_MS.Controllers
             M_TB_CABE_ORDE obj = new M_TB_CABE_ORDE();
             obj = S_TB_CABE_ORDE.buscar_por_codigo(FN_IDE_ORDE, 1);
 
+            ViewBag.numero_orden = obj.FN_IDE_ORDE;
+
+            ViewBag.status = "EDITAR";
             return PartialView("_registro_form", obj);
         }
 
@@ -62,6 +69,8 @@ namespace Restaurant_MS.Controllers
         public JsonResult listar_detalle_orden(decimal FN_IDE_ORDE, int FI_COD_EMPR)
         {
             var temp = S_TB_DETA_ORDE.listar_detalle_orden(FN_IDE_ORDE, FI_COD_EMPR);
+
+            Session["detalle_orden"] = temp;
 
             return Json(temp, JsonRequestBehavior.AllowGet);
         }
@@ -132,7 +141,7 @@ namespace Restaurant_MS.Controllers
         }
 
         [HttpPost]
-        public JsonResult registrar_orden(M_TB_CABE_ORDE reg)
+        public JsonResult registrar_orden(M_TB_CABE_ORDE reg, string status)
         {
             reg.FS_TIP_SITU = "ACT";
 
@@ -146,10 +155,18 @@ namespace Restaurant_MS.Controllers
 
             try
             {
-                reg.FN_IDE_ORDE = S_TB_CABE_ORDE.obtener_numero_nueva_orden(1);
                 reg.FI_COD_EMPR = 1;
+                var n = 0;
+                if (status == "AGREGAR")
+                {
+                    reg.FN_IDE_ORDE = S_TB_CABE_ORDE.obtener_numero_nueva_orden(1);
 
-                var n = S_TB_CABE_ORDE.agregar_orden(reg, (List<M_TB_DETA_ORDE>)Session["detalle_orden"]);
+                    n = S_TB_CABE_ORDE.agregar_orden(reg, (List<M_TB_DETA_ORDE>)Session["detalle_orden"]);
+                }
+                else
+                {
+                    n = S_TB_CABE_ORDE.actualizar_orden(reg, (List<M_TB_DETA_ORDE>)Session["detalle_orden"]);
+                }
 
                 if (n < 1)
                 {
@@ -175,6 +192,35 @@ namespace Restaurant_MS.Controllers
             M_TB_CLIE temp = S_TB_CLIE.buscar_por_tipo_cliente(FS_TIP_CLIE).FirstOrDefault();
 
             return Json(temp, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public JsonResult eliminar_detalle(string FS_COD_ARTI)
+        {
+            decimal total = 0;
+
+            List<M_TB_DETA_ORDE> auxiliar = (List<M_TB_DETA_ORDE>)Session["detalle_orden"];
+
+            if (FS_COD_ARTI == "" || FS_COD_ARTI == null)
+            {
+                res.response = false;
+                res.error = "Artículo no existe";
+                return Json(res, JsonRequestBehavior.AllowGet);
+            }
+
+            if (auxiliar.Count(p => p.FS_COD_ARTI == FS_COD_ARTI) > 0)
+            {
+                var count = auxiliar.Where(p => p.FS_COD_ARTI == FS_COD_ARTI).FirstOrDefault().FN_CAN_ARTI--;
+                if (count < 2)
+                {
+                    auxiliar.RemoveAt(auxiliar.FindIndex(p => p.FS_COD_ARTI == FS_COD_ARTI));
+                }
+                res.result = "Artículo removido";
+
+                total = auxiliar.Sum(item => item.FN_PRE_VENT * item.FN_CAN_ARTI);
+                return Json(new { response = res.response, result = res.result, data = auxiliar, total }, JsonRequestBehavior.AllowGet);
+            }
+            return Json(new { response = res.response, result = res.result, data = auxiliar, total }, JsonRequestBehavior.AllowGet);
         }
     }
 }

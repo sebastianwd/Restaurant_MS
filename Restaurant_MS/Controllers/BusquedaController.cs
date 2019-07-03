@@ -10,6 +10,7 @@ namespace Restaurant_MS.Controllers
         private SQL_TB_CLIE S_TB_CLIE = new SQL_TB_CLIE();
         private SQL_TB_CABE_ORDE S_TB_CABE_ORDE = new SQL_TB_CABE_ORDE();
         private SQL_TB_TIPO_PERS_SUNA S_TB_TIPO_PERS_SUNA = new SQL_TB_TIPO_PERS_SUNA();
+        private SQL_TB_CABE_DOCU_VENT S_TB_CABE_DOCU_VENT = new SQL_TB_CABE_DOCU_VENT();
 
         private ResponseModel res = new ResponseModel
         {
@@ -72,6 +73,21 @@ namespace Restaurant_MS.Controllers
             var data = S_TB_CABE_ORDE.listar_ordenes();
 
             Session["detalle_venta"] = data;
+            return Json(data, JsonRequestBehavior.AllowGet);
+        }
+
+        [AjaxOnly]
+        public PartialViewResult Busqueda_venta()
+        {
+            return PartialView("_busqueda_ventas", new M_TB_CABE_DOCU_VENT());
+        }
+
+        [HttpGet]
+        [AjaxOnly]
+        public JsonResult Busqueda_ventas_listado()
+        {
+            var data = S_TB_CABE_DOCU_VENT.listar_ventas();
+
             return Json(data, JsonRequestBehavior.AllowGet);
         }
     }

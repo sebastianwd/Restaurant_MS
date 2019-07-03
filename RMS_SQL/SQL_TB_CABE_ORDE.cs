@@ -101,6 +101,51 @@ namespace RMS_SQL
             }
         }
 
+        public int actualizar_orden(M_TB_CABE_ORDE reg, List<M_TB_DETA_ORDE> detalle)
+        {
+            int result = 0;
+            using (AdoHelper db = new AdoHelper())
+            {
+                db.BeginTransaction(System.Data.IsolationLevel.Serializable);
+
+                try
+                {
+                    result = db.ExecNonQueryProc("SP_CABE_ORDE_AC01",
+                        "@IICOD_EMPR", reg.FI_COD_EMPR,
+                        "@INIDE_ORDE", reg.FN_IDE_ORDE,
+                       "@IDFEC_ORDE", reg.FD_FEC_ORDE,
+                       "@ISNOM_CLIE", reg.FS_NOM_CLIE,
+                       "@ISNUM_RUCS", reg.FS_NUM_RUCS,
+                       "@ISCOD_CLIE", reg.FS_COD_CLIE,
+                       "@INIMP_TOTA", reg.FN_IMP_TOTA,
+                       "@ISCOD_MESA", reg.FS_COD_MESA,
+                       "@ISTIP_SITU", reg.FS_TIP_SITU,
+                       "@ISCOD_EJEC", reg.FS_COD_EJEC,
+                       "@ISTIP_CLIE", reg.FS_TIP_CLIE,
+                       "@ISNUM_DOCU_CLIE", reg.FS_NUM_DOCU_IDEN);
+
+                    foreach (M_TB_DETA_ORDE x in detalle)
+                    {
+                        result = db.ExecNonQueryProc("SP_DETA_ORDE_AC01",
+                        "@INIDE_ORDE", reg.FN_IDE_ORDE,
+                        "@IINUM_SECU", x.FI_NUM_SECU,
+                       "@IICOD_EMPR", reg.FI_COD_EMPR,
+                       "@INPRE_VENT", x.FN_PRE_VENT,
+                       "@INCAN_ARTI", x.FN_CAN_ARTI,
+                       "@ISTIP_SITU", x.FS_TIP_SITU,
+                       "@ISCOD_ARTI", x.FS_COD_ARTI
+                      );
+                    }
+                    db.Commit();
+                }
+                catch (Exception)
+                {
+                    db.Rollback();
+                }
+                return result;
+            }
+        }
+
         public IEnumerable<M_TB_CABE_ORDE> listar_ordenes()
         {
             var temp = new List<M_TB_CABE_ORDE>();

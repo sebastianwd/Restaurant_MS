@@ -9,31 +9,43 @@
     <button class="navbar-toggler sidebar-toggler d-md-down-none" type="button" data-toggle="sidebar-lg-show">
         <span class="navbar-toggler-icon"></span>
     </button>
-  
+    <ul class="nav navbar-nav d-md-down-none">
+        <li class="nav-item px-3">
+                @Html.Action("GetNombreEmpresa", "Home", new { Area = "" })
+        </li>
+    </ul>
     <ul class="nav navbar-nav ml-auto">
-       
+
         <li class="nav-item dropdown">
             <a class="nav-link no-smoothState" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-                <img class="img-avatar" src="~/Content/Main/imagenes/user_default.svg" alt="-" />
-                <span class="fa fa-circle" style="font-size:9px ; color:chartreuse"></span> Usuario
+                @try
+                {
+                    <img class="img-avatar" src="@Html.Action("GetImageUsuario", "Home", new { Area = "" })" alt="user_image" />
+
+                }
+                catch (Exception)
+                {
+                                        <img class="img-avatar" src ="~/Content/Main/imagenes/user_default.svg" />
+                }
+
+
+                <span class="fa fa-circle" style="font-size:9px ; color:chartreuse"></span> @Html.Action("GetNombreUsuario", "Home", new { Area = "" })
             </a>
             <div class="dropdown-menu dropdown-menu-right">
                 <div class="dropdown-header text-center">
                     <strong>Cuenta</strong>
                 </div>
-               
+
                 <a class="dropdown-item smooth-link" href="@Url.Action("Index","Usuarios")">
                     <i class="fa fa-user"></i> Perfil
                 </a>
-              
+
                 <a class="dropdown-item" href="@Url.Action("Login","Home", new { Area = "" })">
                     <i class="fa fa-lock"></i> Salir
                 </a>
             </div>
         </li>
     </ul>
-    <button class="navbar-toggler aside-menu-toggler d-md-down-none" type="button" data-toggle="aside-menu-lg-show">
-    </button>
-    <button class="navbar-toggler aside-menu-toggler d-lg-none" type="button" data-toggle="aside-menu-show">
-    </button>
+    <button class="navbar-toggler aside-menu-toggler d-md-down-none" type="button" data-toggle="aside-menu-lg-show"></button>
+    <button class="navbar-toggler aside-menu-toggler d-lg-none" type="button" data-toggle="aside-menu-show"></button>
 </header>
