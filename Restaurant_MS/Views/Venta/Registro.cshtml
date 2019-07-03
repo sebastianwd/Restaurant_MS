@@ -10,7 +10,7 @@
     <link href="~/Content/ui-search/search.min.css" rel="stylesheet" />
     <script src="https://unpkg.com/jspdf@latest/dist/jspdf.min.js"></script>
     <script src="https://unpkg.com/jspdf-autotable@3.1.1/dist/jspdf.plugin.autotable.js"></script>
-   
+
     <ol class="breadcrumb">
         <li class="breadcrumb-item">
             <a href="#">Orden </a>
@@ -61,6 +61,7 @@
 
     <div id="_cargar_venta" data-request-url="@Url.Action("Cargar_Venta", "Venta")"></div>
 
+    <div id="_obtener_nuevo_documento_correlativo" data-request-url="@Url.Action("obtener_nuevo_documento_correlativo", "Venta")"></div>
     <div id="_busqueda_ordenes" data-request-url="@Url.Action("Busqueda_ordenes", "Busqueda")"></div>
     <div id="_detalle_data_loader_venta" data-request-url="@Url.Action("listar_detalle_venta", "Venta",new { FN_IDE_DOCU = ViewBag.numero_venta,FI_COD_EMPR = 1 })"></div>
     <div id="_detalle_data_loader_venta2" data-request-url="@Url.Action("listar_detalle_venta", "Venta",new { FI_COD_EMPR = 1 })"></div>

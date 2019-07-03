@@ -35,6 +35,8 @@ namespace RMS_MODELOS
         [MaxLength(10)]
         public string FS_COD_MESA { get; set; }
 
+        public string FS_DES_TIPO_CLIE { get; set; }
+
         [MaxLength(4)]
         [Display(Name = "Situación")]
         public string FS_TIP_SITU { get; set; }

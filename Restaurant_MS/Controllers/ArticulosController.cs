@@ -49,6 +49,37 @@ namespace Restaurant_MS.Controllers
         }
 
         [HttpPost]
+        public JsonResult eliminar_articulo(string FS_COD_ARTI)
+        {
+            try
+            {
+                var n = 0;
+
+                n = S_TB_ARTI.eliminar_articulo(FS_COD_ARTI);
+
+                if (n < 1)
+                {
+                    res.response = false;
+                    res.error = "No se pudo completar la operación";
+                    return Json(res, JsonRequestBehavior.AllowGet);
+                }
+
+                res.result = FS_COD_ARTI;
+            }
+            catch (Exception e)
+            {
+                res.error = "Error at OrdenController - method registrar_articulo" + e.Message;
+                if (e.Message.Contains("REFERENCE"))
+                {
+                    res.error = "Artículo " + FS_COD_ARTI + " está siendo usado en Órdenes, no se puede eliminar";
+                }
+                res.response = false;
+            }
+
+            return Json(res, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
         public JsonResult registrar_artículo(HttpPostedFileBase imagen_articulo, M_TB_ARTI reg, string status)
         {
             reg.FS_TIP_PRES = "";

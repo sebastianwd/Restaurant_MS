@@ -95,7 +95,7 @@
                 <div class="col-lg-4 ">
                     <div class="ui fluid search _FS_DES_TIPO_CLIE">
                         <div class="ui icon input">
-                            @Html.TextBox("FS_DES_TIPO_CLIE", null, new { @class = " prompt form-control form-control-sm", @id = "TXT_FS_DES_TIPO_CLIE", @readonly = "readonly" })
+                            @Html.TextBoxFor(x => @x.FS_DES_TIPO_CLIE, new { @class = " prompt form-control form-control-sm", @id = "TXT_FS_DES_TIPO_CLIE", @readonly = "readonly" })
                         </div>
                         <div class="results" style="z-index: 8999;"></div>
                     </div>
@@ -156,12 +156,7 @@
 </div>
 <script>
     $('#FD_FEC_ORDE').removeAttr("data-val-date");
-    $('._valid-date').toArray().forEach(function (campo) {
-        new Cleave(campo, {
-            date: true,
-            datePattern: ['d', 'm', 'Y']
-        });
-    });
+   
 </script>
 <div id="_detalle_data_loader" data-request-url="@Url.Action("listar_detalle_orden", "Orden",new { FN_IDE_ORDE = ViewBag.numero_orden,FI_COD_EMPR = 1 })"></div>
 <div id="_detalle_data_add" data-request-url="@Url.Action("agregar_detalle_orden", "Orden",new { FN_IDE_ORDE = ViewBag.numero_orden })"></div>

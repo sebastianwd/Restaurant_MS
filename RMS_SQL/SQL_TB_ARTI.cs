@@ -102,6 +102,19 @@ namespace RMS_SQL
             return temp;
         }
 
+        public int eliminar_articulo(string FS_COD_ARTI)
+        {
+            int result = 0;
+            using (AdoHelper db = new AdoHelper())
+            {
+                result = db.ExecNonQueryProc("SP_ARTI_EL01",
+                   "@ISCOD_ARTI", FS_COD_ARTI
+
+             );
+            }
+            return result;
+        }
+
         public int actualizar_articulo(M_TB_ARTI reg)
         {
             int result = 0;

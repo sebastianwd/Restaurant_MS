@@ -47,7 +47,7 @@ namespace RMS_SQL
                     e.FS_TIP_SITU = dr["FS_TIP_SITU"].ToString();
                     e.FS_COD_EJEC = dr["FS_COD_EJEC"].ToString();
                     e.FS_TIP_CLIE = dr["FS_TIP_CLIE"].ToString();
-
+                    e.FS_DES_TIPO_CLIE = dr["FS_DES_TIPO_CLIE"].ToString();
                     e.FS_NUM_DOCU_IDEN = dr["FS_NUM_DOCU_IDEN"].ToString();
                     temp.Add(e);
                 }

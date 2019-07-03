@@ -56,6 +56,8 @@ namespace Restaurant_MS.Controllers
                     return Json(res, JsonRequestBehavior.AllowGet);
                 }
                 update_pwd = 1;
+
+                reg.SetPassword(reg.FS_CLA_USUA);
             }
 
             string[] valid_extensions = { ".png", ".jpg", ".svg", ".gif", ".jpeg" };

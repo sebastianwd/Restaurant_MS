@@ -34,6 +34,8 @@
     <div class="card-body">
         @using (Html.BeginForm("registrar_venta", "Venta", FormMethod.Post, new { @id = "Frm_Venta_Registro", @class = "form-horizontal" }))
         {
+
+            <input name="status" type="hidden" value="@ViewBag.status" />
             <div class="form-group row">
                 @Html.Label("", String.Format("Nro. de Venta"), new { @class = "col-lg-1 pr-0 col-form-label-sm " })
                 <div class="col-lg-1">
@@ -85,32 +87,32 @@
                   @readonly = "readonly" })
                     @Html.ValidationMessageFor(x => x.FS_NUM_DOCU_CLIE, null, new { @class = "label-alert" })
                 </div>
-                    <div class="col-sm-1 pr-lg-0 pb-lg-0">
-                        @Html.TextBoxFor(x => @x.FS_NUM_RUCS, new { @class = "form-control form-control-sm", @id = "TXT_FS_NUM_RUCS",
-                       @readonly = "readonly" })
-                        @Html.ValidationMessageFor(x => x.FS_NUM_RUCS, null, new { @class = "label-alert" })
-                    </div>
-                    @Html.Label("", String.Format("Cód. cliente"), new { @class = "col-lg-1 pr-0 col-form-label-sm " })
-                    <div class="col-lg-2">
-                        @Html.TextBoxFor(x => @x.FS_COD_CLIE, new { @class = "form-control form-control-sm", @id = "TXT_FS_COD_CLIE",
-                       @readonly = "readonly"
-                   })
-                        @Html.ValidationMessageFor(x => x.FS_COD_CLIE, null, new { @class = "label-alert" })
-                    </div>
-
-                    @Html.Label("", String.Format("Nom. cliente"), new { @class = "col-lg-1  pr-0 col-form-label-sm" })
-                    <div class=" col-lg-2 pl-lg-0 ">
-                        @Html.TextAreaFor(x => @x.FS_NOM_CLIE, new { @class = "form-control form-control-sm", @id = "TXT_FS_NOM_CLIE",
-                       @rows = "1", @style = "resize: none",
-                       @readonly = "readonly"
-                   })
-                        @Html.ValidationMessageFor(x => @x.FS_NOM_CLIE, null, new { @class = "label-alert" })
-                    </div>
+                <div class="col-sm-1 pr-lg-0 pb-lg-0">
+                    @Html.TextBoxFor(x => @x.FS_NUM_RUCS, new { @class = "form-control form-control-sm", @id = "TXT_FS_NUM_RUCS",
+                   @readonly = "readonly" })
+                    @Html.ValidationMessageFor(x => x.FS_NUM_RUCS, null, new { @class = "label-alert" })
                 </div>
+                @Html.Label("", String.Format("Cód. cliente"), new { @class = "col-lg-1 pr-0 col-form-label-sm " })
+                <div class="col-lg-2">
+                    @Html.TextBoxFor(x => @x.FS_COD_CLIE, new { @class = "form-control form-control-sm", @id = "TXT_FS_COD_CLIE",
+                   @readonly = "readonly"
+               })
+                    @Html.ValidationMessageFor(x => x.FS_COD_CLIE, null, new { @class = "label-alert" })
+                </div>
+
+                @Html.Label("", String.Format("Nom. cliente"), new { @class = "col-lg-1  pr-0 col-form-label-sm" })
+                <div class=" col-lg-2 pl-lg-0 ">
+                    @Html.TextAreaFor(x => @x.FS_NOM_CLIE, new { @class = "form-control form-control-sm", @id = "TXT_FS_NOM_CLIE",
+                   @rows = "1", @style = "resize: none",
+                   @readonly = "readonly"
+               })
+                    @Html.ValidationMessageFor(x => @x.FS_NOM_CLIE, null, new { @class = "label-alert" })
+                </div>
+            </div>
             <div class="form-group row">
                 @Html.Label("", String.Format("Observación"), new { @class = "col-lg-1 pr-0 col-form-label-sm" })
                 <div class="col-lg-2">
-                    @Html.TextAreaFor(x => @x.FS_DES_OBSE, new { @class = "form-control form-control-lg", @id = "TXT_FN_IMP_TOTA",
+                    @Html.TextAreaFor(x => @x.FS_DES_OBSE, new { @class = "form-control form-control-lg", @id = "TXT_FS_DES_OBSE",
                    @rows = "1",
                    @style = "resize: none"
                })

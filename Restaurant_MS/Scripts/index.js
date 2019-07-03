@@ -402,16 +402,21 @@ RMS = {
             });
 
             $('#TB_ARTI tbody').on('click', '._delete', function () {
-                alertConfirm.show("¿Desea eliminar el cliente?", "");
+                alertConfirm.show("¿Desea eliminar el artículo?", "");
                 const data = dTable.row($(this).parents('tr')).data();
 
                 alertConfirm.yes = function () {
-                    $.post($("#_eliminar_cliente").data('request-url'), { FS_COD_CLIE: data.FS_COD_CLIE },
+                    $.post($("#_eliminar_articulo").data('request-url'), { FS_COD_ARTI: data.FS_COD_ARTI },
                         function (res, textStatus, jqXHR) {
                             if (res.response) {
-                                msg.success("Aviso", `Cliente ${data.FS_COD_CLIE} eliminado`);
+                                msg.success("Aviso", `Artículo ${data.FS_COD_ARTI} eliminado`);
                                 dTable.ajax.reload();
                             }
+                            else {
+                                msg.error("Aviso", res.error);
+                            }
+                            return false;
+                          
                         },
                         "json"
                     );
@@ -664,6 +669,25 @@ RMS = {
             $("body").off("click", "#busqueda_ventas").on("click", "#busqueda_ventas", function (e) {
                 modal_ajax(true, $("#_busqueda_ventas").data("request-url"), load_venta, "Búsqueda de Ventas");
             });
+            $("body").off("change", "#TXT_FS_TIP_DOCU").on("change", "#TXT_FS_TIP_DOCU", function (e) {
+                if ($(this).val() === "FAC") {
+                    $.get($("#_obtener_nuevo_documento_correlativo").data("request-url"), { FS_TIP_DOCU: "FAC" },
+                        function (data, textStatus, jqXHR) {
+                            $("#TXT_FS_NUM_DOCU").val(data);
+                        },
+                        "json"
+                    );
+                }
+                else {
+                    $.get($("#_obtener_nuevo_documento_correlativo").data("request-url"), { FS_TIP_DOCU: "BOL" },
+                        function (data, textStatus, jqXHR) {
+                            $("#TXT_FS_NUM_DOCU").val(data);
+                        },
+                        "json"
+                    );
+                }
+            });
+
             function load_venta() {
                 const FN_IDE_DOCU = localStorage.getItem("FN_IDE_DOCU");
                 if (FN_IDE_DOCU === null) {
@@ -691,7 +715,6 @@ RMS = {
                     "html"
                 );
             }
-            
 
             function load_orden() {
                 const FN_IDE_ORDE = localStorage.getItem("FN_IDE_ORDE");
@@ -736,22 +759,23 @@ RMS = {
                 var doc = new jsPDF();
 
                 function headRows() {
-                    return [{ FI_NUM_SECU: 'Sec.', FS_COD_ARTI: 'Código', FS_NOM_ARTI: 'Artículo', FN_CAN_ARTI: 'Cantidad', FN_PRE_VENT: 'Precio'}];
+                    return [{ FI_NUM_SECU: 'Sec.', FS_COD_ARTI: 'Código', FS_NOM_ARTI: 'Artículo', FN_CAN_ARTI: 'Cantidad', FN_PRE_VENT: 'Precio' }];
                 }
 
                 var total = 0;
 
-                rows.forEach(function (v) { delete v.FD_FEC_DOCU; delete v.FI_COD_EMPR; delete v.FN_IDE_DOCU; delete v.FS_TIP_DOCU; total = total + v.FN_PRE_VENT * v.FN_CAN_ARTI  });
-
+                var omfg = rows[0].FS_TIP_DOCU;
+                rows.forEach(function (v) { delete v.FD_FEC_DOCU; delete v.FN_IDE_ORDE; delete v.FN_IMP_TOTA;delete v.FI_COD_EMPR; delete v.FN_IDE_DOCU; delete v.FS_TIP_DOCU; total = total + v.FN_PRE_VENT * v.FN_CAN_ARTI });
 
                 function footerRows() {
                     return [{
-                        FI_NUM_SECU: '', FS_COD_ARTI: '', FS_NOM_ARTI: '', FN_CAN_ARTI: '', FN_PRE_VENT: `Total: ${total} `}];
+                        FI_NUM_SECU: '', FS_COD_ARTI: '', FS_NOM_ARTI: '', FN_CAN_ARTI: '', FN_PRE_VENT: `Total: ${total} `
+                    }];
                 }
                 doc.autoTable({
                     head: headRows(),
                     body: rows,
-                    foot:footerRows() ,
+                    foot: footerRows(),
                     startY: 42,
                     tableLineColor: [231, 76, 60],
                     tableLineWidth: 1,
@@ -773,31 +797,30 @@ RMS = {
                     alternateRowStyles: {
                         fillColor: [74, 96, 117]
                     },
-                 
+
                     columnStyles: {
                         FN_PRE_VENT: {
                             fontStyle: 'bold'
                         },
-               
+
                         FN_CAN_ARTI: {
                             halign: 'right'
                         }
                     },
                     allSectionHooks: true,
-                              didDrawPage: function (data) {
+                    didDrawPage: function (data) {
                         doc.setFontSize(18);
                         doc.text("Documento N° " + $("#TXT_FS_NUM_DOCU").val(), data.settings.margin.left, 22);
-                        if (rows[0].FS_TIP_DOCU === 'BOL') {
+                        if (omfg === 'BOL') {
                             doc.text("Boleta", data.settings.margin.left, 30);
                         } else {
                             doc.text("Factura", data.settings.margin.left, 30);
-
                         }
 
                         var date = new Date();
-                        date =    moment(date).format('HH:mm a, D MMM , YYYY');
+                        date = moment(date).format('HH:mm a, D MMM , YYYY');
                         doc.setFontSize(11);
-                        doc.text("Fecha de impresión: "+  date, data.settings.margin.left, 38)
+                        doc.text("Fecha de impresión: " + date, data.settings.margin.left, 38)
                     },
                 });
                 doc.save('a4.pdf')
@@ -933,11 +956,9 @@ RMS = {
 
                 if ($("#status").val() === "AGREGAR") {
                     alertConfirm.show("¿Desea registrar la orden?", "");
-
                 }
                 else {
                     alertConfirm.show("¿Desea actualizar la orden?", "");
-
                 }
                 alertConfirm.yes = function () {
                     $(this).attr("disabled", "disabled");
@@ -988,6 +1009,12 @@ RMS = {
                         debugger;
                         $("#registro_form_card").html(data);
 
+                        $('._valid-date').toArray().forEach(function (campo) {
+                            new Cleave(campo, {
+                                date: true,
+                                datePattern: ['d', 'm', 'Y']
+                            });
+                        });
                         $("#TXT_FD_FEC_ORDE").flatpickr({
                             dateFormat: "d/m/Y",
                             minDate: "today",

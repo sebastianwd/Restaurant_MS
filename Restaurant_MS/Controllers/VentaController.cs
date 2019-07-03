@@ -30,6 +30,8 @@ namespace Restaurant_MS.Controllers
 
             ViewBag.numero_venta = S_TB_CABE_DOCU_VENT.obtener_numero_nuevo_documento(1);
             ViewBag.numero_correlativo = S_TB_CABE_DOCU_VENT.obtener_numero_nuevo_documento_correlativo(1, "BOL");
+            ViewBag.status = "AGREGAR";
+
             return View(new M_TB_CABE_DOCU_VENT());
         }
 
@@ -41,6 +43,7 @@ namespace Restaurant_MS.Controllers
             ViewBag.lista_tipo_documentos = new SelectList(S_TB_TIPO_DOCU_SIST.listar_tipos_documentos(), "FS_COD_TIDO_SIST", "FS_DES_TIDO_SIST");
             ViewBag.numero_correlativo = S_TB_CABE_DOCU_VENT.obtener_numero_nuevo_documento_correlativo(1, "BOL");
 
+            ViewBag.status = "AGREGAR";
             return PartialView("_venta_form", reg);
         }
 
@@ -52,6 +55,7 @@ namespace Restaurant_MS.Controllers
             ViewBag.lista_tipo_documentos = new SelectList(S_TB_TIPO_DOCU_SIST.listar_tipos_documentos(), "FS_COD_TIDO_SIST", "FS_DES_TIDO_SIST", reg.FS_TIP_DOCU);
             ViewBag.numero_correlativo = reg.FS_NUM_DOCU;
 
+            ViewBag.status = "EDITAR";
             return PartialView("_venta_form", reg);
         }
 
@@ -109,6 +113,13 @@ namespace Restaurant_MS.Controllers
             Session["detalle_venta"] = new List<M_TB_DETA_ORDE>();
             var temp = S_TB_DETA_ORDE.listar_detalle_orden(FN_IDE_ORDE, FI_COD_EMPR);
             Session["detalle_venta"] = temp;
+            return Json(temp, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        public JsonResult obtener_nuevo_documento_correlativo(string FS_TIP_DOCU)
+        {
+            var temp = S_TB_CABE_DOCU_VENT.obtener_numero_nuevo_documento_correlativo(1, FS_TIP_DOCU);
             return Json(temp, JsonRequestBehavior.AllowGet);
         }
     }
